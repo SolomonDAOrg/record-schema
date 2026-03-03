@@ -1,0 +1,61 @@
+schema: record-schema-registry-profile
+schema_version: 1
+licenseRef: LicenseRef-OPCO-INTERNAL
+profile_id: template-agreements-internal-v1
+name: Template Agreements Registry Profile
+description: >
+  Internal registry for reusable agreement template packs (TPL series).
+  Source docs are Markdown; stitched packets (cover/TOC/spine/schedules) are produced by render packs.
+
+rules:
+  root:
+    required_paths:
+      - INDEX.md
+      - README.md
+      - LICENSE
+      - DISCLAIMER.md
+    disallow_unknown_top_level: false
+
+  buckets:
+    - bucket: templates
+      path: .
+      record_constraints:
+        require_series_code: TPL
+
+        # Base naming rules
+        require_record_directory_regex: "^[A-Z]{2,5}-\\d{5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?$"
+        require_file_name_regex: "^[A-Z]{2,5}-\\d{5}_[A-Z]{2,5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?\\.[A-Za-z0-9]+$"
+
+        # Baseline hygiene
+        require_meta: true
+        require_primary_document: true
+        require_documents_primary_ref: true
+
+        # Phase
+        status_phase_allow:
+          - draft
+          - reviewed
+          - approved
+          - current
+          - superseded
+          - retired
+
+        # Normalization expectations for reproducible packs/hashes
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+
+        # Keep repo "source-only" (no committed PDFs)
+        disallow_extensions: [pdf]
+
+        recommended_files:
+          - "{RECORD_ID}_IND-index.md"
+          - "{RECORD_ID}_DOC-spine.md"
+          - "{RECORD_ID}_ANN-schedule-a.md"
+
+  document_policies:
+    pack_paths:
+      - type: formatting
+        path: formatting/packs/template-agreements-v1.json
+      - type: render
+        path: render/packs/template-agreements-v1.json

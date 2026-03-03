@@ -1,0 +1,366 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solomondao.org/record-schema/registry.profile.schema.json",
+  "title": "Registry Implementation Profile",
+  "type": "object",
+  "required": [
+    "schema",
+    "schema_version",
+    "profile_id",
+    "name",
+    "rules"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "record-schema-registry-profile"
+    },
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "profile_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{2,}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "rules": {
+      "type": "object",
+      "required": [
+        "root",
+        "buckets"
+      ],
+      "properties": {
+        "root": {
+          "type": "object",
+          "required": [
+            "required_paths"
+          ],
+          "properties": {
+            "required_paths": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "disallow_unknown_top_level": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "additionalProperties": true
+        },
+        "buckets": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "bucket",
+              "path",
+              "record_constraints"
+            ],
+            "properties": {
+              "bucket": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "record_constraints": {
+                "$ref": "#/$defs/recordConstraints"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "document_policies": {
+          "type": "object",
+          "required": [
+            "pack_paths"
+          ],
+          "properties": {
+            "pack_paths": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "object",
+                "required": [
+                  "type",
+                  "path"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "formatting",
+                      "render"
+                    ]
+                  },
+                  "path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Repo-relative path to pack JSON file."
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "overrides": {
+              "type": "object",
+              "description": "Optional shallow overrides applied after packs are merged (tooling-defined).",
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "meta_policies": {
+          "$ref": "#/$defs/metaPolicies"
+        }
+      },
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Profile-level extensions. Domain-specific constraint sets (governance, compliance, etc.) live here so the base profile schema stays universal.",
+      "properties": {
+        "governance": {
+          "$ref": "#/$defs/governanceExtension",
+          "description": "Optional governance constraints for profiles that manage voted/adopted records (e.g., DAO proposals). Omit entirely for non-governance registries."
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "recordConstraints": {
+      "type": "object",
+      "description": "Universal structural constraints for records in a bucket. Domain-specific constraints (governance pins, vote fields, etc.) belong in profile extensions, not here.",
+      "properties": {
+        "status_phase_allow": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "description": "Allowed status phase values for records in this bucket."
+        },
+        "status_confidentiality_allow": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "require_formatting_profile": {
+          "type": "boolean",
+          "default": false
+        },
+        "require_commitments": {
+          "type": "boolean",
+          "default": false
+        },
+        "require_commitment_kind_allow": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "require_commitment_hash_or_content_id": {
+          "type": "boolean",
+          "default": false
+        },
+        "require_series_code": {
+          "type": "string",
+          "pattern": "^[A-Z]{2,5}$"
+        },
+        "require_record_directory_regex": {
+          "type": "string",
+          "minLength": 1
+        },
+        "require_file_name_regex": {
+          "type": "string",
+          "minLength": 1
+        },
+        "require_meta": {
+          "type": "boolean"
+        },
+        "require_primary_document": {
+          "type": "boolean"
+        },
+        "require_documents_primary_ref": {
+          "type": "boolean"
+        },
+        "require_documents_log_ref": {
+          "type": "boolean"
+        },
+        "require_formatting_profile_when_phase_at_least": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recommended_files": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "disallow_doc_types": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{2,5}$"
+          },
+          "uniqueItems": true,
+          "description": "Document type codes that MUST NOT appear in record file names for this bucket."
+        },
+        "disallow_extensions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "description": "File extensions that MUST NOT appear in this bucket (case-insensitive; no leading dot)."
+        },
+        "disallow_paths_regex": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "description": "Regexes; any matching repo-relative path is disallowed for this bucket."
+        },
+        "record_overrides": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "match_record_id_regex",
+              "overrides"
+            ],
+            "properties": {
+              "match_record_id_regex": {
+                "type": "string",
+                "minLength": 1
+              },
+              "overrides": {
+                "type": "object",
+                "description": "Shallow overrides applied to record_constraints when record id matches."
+              }
+            },
+            "additionalProperties": true
+          },
+          "description": "Conditional overrides for special record IDs (e.g., DP-00000 preformation). Tooling-defined semantics."
+        }
+      },
+      "additionalProperties": true
+    },
+    "governanceExtension": {
+      "type": "object",
+      "description": "Governance-specific constraints for profiles that manage voted/adopted records. This entire block is optional and should be omitted for non-governance registries (opco SOPs, IP registries, etc.).",
+      "properties": {
+        "require_annotated_git_tag_when_phase_at_least": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Phase threshold at which an annotated git tag is required (e.g., 'passed')."
+        },
+        "require_governance_pins_when_phase_at_least": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Phase threshold at which governance pin fields are required (e.g., 'passed')."
+        },
+        "governance_pin_fields": {
+          "type": "object",
+          "description": "Fields required at each governance milestone.",
+          "properties": {
+            "passed": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true,
+              "description": "Fields required when phase reaches 'passed' (e.g., passed_commit, passed_tag, adopted_paths)."
+            },
+            "executed": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true,
+              "description": "Fields required when phase reaches 'executed' (e.g., executed_commit, executed_tag, execution_txs)."
+            }
+          },
+          "additionalProperties": true
+        },
+        "require_vote_reference_when_phase_at_least": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Phase threshold at which a vote reference is required (e.g., 'voting')."
+        },
+        "adopted_text_freeze": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether files in adopted_paths are frozen after passed_tag. Substantive changes require a new record ID."
+        },
+        "governance_metadata_path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Dot-path within META.yaml where governance fields live (e.g., 'extensions.dao_proposals.governance')."
+        }
+      },
+      "additionalProperties": true
+    },
+    "metaPolicies": {
+      "type": "object",
+      "description": "Additional validation/policy configuration for record metadata (META.yaml) within this registry profile.",
+      "properties": {
+        "overlay_schema_paths": {
+          "type": "array",
+          "description": "Repository-relative JSON Schema overlay(s) applied in addition to schema/record.meta.schema.json (recommended location: top-level overlays/).",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "require_extension_paths": {
+          "type": "array",
+          "description": "Dot-paths that MUST exist in META.yaml (e.g. 'extensions.dao_proposals.governance').",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "disallow_extension_paths": {
+          "type": "array",
+          "description": "Dot-paths that MUST NOT exist in META.yaml (e.g. 'extensions.secrets').",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

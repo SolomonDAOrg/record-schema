@@ -1,0 +1,23 @@
+schema: record-schema-registry
+schema_version: 1
+
+series:
+  - code: TPL
+    tier: core
+    name: Template
+    description: A reusable record template pack.
+
+  - code: ADR
+    tier: core
+    name: Architecture Decision Record
+    description: A technical decision and its context.
+
+  - code: INC
+    tier: core
+    name: Incident Record
+    description: A generic incident record (security, ops, compliance).
+
+  - code: DOC
+    tier: core
+    name: Generic Record
+    description: A fallback series code when no domain series is chosen.

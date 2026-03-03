@@ -1,0 +1,800 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solomondao.org/record-schema/render.pack.schema.json",
+  "title": "Render Pack",
+  "description": "Schema for document render packs defining output transformation rules, rendering profiles, and visual styling (including chart themes and classes).",
+  "type": "object",
+  "required": [
+    "schema",
+    "schema_version",
+    "pack_id",
+    "document_policies"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "record-schema-render-pack"
+    },
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "pack_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{2,}$"
+    },
+    "description": {
+      "type": "string"
+    },
+    "imports": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Repo-relative paths to other packs to merge first."
+    },
+    "document_policies": {
+      "type": "object",
+      "properties": {
+        "defaults": {
+          "type": "object",
+          "description": "Default render settings inherited by all rules.",
+          "additionalProperties": true
+        },
+        "targets": {
+          "type": "object",
+          "description": "Named render target configurations keyed by format identifier (pdf, csv, html, etc.).",
+          "additionalProperties": {
+            "$ref": "#/$defs/renderTarget"
+          }
+        },
+        "render_profiles": {
+          "type": "object",
+          "description": "Named render profiles that can be referenced by rules.",
+          "additionalProperties": true
+        },
+        "chart_themes": {
+          "type": "object",
+          "description": "Named visual themes for charts (node/edge/subgraph defaults).",
+          "additionalProperties": {
+            "$ref": "#/$defs/chartTheme"
+          }
+        },
+        "chart_classes": {
+          "type": "object",
+          "description": "Named style classes for chart elements (nodes, states, entities).",
+          "additionalProperties": {
+            "$ref": "#/$defs/chartClass"
+          }
+        },
+        "chart_edge_classes": {
+          "type": "object",
+          "description": "Named style classes specific to edges/transitions/relationships.",
+          "additionalProperties": {
+            "$ref": "#/$defs/chartEdgeClass"
+          }
+        },
+        "chart_targets": {
+          "type": "object",
+          "description": "Chart-specific render target configurations (svg, png, ascii, mermaid).",
+          "additionalProperties": {
+            "$ref": "#/$defs/chartTarget"
+          }
+        },
+        "rulesets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ruleset"
+          },
+          "description": "Ordered list of selector-based render rules."
+        },
+        "spacing_policy": {
+          "type": "object",
+          "description": "Element spacing rules for document rendering.",
+          "additionalProperties": true
+        },
+        "precedence_notes": {
+          "type": "string",
+          "description": "Human-readable notes on rule precedence and merging behavior."
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "ruleset": {
+      "type": "object",
+      "required": [
+        "id",
+        "selectors",
+        "render"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "severity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "selectors": {
+          "$ref": "#/$defs/selectors"
+        },
+        "render": {
+          "type": "object",
+          "properties": {
+            "targets": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": "List of target format IDs to generate."
+            },
+            "profile": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Render profile ID to apply."
+            },
+            "chart_theme": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Chart theme ID to apply."
+            },
+            "output_dir": {
+              "type": "string",
+              "description": "Output directory relative to source file."
+            },
+            "output_suffix": {
+              "type": "string",
+              "description": "Suffix to add before extension (e.g., '-rendered')."
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "selectors": {
+      "type": "object",
+      "properties": {
+        "paths_glob": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Glob patterns matching file paths."
+        },
+        "is_root_file": {
+          "type": "boolean",
+          "description": "Match only files at repository root."
+        },
+        "doc_types": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{2,5}$"
+          },
+          "uniqueItems": true,
+          "description": "Document type codes."
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "description": "File extensions without leading dot."
+        }
+      },
+      "additionalProperties": true
+    },
+    "chartTheme": {
+      "type": "object",
+      "description": "Coordinated visual defaults for a chart theme.",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "node_defaults": {
+          "$ref": "#/$defs/chartStyleProperties"
+        },
+        "edge_defaults": {
+          "$ref": "#/$defs/chartEdgeStyleProperties"
+        },
+        "subgraph_defaults": {
+          "$ref": "#/$defs/chartStyleProperties"
+        },
+        "participant_defaults": {
+          "$ref": "#/$defs/chartStyleProperties"
+        },
+        "state_defaults": {
+          "$ref": "#/$defs/chartStyleProperties"
+        },
+        "entity_defaults": {
+          "$ref": "#/$defs/chartStyleProperties"
+        }
+      },
+      "additionalProperties": true
+    },
+    "chartClass": {
+      "type": "object",
+      "description": "Style class for chart elements.",
+      "properties": {
+        "extends": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]*$"
+          },
+          "description": "Classes to inherit from (applied in order before this class)."
+        },
+        "fill": {
+          "type": "string",
+          "description": "Background fill color."
+        },
+        "stroke": {
+          "type": "string",
+          "description": "Border/stroke color."
+        },
+        "stroke_width": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Border/stroke width in pixels."
+        },
+        "stroke_dasharray": {
+          "type": "string",
+          "description": "SVG dash array (e.g., '5,5' for dashed)."
+        },
+        "font_family": {
+          "type": "string"
+        },
+        "font_size": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "description": "Font size (number for px, string for other units)."
+        },
+        "font_weight": {
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "text_color": {
+          "type": "string",
+          "description": "Text/label color."
+        },
+        "opacity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "shape": {
+          "type": "string",
+          "description": "Default shape for this class."
+        },
+        "border_radius": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "description": "Corner radius for applicable shapes."
+        },
+        "padding": {
+          "type": [
+            "string",
+            "number",
+            "object"
+          ],
+          "description": "Internal padding."
+        }
+      },
+      "additionalProperties": true
+    },
+    "chartEdgeClass": {
+      "type": "object",
+      "description": "Style class specific to edges/transitions/relationships.",
+      "properties": {
+        "extends": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]*$"
+          }
+        },
+        "stroke": {
+          "type": "string"
+        },
+        "stroke_width": {
+          "type": "number",
+          "minimum": 0
+        },
+        "stroke_dasharray": {
+          "type": "string"
+        },
+        "arrow_head": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "open",
+            "cross",
+            "none"
+          ],
+          "description": "Arrow head style."
+        },
+        "arrow_tail": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "open",
+            "cross",
+            "none"
+          ],
+          "description": "Arrow tail style (for bidirectional)."
+        },
+        "label_font_size": {
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "label_color": {
+          "type": "string"
+        },
+        "label_background": {
+          "type": "string"
+        },
+        "curve": {
+          "type": "string",
+          "enum": [
+            "linear",
+            "basis",
+            "cardinal",
+            "step"
+          ],
+          "description": "Edge curve interpolation."
+        }
+      },
+      "additionalProperties": true
+    },
+    "chartStyleProperties": {
+      "type": "object",
+      "description": "Common style properties for chart elements.",
+      "properties": {
+        "fill": {
+          "type": "string"
+        },
+        "stroke": {
+          "type": "string"
+        },
+        "stroke_width": {
+          "type": "number",
+          "minimum": 0
+        },
+        "stroke_dasharray": {
+          "type": "string"
+        },
+        "font_family": {
+          "type": "string"
+        },
+        "font_size": {
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "font_weight": {
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "text_color": {
+          "type": "string"
+        },
+        "opacity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "shape": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "chartEdgeStyleProperties": {
+      "type": "object",
+      "description": "Style properties for edges.",
+      "properties": {
+        "stroke": {
+          "type": "string"
+        },
+        "stroke_width": {
+          "type": "number",
+          "minimum": 0
+        },
+        "stroke_dasharray": {
+          "type": "string"
+        },
+        "arrow_head": {
+          "type": "string"
+        },
+        "arrow_tail": {
+          "type": "string"
+        },
+        "curve": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "chartTarget": {
+      "type": "object",
+      "required": [
+        "engine"
+      ],
+      "properties": {
+        "engine": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Render engine identifier (e.g., chart-schema-native, chart-schema-mermaid-export, chart-schema-ascii)."
+        },
+        "theme": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Theme ID from chart_themes."
+        },
+        "style_packs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Additional formatting pack paths to load for chart styles (cascade order)."
+        },
+        "options": {
+          "$ref": "#/$defs/chartTargetOptions"
+        }
+      },
+      "additionalProperties": true
+    },
+    "chartTargetOptions": {
+      "type": "object",
+      "description": "Engine-specific options for chart rendering.",
+      "properties": {
+        "width": {
+          "type": [
+            "integer",
+            "string"
+          ],
+          "description": "Output width in pixels or 'auto'."
+        },
+        "height": {
+          "type": [
+            "integer",
+            "string"
+          ],
+          "description": "Output height in pixels or 'auto'."
+        },
+        "scale": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 10,
+          "description": "Scale factor (e.g., 2 for retina)."
+        },
+        "padding": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Padding around chart in pixels."
+        },
+        "background": {
+          "type": "string",
+          "description": "Background color (CSS color or 'transparent')."
+        },
+        "max_width": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum width for ASCII output."
+        },
+        "box_chars": {
+          "type": "string",
+          "enum": [
+            "unicode",
+            "ascii"
+          ],
+          "default": "unicode",
+          "description": "Box drawing character set for ASCII output."
+        },
+        "escape_mode": {
+          "type": "string",
+          "enum": [
+            "html_entities",
+            "unicode",
+            "none"
+          ],
+          "default": "html_entities",
+          "description": "Escape mode for Mermaid export."
+        },
+        "mermaid_theme": {
+          "type": "string",
+          "description": "Mermaid theme name for mermaid export."
+        },
+        "font_family": {
+          "type": "string",
+          "description": "Default font family for SVG/PNG output."
+        },
+        "embed_fonts": {
+          "type": "boolean",
+          "description": "Embed fonts in SVG output."
+        },
+        "minify": {
+          "type": "boolean",
+          "description": "Minify SVG output."
+        }
+      },
+      "additionalProperties": true
+    },
+    "tableRenderConfig": {
+      "type": "object",
+      "description": "PDF table rendering configuration (points unless stated).",
+      "properties": {
+        "font_size": {
+          "type": "number"
+        },
+        "font_size_scale": {
+          "type": "number"
+        },
+        "min_font_size": {
+          "type": "number"
+        },
+        "max_font_size": {
+          "type": "number"
+        },
+        "auto_shrink": {
+          "type": "boolean"
+        },
+        "line_height": {
+          "type": "number"
+        },
+        "cell_padding": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "top": {
+                  "type": "number"
+                },
+                "right": {
+                  "type": "number"
+                },
+                "bottom": {
+                  "type": "number"
+                },
+                "left": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "border_width": {
+          "type": "number"
+        },
+        "border_color": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "header": {
+          "type": "object",
+          "properties": {
+            "background_color": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "text_color": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "cell_padding": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "top": {
+                      "type": "number"
+                    },
+                    "right": {
+                      "type": "number"
+                    },
+                    "bottom": {
+                      "type": "number"
+                    },
+                    "left": {
+                      "type": "number"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "additionalProperties": true
+        },
+        "zebra": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "odd_background": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "even_background": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "additionalProperties": true
+        },
+        "bleed_in": {
+          "type": "number",
+          "description": "Inches to allow table to bleed into both margins."
+        },
+        "bleed_left_in": {
+          "type": "number",
+          "description": "Inches to allow table to bleed into left margin."
+        },
+        "bleed_right_in": {
+          "type": "number",
+          "description": "Inches to allow table to bleed into right margin."
+        },
+        "bleed_pt": {
+          "type": "number",
+          "description": "Points to allow table to bleed into both margins."
+        },
+        "bleed_left_pt": {
+          "type": "number",
+          "description": "Points to allow table to bleed into left margin."
+        },
+        "bleedLeftPt": {
+          "type": "number"
+        },
+        "bleed_right_pt": {
+          "type": "number",
+          "description": "Points to allow table to bleed into right margin."
+        },
+        "min_page_edge_inset_in": {
+          "type": "number",
+          "description": "Inches to keep table content away from physical page edge (safety inset)."
+        },
+        "min_page_edge_inset_pt": {
+          "type": "number",
+          "description": "Points to keep table content away from physical page edge (safety inset)."
+        },
+        "bleed_if_columns_gt": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Apply bleed only if table column count is > this value."
+        },
+        "bleed_if_columns_gte": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Apply bleed only if table column count is >= this value."
+        },
+        "bleed_min_columns": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Alias for bleed_if_columns_gte."
+        }
+      },
+      "additionalProperties": true
+    },
+    "pdfTarget": {
+      "type": "object",
+      "required": [
+        "format"
+      ],
+      "properties": {
+        "format": {
+          "const": "pdf"
+        },
+        "table": {
+          "$ref": "#/$defs/tableRenderConfig"
+        },
+        "table_style": {
+          "$ref": "#/$defs/tableRenderConfig"
+        }
+      },
+      "additionalProperties": true
+    },
+    "renderTarget": {
+      "type": "object",
+      "required": [
+        "format"
+      ],
+      "properties": {
+        "format": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "format": {
+                "const": "pdf"
+              }
+            },
+            "required": [
+              "format"
+            ]
+          },
+          "then": {
+            "$ref": "#/$defs/pdfTarget"
+          }
+        }
+      ]
+    }
+  }
+}

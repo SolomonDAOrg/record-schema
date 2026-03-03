@@ -1,0 +1,216 @@
+{
+    "schema": "record-schema-formatting-pack",
+    "schema_version": 1,
+    "pack_id": "template-agreements-v1",
+    "description": "Template agreements document policies (shapes, templates, and rulesets). Imports base-v1 + IND index conventions.",
+    "imports": [
+        "formatting/packs/base-v1.json"
+    ],
+    "document_policies": {
+        "shapes": {
+            "mem-disclaimer-footer-v1": {
+                "kind": "fixed_lines",
+                "location": "markdown_footer",
+                "required_trailing_lines": [
+                    "END DISCLAIMER"
+                ]
+            }
+        },
+        "rulesets": [
+            {
+                "id": "root-license-v1",
+                "severity": "error",
+                "selectors": {
+                    "paths_glob": ["LICENSE"],
+                    "is_root_file": true
+                },
+                "enforce": {
+                    "line_width": {
+                        "max": 80,
+                        "ignore_blocks": [
+                            "code",
+                            "tables",
+                            "urls",
+                            "base58",
+                            "base64",
+                            "legal_citations"
+                        ]
+                    },
+                    "language_locale": "en-US",
+                    "dialect_pack": "en-US-basic-v1",
+                    "formatting_profile": "canonical-ascii",
+                    "header_shape_id": "license-header-v1",
+                    "footer_shape_id": "license-footer-v1",
+                    "body_shape_id": "license-body-v1",
+                    "metadata_shape_id": "document-metadata-block-v1",
+                    "style_profile_id": "license-v1",
+                    "header_template_path": "formatting/templates/root/LICENSE-header-v1.txt",
+                    "footer_template_path": "formatting/templates/root/LICENSE-footer-v1.txt"
+                }
+            },
+            {
+                "id": "license-documents-v1",
+                "severity": "error",
+                "selectors": {
+                    "doc_types": ["LIC"],
+                    "paths_glob": ["**/LICENSE", "**/LICENSE-*.md", "**/*_LIC-*.md"]
+                },
+                "enforce": {
+                    "line_width": {
+                        "max": 80,
+                        "ignore_blocks": [
+                            "code",
+                            "tables",
+                            "urls",
+                            "base58",
+                            "base64",
+                            "legal_citations"
+                        ]
+                    },
+                    "formatting_profile": "canonical-ascii",
+                    "header_shape_id": "license-header-v1",
+                    "footer_shape_id": "license-footer-v1",
+                    "body_shape_id": "license-body-v1",
+                    "metadata_shape_id": "document-metadata-block-v1",
+                    "style_profile_id": "license-v1",
+                    "require_metadata_block": true,
+                    "metadata_required_fields": [
+                        "SPDX-LicenseIdentifier",
+                        "Document-Type",
+                        "Title",
+                        "Version",
+                        "Effective-Date"
+                    ]
+                }
+            },
+            {
+                "id": "mem-disclaimer-v1",
+                "severity": "error",
+                "selectors": {
+                    "doc_types": ["MEM"],
+                    "extensions": ["md"]
+                },
+                "enforce": {
+                    "require_disclaimer_footer": true,
+                    "footer_shape_id": "mem-disclaimer-footer-v1",
+                    "footer_template_path": "formatting/templates/footers/dao-proposals_MEM-disclaimer-footer-v1.md",
+                    "line_width": {
+                        "max": 80,
+                        "ignore_blocks": [
+                            "code",
+                            "tables",
+                            "urls"
+                        ]
+                    },
+                    "markdown_style_profile_id": "informative-memo-v1",
+                    "markdown_envelope_id": "record-markdown-envelope-v1",
+                    "markdown_hash_surface": "markdown-body-v1"
+                }
+            },
+            {
+                "id": "legal-instruments-style-v1",
+                "severity": "warn",
+                "selectors": {
+                    "doc_types": ["CHA", "RES", "POL", "SOP"],
+                    "extensions": ["md"]
+                },
+                "enforce": {
+                    "line_width": {
+                        "max": 80,
+                        "ignore_blocks": [
+                            "code",
+                            "tables",
+                            "urls"
+                        ]
+                    },
+                    "markdown_style_profile_id": "legal-instrument-v1",
+                    "markdown_envelope_id": "record-markdown-envelope-v1",
+                    "metadata_shape_id": "document-metadata-block-v1",
+                    "metadata_optional_fields": [
+                        "Document-Type",
+                        "Record-ID",
+                        "Title",
+                        "Adopted-Date",
+                        "Effective-Date",
+                        "SPDX-LicenseIdentifier"
+                    ]
+                }
+            },
+            {
+                "id": "index-documents-v1",
+                "severity": "warn",
+                "selectors": {
+                    "doc_types": [
+                        "IND"
+                    ],
+                    "extensions": [
+                        "md"
+                    ]
+                },
+                "enforce": {
+                    "line_width": {
+                        "max": 80,
+                        "ignore_blocks": [
+                            "code",
+                            "tables",
+                            "urls"
+                        ]
+                    },
+                    "markdown_style_profile_id": "legal-instrument-v1",
+                    "markdown_envelope_id": "record-markdown-envelope-v1",
+                    "metadata_shape_id": "document-metadata-block-v1",
+                    "require_metadata_block": true,
+                    "metadata_required_fields": [
+                        "Document-Type",
+                        "Record-ID",
+                        "Title",
+                        "Created-At"
+                    ]
+                }
+            },
+            {
+                "id": "uk-dialect-example-v1",
+                "severity": "info",
+                "selectors": {
+                    "paths_glob": ["**/*_CHA-uk-*.md"],
+                    "extensions": ["md"]
+                },
+                "enforce": {
+                    "language_locale": "en-GB",
+                    "dialect_pack": "en-GB-basic-v1"
+                }
+            }
+        ],
+        "templates": {
+            "license-metadata-block-v1": {
+                "description": "Template for license document metadata block",
+                "content": [
+                    "",
+                    "----------------------------BEGIN DOCUMENT METADATA-----------------------------",
+                    "SPDX-LicenseIdentifier: ${spdx_id}",
+                    "Document-Type: LICENSE",
+                    "Title: ${title}",
+                    "Version: ${version}",
+                    "Effective-Date: ${effective_date}",
+                    "Canonical-URL: ${canonical_url}",
+                    "-----------------------------END DOCUMENT METADATA------------------------------"
+                ]
+            },
+            "resolution-metadata-block-v1": {
+                "description": "Template for resolution document metadata block",
+                "content": [
+                    "",
+                    "----------------------------BEGIN DOCUMENT METADATA-----------------------------",
+                    "Document-Type: RESOLUTION",
+                    "Record-ID: ${record_id}",
+                    "Title: ${title}",
+                    "Adopted-Date: ${adopted_date}",
+                    "Effective-Date: ${effective_date}",
+                    "SPDX-LicenseIdentifier: ${spdx_id}",
+                    "-----------------------------END DOCUMENT METADATA------------------------------"
+                ]
+            }
+        },
+        "precedence_notes": "Defaults < extension/doc_type rules < path rules. For multiple matches, merge in order; later matches override field-by-field."
+    }
+}

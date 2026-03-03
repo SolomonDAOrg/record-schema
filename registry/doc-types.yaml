@@ -1,0 +1,107 @@
+schema: record-schema-registry
+schema_version: 1
+
+doc_types:
+- code: META
+  name: Metadata
+  description: Machine-readable record metadata.
+
+- code: DOC
+  name: Primary Document
+  description: Default primary document when no specialised narrative type applies.
+  recommended_extensions: [md]
+  markdown_envelope: record-markdown-envelope-v1
+
+- code: MEM
+  name: Memorandum
+  description: Narrative document that explains the record and context.
+  recommended_extensions: [md]
+  markdown_envelope: record-markdown-envelope-v1
+
+- code: CHA
+  name: Charter / Operating Agreement
+  description: Charter, operating agreement, constitution, or similar governing instrument.
+  recommended_extensions: [md]
+  markdown_envelope: record-markdown-envelope-v1
+
+- code: ANN
+  name: Annex
+  description: Technical appendices, parameters, specifications, proofs, exhibits.
+  recommended_extensions: [md]
+  markdown_envelope: record-markdown-envelope-v1
+
+- code: SUPP
+  name: Supplement
+  description: Supplemental, non-primary narrative or supporting material that is not authoritative.
+  recommended_extensions: [md]
+  markdown_envelope: record-markdown-envelope-v1
+
+- code: LOG
+  name: Log
+  description: Chronological notes, governance log, operational log.
+  recommended_extensions: [md]
+  markdown_envelope: record-markdown-envelope-v1
+
+- code: REG
+  name: Register / Registry
+  description: 'Canonical register/registry document: curated list or table (e.g.,
+    smart contract register, website register).'
+  recommended_extensions: [md]
+  markdown_envelope: record-markdown-envelope-v1
+
+- code: IND
+  name: Index
+  description: Human-readable index/table of contents for a multi-part record or packet.
+  recommended_extensions: [md]
+  markdown_envelope: record-markdown-envelope-v1
+  recommended_slug: index
+
+- code: TX
+  name: Transaction Bundle
+  description: Executable bundle, e.g. JSON payloads, borsh bytes, signatures.
+  recommended_extensions: [json, borsh]
+
+- code: REP
+  name: Report
+  description: Audit report, incident report, review report.
+  recommended_extensions: [md, pdf]
+  markdown_envelope: record-markdown-envelope-v1
+
+- code: PKT
+  name: Packet
+  description: Compiled/assembled filing packet (single artefact) produced from ordered
+    sources (e.g., stitched PDF for filing/submission).
+  recommended_extensions: [pdf]
+  recommended_slug: filing
+
+- code: EVD
+  name: Evidence
+  description: Raw artefacts, exports, emails, screenshots, captures.
+  recommended_extensions: [zip, eml, msg, png, jpg, pdf, json, csv]
+
+- code: IOC
+  name: Indicators
+  description: Indicators of compromise, blocklists, rules, hashes, addresses.
+  recommended_extensions: [json, txt, csv]
+
+- code: POL
+  name: Policy
+  description: Policy record content.
+  recommended_extensions: [md]
+  markdown_envelope: record-markdown-envelope-v1
+
+- code: SOP
+  name: Procedure
+  description: Runbooks / standard operating procedures.
+  recommended_extensions: [md]
+  markdown_envelope: record-markdown-envelope-v1
+
+- code: DAT
+  name: Data
+  description: Structured data attached to a record.
+  recommended_extensions: [json, yaml, csv]
+
+- code: DIA
+  name: Diagram
+  description: Chart or diagram source definition using record-schema-chart format.
+  recommended_extensions: [chart.yaml, chart.json]

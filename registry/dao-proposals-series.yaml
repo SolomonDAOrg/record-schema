@@ -1,0 +1,22 @@
+schema: record-schema-registry
+schema_version: 1
+
+series:
+  - code: DP
+    tier: core
+    name: DAO Proposal
+    description: >
+      A governance proposal record for SOLOMON DAO LLC.
+      Managed by the dao-proposals-v1 registry implementation profile.
+    recommended_doc_types:
+      - META
+      - MEM
+      - CHA
+      - ANN
+      - SUPP
+      - REG
+      - TX
+      - IND
+      - PKT
+      - LOG
+      - SOP

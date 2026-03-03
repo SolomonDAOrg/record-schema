@@ -1,0 +1,107 @@
+schema: record-schema-registry-profile
+schema_version: 1
+licenseRef: LicenseRef-SOLOMON-DAO-PUBLIC-GOVERNANCE
+profile_id: dao-proposals-v1
+name: DAO Proposals Registry Implementation Profile
+description: >
+  Tightens record-schema for DAO proposal registries (DP series).
+  Enforces:
+  - root files (index, disclaimer, license),
+  - proposal directory layout and naming,
+  - phase vocabulary,
+  - adoption pinning + adopted-text freeze surface,
+  - formatting profile for reproducible adopted surfaces.
+
+rules:
+  root:
+    required_paths:
+      - INDEX.md
+      - README.md
+      - LICENSE
+      - DISCLAIMER.md
+    disallow_unknown_top_level: false
+
+  meta_policies:
+    overlay_schema_paths:
+      - overlays/dao-proposals.record.meta.schema.json
+
+  buckets:
+    - bucket: proposals
+      path: .
+      record_constraints:
+        # Series constraints
+        require_series_code: DP
+
+        # Phase vocabulary
+        status_phase_allow:
+          - formation
+          - preformation
+          - draft
+          - submitted
+          - voting
+          - passed
+          - executed
+          - failed
+          - withdrawn
+          - superseded
+
+        # Structural constraints (proposal directories should be DP-00001-<slug>/)
+        require_record_directory_regex: "^[A-Z]{2,5}-\\d{5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?$"
+        require_file_name_regex: "^[A-Z]{2,5}-\\d{5}_[A-Z]{2,5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?\\.[A-Za-z0-9]+$"
+
+        # Baseline record-schema requirements
+        require_meta: true
+        require_primary_document: true
+
+        # Stronger dao-proposals expectations
+        require_documents_primary_ref: true
+        require_documents_log_ref: true
+
+        # Adopted surfaces should declare a formatting profile for reproducible hashing
+        require_formatting_profile_when_phase_at_least: passed
+
+        # Recommended-but-not-hard-required files (warn if missing)
+        recommended_files:
+          - "{RECORD_ID}_LOG-governance.md"
+          - "{RECORD_ID}_TX-main.json"
+          - "{RECORD_ID}_TX-main.borsh"
+          - "{RECORD_ID}_REG-smart-contract-registry.md"
+
+        # Pre-DAO formation filings
+        record_overrides:
+          - match_record_id_regex: ^DP-00000$
+            overrides:
+              status_phase_allow:
+                - preformation
+                - formation
+                - draft
+  
+  document_policies:
+    pack_paths:
+      - type: formatting
+        path: formatting/packs/dao-proposals-v1.json
+      - type: render
+        path: render/packs/dao-proposals-v1.json
+
+extensions:
+  governance:
+    governance_metadata_path: "extensions.dao_proposals.governance"
+
+    require_vote_reference_when_phase_at_least: voting
+    require_annotated_git_tag_when_phase_at_least: passed
+    require_governance_pins_when_phase_at_least: passed
+
+    # Governance pinning requirements on adoption (annotated tags; freeze surface)
+    governance_pin_fields:
+      passed:
+        - governance.passed_commit
+        - governance.passed_tag
+        - governance.passed_pinned
+        - governance.adopted_paths
+      executed:
+        - governance.executed_commit
+        - governance.executed_tag
+        - governance.executed_pinned
+        - governance.execution_txs
+
+    adopted_text_freeze: true

@@ -1,0 +1,41 @@
+{
+    "schema": "record-schema-formatting-pack",
+    "schema_version": 1,
+    "pack_id": "base-diagrams-v1",
+    "description": "Base chart validation rules for general documentation",
+    "imports": [
+        "formatting/packs/base-v1.json"
+    ],
+    "document_policies": {
+        "rulesets": [
+            {
+                "id": "chart-source-validation",
+                "severity": "warn",
+                "selectors": {
+                    "extensions": ["chart.yaml", "chart.json"]
+                },
+                "enforce": {
+                    "formatting_profile": "canonical-ascii",
+                    "chart_validation": {
+                        "require_metadata_title": true,
+                        "warn_undefined_classes": true,
+                        "warn_orphan_nodes": true,
+                        "warn_duplicate_ids": true
+                    }
+                }
+            },
+            {
+                "id": "diagram-doc-type-validation",
+                "severity": "error",
+                "selectors": {
+                    "doc_types": ["DIA"]
+                },
+                "enforce": {
+                    "chart_validation": {
+                        "require_metadata_record_id": true
+                    }
+                }
+            }
+        ]
+    }
+}

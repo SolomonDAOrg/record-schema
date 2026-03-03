@@ -1,0 +1,14 @@
+<LICENSE TITLE IN CAPS>
+
+Version <X.Y> - Effective <Month YYYY>
+
+================================================================================
+
+<Licensor identification block>
+<Canonical URL>
+
+<Rights reservation>
+
+<Scope summary - what this license covers>
+
+================================================================================

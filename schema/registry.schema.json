@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solomondao.org/record-schema/registry.schema.json",
+  "title": "Record Registry",
+  "type": "object",
+  "required": [
+    "schema",
+    "schema_version"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "record-schema-registry"
+    },
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "doc_types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "name"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z]{2,5}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "recommended_extensions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "markdown_envelope": {
+            "type": "string",
+            "description": "Optional standard envelope ID for Markdown documents (e.g., record-markdown-envelope-v1)."
+          },
+          "recommended_header_fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true,
+            "description": "Optional ordered list of recommended header field labels for Markdown envelopes."
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "series": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "name"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z]{2,5}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "tier": {
+            "type": "string",
+            "enum": [
+              "core",
+              "suggested"
+            ]
+          },
+          "recommended_doc_types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Z]{2,5}$"
+            },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "commitment_kinds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "name"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{2,63}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "required_one_of": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "recommended_fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "recommended_hash_surface": {
+            "type": "string",
+            "description": "Optional recommended hash surface identifier (e.g., markdown-body-v1)."
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

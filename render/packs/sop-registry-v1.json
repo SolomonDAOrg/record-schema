@@ -1,0 +1,537 @@
+{
+  "schema": "record-schema-render-pack",
+  "schema_version": 1,
+  "pack_id": "sop-registry-render-v1",
+  "description": "SOP Registry render pack for filing and legal documents. Horizontal rules (---) become page breaks. Downstream packs or metafile extensions supply entity-specific values (entity name, header text, etc.).",
+  "imports": [
+    "render/packs/base-v1.json"
+  ],
+  "packet_config": {
+    "default_entity_name": "DAO ENTITY",
+    "default_document_title": "FILING PACKET",
+    "header_text": "",
+    "series_prefix": "^(DP-\\d+_)?",
+    "header_title_format": "entity-suffix",
+    "section_page_break": "always",
+    "path_to_title": {
+      "Operating_Agreement": "COMPANY AGREEMENT",
+      "Charter": "FOUNDING CHARTER",
+      "Founding_Charter": "FOUNDING CHARTER",
+      "Memorandum": "FOUNDING MEMORANDUM"
+    },
+    "name_patterns": [
+      "Operating_Agreement",
+      "Founding_Charter",
+      "Founding_Memorandum",
+      "IP_License",
+      "Order.of.business",
+      "smart.contract.registry",
+      "website.registry",
+      "intellectual.property",
+      "document.register",
+      "governance",
+      "index"
+    ],
+    "entity_extraction": {
+      "fields": [
+        "entity_name"
+      ],
+      "title_pattern": "^(?:\\s*(?:Company|Operating)[\\s_-]+Agreement(?:[\\s_-]+of)?[\\s_-]+(.+?)\\s*$|\\s*(.+?)[\\s_-]+(?:Company|Operating)[\\s_-]+Agreement\\s*$)"
+    },
+    "cover_config": {
+      "suppress_header": true,
+      "suppress_footer": true,
+      "suppress_page_numbering": true,
+      "reserve_header_footer_space": false,
+      "draft_watermark": {
+        "enabled": false,
+        "text": "",
+        "gray": 0.9,
+        "angle_deg": 35,
+        "font_size": 84
+      },
+      "cover_layout": {
+        "title_block": {
+          "top_spacer": 130,
+          "align": "center",
+          "title_font_size": 26,
+          "include_conjunction_line": false,
+          "entity_font_size": 22,
+          "after_spacer": 40
+        },
+        "rule": {
+          "enabled": true,
+          "start_frac": 0.2,
+          "end_frac": 0.8,
+          "line_width": 0.5,
+          "gray": 0.5,
+          "after_spacer": 25
+        },
+        "metadata_block": {
+          "layout": "columns",
+          "align": "left",
+          "label_align": "left",
+          "column_gap": 12,
+          "font_size": 10,
+          "line_spacer": 6,
+          "label_value_separator": ": ",
+          "separator": ": ",
+          "fields": [
+            {
+              "key": "document_id",
+              "label": "Document ID"
+            },
+            {
+              "key": "version",
+              "label": "Version"
+            },
+            {
+              "key": "status",
+              "label": "Status"
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective Date"
+            }
+          ]
+        }
+      }
+    },
+    "signing_page": {
+      "enabled": true,
+      "witness_clause": "IN WITNESS WHEREOF, the Head Steward, being duly authorized, has executed this Company Agreement for and on behalf of the Company as of the Effective Date.",
+      "execution_note": "The undersigned executes this Company Agreement solely in the capacity stated below, for and on behalf of the Company, and not in an individual capacity except as expressly stated herein.",
+      "acknowledgment_title": "Acknowledgment/Affirmation.",
+      "acknowledgment_text": "By signing below over the undersigned's typed or printed name and title, the undersigned affirms, under penalties of perjury, that this instrument is the act and deed of the Company (and not of the undersigned in an individual capacity except as expressly stated herein), and that the facts stated herein are true to the best of the undersigned's knowledge and belief.",
+      "parties": [
+        {
+          "label": "HEAD STEWARD:",
+          "fields": ["Name", "Title", "Date", "Signature"],
+          "signatories": [
+            {
+              "values": {
+                "Name": "",
+                "Title": ""
+              }
+            }
+          ]
+        }
+      ],
+      "layout": {
+        "label_column_width": 96,
+        "signature_line_width": 336,
+        "signature_row_height": 22,
+        "row_height": 17,
+        "party_label_gap": 32,
+        "witness_clause_top_gap": 14,
+        "witness_clause_bottom_gap": 14,
+        "execution_note_top_gap": 0,
+        "execution_note_bottom_gap": 18,
+        "acknowledgment_top_gap": 0,
+        "acknowledgment_bottom_gap": 32,
+        "row_gap": 20,
+        "block_gap": 19,
+        "party_gap": 24
+      }
+    },
+    "packet_variants": {
+      "default": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "short_agreement": {
+        "include_cover": true,
+        "include_toc": false
+      },
+      "notice": {
+        "include_cover": false,
+        "include_toc": false,
+        "signing_page": false
+      }
+    }
+  },
+  "document_policies": {
+    "defaults": {
+      "output_encoding": "utf-8",
+      "output_newlines": "lf",
+      "horizontal_rule_behavior": "page-break"
+    },
+    "targets": {
+      "pdf": {
+        "format": "pdf",
+        "page_size": "letter",
+        "orientation": "portrait",
+        "margins": {
+          "top": 72,
+          "bottom": 72,
+          "left": 72,
+          "right": 72,
+          "unit": "pt"
+        },
+        "fonts": {
+          "regular": "Helvetica",
+          "bold": "Helvetica-Bold",
+          "italic": "Helvetica-Oblique",
+          "bold_italic": "Helvetica-BoldOblique",
+          "monospace": "Courier"
+        },
+        "base_font_size": 10,
+        "title_font_size": 18,
+        "heading_scales": {
+          "h1": 1.6,
+          "h2": 1.35,
+          "h3": 1.2,
+          "h4": 1.1
+        },
+        "line_spacing": 1.5,
+        "paragraph_spacing_factor": 0.5,
+        "list_indent_per_level": 20,
+        "code_block_indent": 36,
+        "horizontal_rule": {
+          "behavior": "page-break"
+        },
+        "inline_formatting": {
+          "enabled": true,
+          "underline_offset_factor": 0.15,
+          "underline_thickness_small": 0.5,
+          "underline_thickness_large": 0.75,
+          "underline_size_threshold": 12
+        },
+        "toc": {
+          "title_font_size": 15,
+          "level_styles": {
+            "1": {
+              "font_size_scale": 1.1,
+              "bold": true,
+              "indent": 0,
+              "spacingAfter": 1.15,
+              "spacingBefore": 1.2
+            },
+            "2": {
+              "font_size_scale": 0.92,
+              "bold": true,
+              "indent": 24,
+              "spacing_after": 1.2
+            },
+            "3": {
+              "font_size_scale": 0.85,
+              "bold": false,
+              "indent": 48,
+              "spacing_after": 1.1
+            },
+            "4": {
+              "font_size_scale": 0.8,
+              "bold": false,
+              "indent": 72,
+              "spacing_after": 1
+            }
+          }
+        },
+        "cover_page": {
+          "title_position": "upper-third",
+          "title_spacing": 30,
+          "company_name_font_size": 24,
+          "subtitle_font_size": 14
+        },
+        "table": {
+          "font_size_scale": 0.95,
+          "min_font_size": 6,
+          "max_font_size": 10,
+          "auto_shrink": true,
+          "cell_padding": {
+            "x": 4,
+            "y": 3
+          },
+          "border_width": 0.5,
+          "border_color": 0.75,
+          "header": {
+            "background_color": 0.92,
+            "text_color": 0,
+            "cell_padding": {
+              "x": 4,
+              "y": 3
+            }
+          },
+          "zebra": {
+            "enabled": true,
+            "odd_background": 0.98,
+            "even_background": "none"
+          },
+          "line_height": 1.2,
+          "bleed_in": 0.2,
+          "bleed_if_columns_gt": 8,
+          "min_page_edge_inset_in": 0.25
+        }
+      }
+    },
+    "render_profiles": {
+      "dao-legal-standard-v1": {
+        "description": "Standard DAO legal document PDF rendering",
+        "target": "pdf",
+        "overrides": {
+          "break_mode": "always"
+        }
+      },
+      "dao-filing-packet-v1": {
+        "description": "DAO filing packet with cover page and TOC",
+        "target": "pdf",
+        "extends": "dao-legal-standard-v1",
+        "overrides": {
+          "base_font_size": 10,
+          "line_spacing": 1.5,
+          "margins": {
+            "top": 72,
+            "bottom": 72,
+            "left": 72,
+            "right": 72,
+            "unit": "pt"
+          },
+          "horizontal_rule": {
+            "behavior": "page-break"
+          }
+        }
+      },
+      "dao-operating-agreement-v1": {
+        "description": "Operating Agreement rendering profile",
+        "target": "pdf",
+        "extends": "dao-filing-packet-v1",
+        "overrides": {
+          "base_font_size": 10,
+          "line_spacing": 1.5
+        }
+      },
+      "dao-charter-v1": {
+        "description": "Charter document rendering profile",
+        "target": "pdf",
+        "extends": "dao-filing-packet-v1"
+      },
+      "dao-memorandum-v1": {
+        "description": "Memorandum rendering profile",
+        "target": "pdf",
+        "extends": "dao-legal-standard-v1"
+      },
+      "dao-legal-part-only-v1": {
+        "description": "Legal doc rendering with Part-only section breaks",
+        "target": "pdf",
+        "extends": "dao-legal-standard-v1",
+        "overrides": {
+          "break_mode": "part-only"
+        }
+      }
+    },
+    "rulesets": [
+      {
+        "id": "dao-packet-v1",
+        "selectors": {
+          "doc_types": [
+            "PACKET",
+            "PKT"
+          ],
+          "extensions": [
+            "pdf"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "dao-filing-packet-v1"
+        }
+      },
+      {
+        "id": "dao-operating-agreement-v1",
+        "selectors": {
+          "doc_types": [
+            "CHA"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Operating_Agreement*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "dao-operating-agreement-v1"
+        }
+      },
+      {
+        "id": "dao-charter-v1",
+        "selectors": {
+          "doc_types": [
+            "CHA"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Charter*",
+            "**/*Founding_Charter*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "dao-charter-v1"
+        }
+      },
+      {
+        "id": "dao-memorandum-v1",
+        "selectors": {
+          "doc_types": [
+            "MEM"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "dao-memorandum-v1"
+        }
+      },
+      {
+        "id": "dao-sop-v1",
+        "selectors": {
+          "doc_types": [
+            "SOP"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "dao-legal-part-only-v1"
+        }
+      },
+      {
+        "id": "dao-registry-v1",
+        "selectors": {
+          "doc_types": [
+            "REG"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "dao-legal-part-only-v1"
+        }
+      },
+      {
+        "id": "dao-index-v1",
+        "selectors": {
+          "doc_types": [
+            "IND"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "dao-legal-standard-v1"
+        }
+      },
+      {
+        "id": "dao-log-v1",
+        "selectors": {
+          "doc_types": [
+            "LOG"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "dao-legal-standard-v1"
+        }
+      }
+    ],
+    "spacing_policy": {
+      "pair_rules": [
+        {
+          "prev": "heading",
+          "curr": "paragraph",
+          "before_em": 0.5
+        },
+        {
+          "prev": "paragraph",
+          "curr": "heading",
+          "before_em": 1.5
+        },
+        {
+          "prev": "heading",
+          "curr": "heading",
+          "before_em": 0.75
+        },
+        {
+          "prev": "list",
+          "curr": "heading",
+          "before_em": 1.5
+        },
+        {
+          "prev": "paragraph",
+          "curr": "paragraph",
+          "before_em": 0.75
+        },
+        {
+          "prev": "paragraph",
+          "curr": "list",
+          "before_em": 0.5
+        },
+        {
+          "prev": "list",
+          "curr": "paragraph",
+          "before_em": 0.75
+        },
+        {
+          "prev": "article",
+          "curr": "paragraph",
+          "before_em": 0.75
+        },
+        {
+          "prev": "section",
+          "curr": "paragraph",
+          "before_em": 0.5
+        }
+      ],
+      "defaults": {
+        "heading": {
+          "before_em": 1.2,
+          "after_em": 0.4
+        },
+        "paragraph": {
+          "before_em": 0.5,
+          "after_em": 0.5
+        },
+        "list": {
+          "before_em": 0.5,
+          "after_em": 0.5
+        },
+        "code-block": {
+          "before_em": 0.75,
+          "after_em": 0.75
+        },
+        "blockquote": {
+          "before_em": 0.75,
+          "after_em": 0.75
+        },
+        "table": {
+          "before_em": 0.75,
+          "after_em": 0.75
+        },
+        "article": {
+          "before_em": 1.5,
+          "after_em": 0.5
+        },
+        "section": {
+          "before_em": 1,
+          "after_em": 0.5
+        }
+      }
+    },
+    "precedence_notes": "Rules evaluated in order. First match applies. Profiles extend base targets."
+  }
+}

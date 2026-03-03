@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solomondao.org/record-schema/document.metadata.schema.json",
+  "title": "Document Trailing Metadata",
+  "description": "Schema for machine-readable document metadata blocks (parsed form). These blocks may trail text documents or live as sidecar *.metadata files for non-embeddable artefacts. Intended to validate the parsed key/value map extracted from the metadata block.",
+  "type": "object",
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stringOrStrings": {
+      "anyOf": [
+        { "$ref": "#/$defs/nonEmptyString" },
+        {
+          "type": "array",
+          "items": { "$ref": "#/$defs/nonEmptyString" },
+          "minItems": 1
+        }
+      ]
+    },
+    "recordId": {
+      "type": "string",
+      "pattern": "^[A-Z]{2,5}-\\d{5}$",
+      "description": "Record ID, e.g. DP-00042."
+    },
+    "recordIdOrRecordIds": {
+      "anyOf": [
+        { "$ref": "#/$defs/recordId" },
+        {
+          "type": "array",
+          "items": { "$ref": "#/$defs/recordId" },
+          "minItems": 1
+        }
+      ]
+    },
+    "date": { "type": "string", "format": "date" },
+    "dateOrDates": {
+      "anyOf": [
+        { "$ref": "#/$defs/date" },
+        { "type": "array", "items": { "$ref": "#/$defs/date" }, "minItems": 1 }
+      ]
+    },
+    "dateTime": { "type": "string", "format": "date-time" },
+    "dateTimeOrDateTimes": {
+      "anyOf": [
+        { "$ref": "#/$defs/dateTime" },
+        {
+          "type": "array",
+          "items": { "$ref": "#/$defs/dateTime" },
+          "minItems": 1
+        }
+      ]
+    },
+    "uri": { "type": "string", "format": "uri" },
+    "uriOrUris": {
+      "anyOf": [
+        { "$ref": "#/$defs/uri" },
+        { "type": "array", "items": { "$ref": "#/$defs/uri" }, "minItems": 1 }
+      ]
+    },
+    "sha256Hex": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "sha256HexOrSha256Hexes": {
+      "anyOf": [
+        { "$ref": "#/$defs/sha256Hex" },
+        {
+          "type": "array",
+          "items": { "$ref": "#/$defs/sha256Hex" },
+          "minItems": 1
+        }
+      ]
+    },
+    "spdxLike": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(LicenseRef-[A-Za-z0-9][A-Za-z0-9.-]{0,127}|[A-Za-z0-9][A-Za-z0-9.-]{0,127})$",
+      "description": "SPDX license identifier or LicenseRef-*."
+    },
+    "spdxLikeOrSpdxLikes": {
+      "anyOf": [
+        { "$ref": "#/$defs/spdxLike" },
+        {
+          "type": "array",
+          "items": { "$ref": "#/$defs/spdxLike" },
+          "minItems": 1
+        }
+      ]
+    },
+    "metadataValue": {
+      "description": "Generic parsed value. Tooling may produce a scalar for single occurrence, or an array for repeated keys.",
+      "anyOf": [
+        { "$ref": "#/$defs/nonEmptyString" },
+        {
+          "type": "array",
+          "items": { "$ref": "#/$defs/nonEmptyString" },
+          "minItems": 1
+        }
+      ]
+    }
+  },
+  "properties": {
+    "SPDX-LicenseIdentifier": { "$ref": "#/$defs/spdxLikeOrSpdxLikes" },
+    "Document-Type": {
+      "$ref": "#/$defs/stringOrStrings",
+      "description": "Category such as LICENSE, RESOLUTION, SOP, MEMO, etc."
+    },
+    "Title": { "$ref": "#/$defs/stringOrStrings" },
+    "Version": { "$ref": "#/$defs/stringOrStrings" },
+    "Record-ID": { "$ref": "#/$defs/recordIdOrRecordIds" },
+    "Effective-Date": { "$ref": "#/$defs/dateOrDates" },
+    "Adopted-Date": { "$ref": "#/$defs/dateOrDates" },
+    "Created-At": { "$ref": "#/$defs/dateTimeOrDateTimes" },
+    "Canonical-URL": { "$ref": "#/$defs/uriOrUris" },
+    "Source-URL": { "$ref": "#/$defs/uriOrUris" },
+    "Hash-SHA256-HEX": { "$ref": "#/$defs/sha256HexOrSha256Hexes" },
+    "Hash-SHA256-Base58": { "$ref": "#/$defs/stringOrStrings" },
+    "Content-Type": {
+      "$ref": "#/$defs/stringOrStrings",
+      "description": "MIME type, e.g. image/jpeg."
+    },
+    "Content-Length": {
+      "anyOf": [
+        { "type": "integer", "minimum": 0 },
+        { "type": "string", "pattern": "^[0-9]+$" },
+        {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "type": "integer", "minimum": 0 },
+              { "type": "string", "pattern": "^[0-9]+$" }
+            ]
+          },
+          "minItems": 1
+        }
+      ],
+      "description": "Byte length. Tooling may parse as integer or keep as digits."
+    },
+    "Checksum": {
+      "$ref": "#/$defs/stringOrStrings",
+      "description": "Free-form checksum field if multiple algorithms are used."
+    },
+    "Schema": {
+      "anyOf": [
+        { "type": "string", "const": "record-schema-document-metadata" },
+        { "$ref": "#/$defs/stringOrStrings" }
+      ],
+      "description": "Optional schema family identifier. Recommended value: record-schema-document-metadata."
+    },
+    "Schema-Version": {
+      "anyOf": [
+        { "type": "integer", "minimum": 1 },
+        { "type": "string", "pattern": "^[0-9]+$" },
+        {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "type": "integer", "minimum": 1 },
+              { "type": "string", "pattern": "^[0-9]+$" }
+            ]
+          },
+          "minItems": 1
+        }
+      ],
+      "description": "Optional schema version. Tooling may parse as integer or keep as digits."
+    }
+  },
+  "patternProperties": {
+    "^[A-Z0-9][A-Za-z0-9]*(?:-[A-Z0-9][A-Za-z0-9]*)*$": {
+      "$ref": "#/$defs/metadataValue"
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "SPDX-LicenseIdentifier": "LicenseRef-SOLOMON-DAO-PUBLIC-GOVERNANCE-1.0",
+      "Document-Type": "LICENSE",
+      "Title": "SOLOMON DAO PUBLIC GOVERNANCE REPOSITORY LICENSE",
+      "Version": "1.0",
+      "Effective-Date": "2026-01-01",
+      "Canonical-URL": "https://solomondao.org/licenses/governance-1.0"
+    },
+    {
+      "Document-Type": "RESOLUTION",
+      "Record-ID": "DP-00042",
+      "Title": "Amendment to Treasury Management SOP",
+      "Adopted-Date": "2026-01-15",
+      "Effective-Date": "2026-02-01",
+      "SPDX-LicenseIdentifier": "LicenseRef-SOLOMON-DAO-PUBLIC-GOVERNANCE-1.0"
+    }
+  ]
+}

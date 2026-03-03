@@ -1,0 +1,73 @@
+schema: record-schema-registry-profile
+schema_version: 1
+licenseRef: LicenseRef-OPCO-INTERNAL
+profile_id: sop-registry-internal-v1
+name: Internal SOP Registry Repository Profile
+description: >
+  Tightens record-schema for private OpCo/service-entity SOP registries with lifecycle buckets:
+  active, draft, archived, and anchors (hash/CID commitments for artefacts that should not live in-repo).
+
+rules:
+  root:
+    required_paths:
+      - registry/active
+      - registry/draft
+      - registry/archived
+      - registry/anchors
+    disallow_unknown_top_level: false
+
+  buckets:
+    - bucket: active
+      path: registry/active
+      record_constraints:
+        status_phase_allow: [ratified, adopted, effective, current]
+        require_formatting_profile: true
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_doc_types: []
+        disallow_extensions: []   # or [pdf] if you want "text-only"
+        recommended_files:
+          - "{RECORD_ID}_IND-index.md"
+
+    - bucket: draft
+      path: registry/draft
+      record_constraints:
+        status_phase_allow: [interim, draft, proposed]
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_doc_types: []
+        disallow_extensions: []   # or [pdf]
+        recommended_files:
+          - "{RECORD_ID}_IND-index.md"
+
+    - bucket: archived
+      path: registry/archived
+      record_constraints:
+        status_phase_allow: [superseded, retired, rescinded, archived]
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_doc_types: []
+        disallow_extensions: []
+
+    - bucket: anchors
+      path: registry/anchors
+      record_constraints:
+        status_confidentiality_allow: [hash-only, confidential, redacted]
+        require_commitments: true
+        require_commitment_kind_allow:
+          [
+            confidential-fulltext,
+            redacted-plus-fulltext,
+            hash-only-replacement,
+            government-form-original,
+            identity-kyc-package
+          ]
+        require_commitment_hash_or_content_id: true
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_doc_types: []
+        disallow_extensions: []

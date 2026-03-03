@@ -1,0 +1,57 @@
+schema: record-schema-registry
+schema_version: 1
+commitment_kinds:
+- code: confidential-fulltext
+  name: Confidential full text
+  description: Hash/CID anchor to full text retained privately (security/trade secret).
+  required_one_of:
+  - hash_sha256_hex
+  - content_id
+  recommended_fields:
+  - disclosure
+  - storage
+  - notes
+  - created
+  - formatting_profile
+- code: redacted-plus-fulltext
+  name: Redacted public + confidential full text
+  description: Public redacted doc exists; full text retained privately with hash/CID anchor.
+  required_one_of:
+  - hash_sha256_hex
+  - content_id
+  recommended_fields:
+  - disclosure
+  - storage
+  - notes
+- code: hash-only-replacement
+  name: Hash-only replacement entry
+  description: Emergency/urgent replacement published as hash/CID prior to full instrument publication.
+  required_one_of:
+  - hash_sha256_hex
+  - content_id
+  recommended_fields:
+  - disclosure
+  - notes
+- code: government-form-original
+  name: Government form (original)
+  description: Hash/CID anchor to a government-issued or government-required form retained privately (do not publish the form itself).
+  required_one_of:
+  - hash_sha256_hex
+  - content_id
+  recommended_fields:
+  - disclosure
+  - storage
+  - notes
+  - created
+  - formatting_profile
+- code: identity-kyc-package
+  name: Identity/KYC package
+  description: Hash/CID anchor to identity/KYC materials retained privately by the individual or service provider (never store raw KYC in public registries).
+  required_one_of:
+  - hash_sha256_hex
+  - content_id
+  recommended_fields:
+  - disclosure
+  - storage
+  - notes
+  - created

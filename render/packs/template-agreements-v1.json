@@ -1,0 +1,442 @@
+{
+  "schema": "record-schema-render-pack",
+  "schema_version": 1,
+  "pack_id": "template-agreements-render-v1",
+  "description": "Template agreements render pack for stitched agreement packets. Source docs are Markdown; output is compiled PDF. Downstream packs or metafile extensions supply entity-specific values.",
+  "imports": [
+    "render/packs/base-v1.json"
+  ],
+  "packet_config": {
+    "default_entity_name": "ENTITY",
+    "default_document_title": "TEMPLATE AGREEMENT PACK",
+    "header_text": "DRAFT — INTERNAL TEMPLATE",
+    "series_prefix": "^([A-Z]{2,5}-\\d+_)?",
+    "header_title_format": "plain",
+    "section_page_break": "always",
+    "path_to_title": {},
+    "name_patterns": [
+      "Agreement",
+      "Order_Form",
+      "Schedule_\\d+",
+      "Document_Register",
+      "index"
+    ],
+    "entity_extraction": {
+      "fields": [
+        "entity_name",
+        "title"
+      ]
+    },
+    "cover_config": {
+      "suppress_header": true,
+      "suppress_footer": true,
+      "suppress_page_numbering": true,
+      "reserve_header_footer_space": false,
+      "draft_watermark": {
+        "enabled": true,
+        "text": "DRAFT",
+        "gray": 0.9,
+        "angle_deg": 35,
+        "font_size": 84
+      }
+    },
+    "packet_variants": {
+      "default": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "short_agreement": {
+        "include_cover": true,
+        "include_toc": false
+      },
+      "notice": {
+        "include_cover": false,
+        "include_toc": false,
+        "signing_page": false
+      }
+    }
+  },
+  "document_policies": {
+    "defaults": {
+      "output_encoding": "utf-8",
+      "output_newlines": "lf",
+      "horizontal_rule_behavior": "page-break"
+    },
+    "targets": {
+      "pdf": {
+        "format": "pdf",
+        "page_size": "letter",
+        "orientation": "portrait",
+        "margins": {
+          "top": 72,
+          "bottom": 72,
+          "left": 72,
+          "right": 72,
+          "unit": "pt"
+        },
+        "fonts": {
+          "regular": "Helvetica",
+          "bold": "Helvetica-Bold",
+          "italic": "Helvetica-Oblique",
+          "bold_italic": "Helvetica-BoldOblique",
+          "monospace": "Courier"
+        },
+        "base_font_size": 10,
+        "title_font_size": 18,
+        "heading_scales": {
+          "h1": 1.6,
+          "h2": 1.35,
+          "h3": 1.2,
+          "h4": 1.1
+        },
+        "line_spacing": 1.5,
+        "paragraph_spacing_factor": 0.5,
+        "list_indent_per_level": 20,
+        "code_block_indent": 36,
+        "horizontal_rule": {
+          "behavior": "page-break"
+        },
+        "inline_formatting": {
+          "enabled": true,
+          "underline_offset_factor": 0.15,
+          "underline_thickness_small": 0.5,
+          "underline_thickness_large": 0.75,
+          "underline_size_threshold": 12
+        },
+        "toc": {
+          "title_font_size": 15,
+          "level_styles": {
+            "1": {
+              "font_size_scale": 1.1,
+              "bold": true,
+              "indent": 0,
+              "spacing_after": 1.15,
+              "spacing_before": 1.2
+            },
+            "2": {
+              "font_size_scale": 0.92,
+              "bold": true,
+              "indent": 24,
+              "spacing_after": 1.2
+            },
+            "3": {
+              "font_size_scale": 0.85,
+              "bold": false,
+              "indent": 48,
+              "spacing_after": 1.1
+            },
+            "4": {
+              "font_size_scale": 0.8,
+              "bold": false,
+              "indent": 72,
+              "spacing_after": 1
+            }
+          }
+        },
+        "cover_page": {
+          "title_position": "upper-third",
+          "title_spacing": 30,
+          "company_name_font_size": 24,
+          "subtitle_font_size": 14
+        },
+        "table": {
+          "font_size_scale": 0.95,
+          "min_font_size": 6,
+          "max_font_size": 10,
+          "auto_shrink": true,
+          "cell_padding": {
+            "x": 4,
+            "y": 3
+          },
+          "border_width": 0.5,
+          "border_color": 0.75,
+          "header": {
+            "background_color": 0.92,
+            "text_color": 0,
+            "cell_padding": {
+              "x": 4,
+              "y": 3
+            }
+          },
+          "zebra": {
+            "enabled": true,
+            "odd_background": 0.98,
+            "even_background": "none"
+          },
+          "line_height": 1.2,
+          "bleed_in": 0.2,
+          "bleed_if_columns_gt": 8,
+          "min_page_edge_inset_in": 0.25
+        }
+      }
+    },
+    "render_profiles": {
+      "tpl-standard-v1": {
+        "description": "Standard template agreement PDF rendering",
+        "target": "pdf",
+        "overrides": {
+          "break_mode": "always"
+        }
+      },
+      "tpl-packet-v1": {
+        "description": "Template agreement packet with cover page and TOC",
+        "target": "pdf",
+        "extends": "tpl-standard-v1",
+        "overrides": {
+          "base_font_size": 10,
+          "line_spacing": 1.5,
+          "margins": {
+            "top": 72,
+            "bottom": 72,
+            "left": 72,
+            "right": 72,
+            "unit": "pt"
+          },
+          "horizontal_rule": {
+            "behavior": "page-break"
+          }
+        }
+      },
+      "tpl-master-agreement-v1": {
+        "description": "Master agreement rendering — tighter body, formal cover",
+        "target": "pdf",
+        "extends": "tpl-packet-v1",
+        "overrides": {
+          "line_spacing": 1.5,
+          "cover_config": {
+            "suppress_header": true,
+            "suppress_footer": true,
+            "suppress_page_numbering": true,
+            "reserve_header_footer_space": false,
+            "draft_watermark": {
+              "enabled": true,
+              "text": "DRAFT",
+              "gray": 0.9,
+              "angle_deg": 35,
+              "font_size": 84
+            }
+          }
+        }
+      },
+      "tpl-service-agreement-v1": {
+        "description": "Service agreement rendering",
+        "target": "pdf",
+        "extends": "tpl-packet-v1",
+        "overrides": {
+          "cover_config": {
+            "suppress_header": true,
+            "suppress_footer": true,
+            "suppress_page_numbering": true,
+            "reserve_header_footer_space": false
+          }
+        }
+      },
+      "tpl-license-agreement-v1": {
+        "description": "License agreement rendering",
+        "target": "pdf",
+        "extends": "tpl-packet-v1",
+        "overrides": {
+          "cover_config": {
+            "suppress_header": true,
+            "suppress_footer": true,
+            "suppress_page_numbering": true,
+            "reserve_header_footer_space": false
+          }
+        }
+      }
+    },
+    "rulesets": [
+      {
+        "id": "tpl-packet-v1",
+        "selectors": {
+          "doc_types": [
+            "PACKET",
+            "PKT"
+          ],
+          "extensions": [
+            "pdf"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "tpl-packet-v1"
+        }
+      },
+      {
+        "id": "tpl-master-agreement-v1",
+        "selectors": {
+          "doc_types": [
+            "MA"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "tpl-master-agreement-v1"
+        }
+      },
+      {
+        "id": "tpl-service-agreement-v1",
+        "selectors": {
+          "doc_types": [
+            "SA"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "tpl-service-agreement-v1"
+        }
+      },
+      {
+        "id": "tpl-license-agreement-v1",
+        "selectors": {
+          "doc_types": [
+            "LIC"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "tpl-license-agreement-v1"
+        }
+      },
+      {
+        "id": "tpl-schedules-v1",
+        "selectors": {
+          "doc_types": [
+            "SCH",
+            "FRM"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "tpl-standard-v1"
+        }
+      },
+      {
+        "id": "tpl-spine-v1",
+        "selectors": {
+          "doc_types": [
+            "DOC"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "tpl-standard-v1"
+        }
+      },
+      {
+        "id": "tpl-index-v1",
+        "selectors": {
+          "doc_types": [
+            "IND"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "tpl-standard-v1"
+        }
+      }
+    ],
+    "spacing_policy": {
+      "pair_rules": [
+        {
+          "prev": "heading",
+          "curr": "paragraph",
+          "before_em": 0.5
+        },
+        {
+          "prev": "paragraph",
+          "curr": "heading",
+          "before_em": 1.5
+        },
+        {
+          "prev": "heading",
+          "curr": "heading",
+          "before_em": 0.75
+        },
+        {
+          "prev": "list",
+          "curr": "heading",
+          "before_em": 1.5
+        },
+        {
+          "prev": "paragraph",
+          "curr": "paragraph",
+          "before_em": 0.75
+        },
+        {
+          "prev": "paragraph",
+          "curr": "list",
+          "before_em": 0.5
+        },
+        {
+          "prev": "list",
+          "curr": "paragraph",
+          "before_em": 0.75
+        },
+        {
+          "prev": "article",
+          "curr": "paragraph",
+          "before_em": 0.75
+        },
+        {
+          "prev": "section",
+          "curr": "paragraph",
+          "before_em": 0.5
+        }
+      ],
+      "defaults": {
+        "heading": {
+          "before_em": 1.2,
+          "after_em": 0.4
+        },
+        "paragraph": {
+          "before_em": 0.5,
+          "after_em": 0.5
+        },
+        "list": {
+          "before_em": 0.5,
+          "after_em": 0.5
+        },
+        "code-block": {
+          "before_em": 0.75,
+          "after_em": 0.75
+        },
+        "blockquote": {
+          "before_em": 0.75,
+          "after_em": 0.75
+        },
+        "table": {
+          "before_em": 0.75,
+          "after_em": 0.75
+        },
+        "article": {
+          "before_em": 1.5,
+          "after_em": 0.5
+        },
+        "section": {
+          "before_em": 1,
+          "after_em": 0.5
+        }
+      }
+    },
+    "precedence_notes": "Rules evaluated in order. First match applies. Profiles extend base targets. Each profile can carry cover_config in overrides to control cover page rendering per document type."
+  }
+}

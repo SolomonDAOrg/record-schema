@@ -1,0 +1,192 @@
+{
+    "schema": "record-schema-render-pack",
+    "schema_version": 1,
+    "pack_id": "base-v1",
+    "description": "Baseline render pack with common targets and profiles.",
+    "document_policies": {
+        "defaults": {
+            "output_encoding": "utf-8",
+            "output_newlines": "lf"
+        },
+        "targets": {
+            "pdf": {
+                "format": "pdf",
+                "page_size": "letter",
+                "orientation": "portrait",
+                "margins": {
+                    "top": 72,
+                    "bottom": 72,
+                    "left": 72,
+                    "right": 72,
+                    "unit": "pt"
+                },
+                "fonts": {
+                    "regular": "Helvetica",
+                    "bold": "Helvetica-Bold",
+                    "italic": "Helvetica-Oblique",
+                    "bold_italic": "Helvetica-BoldOblique",
+                    "monospace": "Courier"
+                },
+                "base_font_size": 10,
+                "title_font_size": 16,
+                "heading_scales": {
+                    "h1": 1.6,
+                    "h2": 1.4,
+                    "h3": 1.2,
+                    "h4": 1.1
+                },
+                "line_spacing": 1.5,
+                "paragraph_spacing_factor": 0.5,
+                "list_indent_per_level": 20,
+                "code_block_indent": 36,
+                "horizontal_rule": {
+                    "width_factor": 0.5,
+                    "thickness": 0.5,
+                    "gray_value": 0.5,
+                    "spacing_before": 10,
+                    "spacing_after": 10
+                },
+                "inline_formatting": {
+                    "enabled": true,
+                    "underline_offset_factor": 0.15,
+                    "underline_thickness_small": 0.5,
+                    "underline_thickness_large": 0.75,
+                    "underline_size_threshold": 12
+                },
+                "table": {
+                    "font_size_scale": 0.95,
+                    "min_font_size": 7,
+                    "max_font_size": 10,
+                    "auto_shrink": true,
+                    "cell_padding": {
+                        "x": 4,
+                        "y": 3
+                    },
+                    "border_width": 0.5,
+                    "border_color": 0.75,
+                    "header": {
+                        "background_color": 0.92,
+                        "text_color": 0.0,
+                        "cell_padding": {
+                            "x": 4,
+                            "y": 3
+                        }
+                    },
+                    "zebra": {
+                        "enabled": false
+                    }
+                }
+            },
+            "csv": {
+                "format": "csv",
+                "delimiter": ",",
+                "quote_char": "\"",
+                "line_terminator": "lf",
+                "include_header": true,
+                "null_value": "",
+                "date_format": "YYYY-MM-DD"
+            },
+            "tsv": {
+                "format": "tsv",
+                "delimiter": "\t",
+                "quote_char": "\"",
+                "line_terminator": "lf",
+                "include_header": true
+            },
+            "html": {
+                "format": "html",
+                "doctype": "html5",
+                "inline_styles": false
+            },
+            "json": {
+                "format": "json",
+                "indent": 4,
+                "sort_keys": false
+            },
+            "yaml": {
+                "format": "yaml",
+                "indent": 2,
+                "line_width": 120
+            }
+        },
+        "render_profiles": {
+            "legal-standard-v1": {
+                "description": "Standard legal document PDF rendering",
+                "target": "pdf"
+            },
+            "legal-filing-v1": {
+                "description": "Legal filing PDF with stricter formatting",
+                "target": "pdf",
+                "extends": "legal-standard-v1",
+                "overrides": {
+                    "base_font_size": 12,
+                    "line_spacing": 2.0,
+                    "margins": {
+                        "top": 108,
+                        "bottom": 108,
+                        "left": 108,
+                        "right": 72,
+                        "unit": "pt"
+                    }
+                }
+            },
+            "registry-export-v1": {
+                "description": "Registry export to CSV",
+                "target": "csv",
+                "overrides": {
+                    "date_format": "YYYY-MM-DDTHH:mm:ssZ"
+                }
+            }
+        },
+        "rulesets": [
+            {
+                "id": "license-pdf-v1",
+                "selectors": {
+                    "doc_types": [
+                        "LIC"
+                    ],
+                    "extensions": [
+                        "md",
+                        "txt"
+                    ]
+                },
+                "render": {
+                    "target": "pdf",
+                    "render_profile_id": "legal-standard-v1"
+                }
+            },
+            {
+                "id": "charter-pdf-v1",
+                "selectors": {
+                    "doc_types": [
+                        "CHA"
+                    ],
+                    "extensions": [
+                        "md"
+                    ]
+                },
+                "render": {
+                    "target": "pdf",
+                    "render_profile_id": "legal-filing-v1"
+                }
+            },
+            {
+                "id": "registry-csv-v1",
+                "selectors": {
+                    "doc_types": [
+                        "REG"
+                    ],
+                    "extensions": [
+                        "md",
+                        "yaml"
+                    ]
+                },
+                "render": {
+                    "target": "csv",
+                    "render_profile_id": "registry-export-v1"
+                }
+            }
+        ],
+        "precedence_notes": "Rules are evaluated in order. First matching rule applies. Profiles can extend other profiles."
+    }
+}

@@ -1,0 +1,285 @@
+{
+    "schema": "record-schema-render-pack",
+    "schema_version": 1,
+    "pack_id": "base-diagrams-v1",
+    "description": "Base chart rendering: visual themes, style classes, and output targets",
+    "imports": [
+        "render/packs/base-v1.json"
+    ],
+    "document_policies": {
+        "chart_themes": {
+            "default": {
+                "description": "Light theme suitable for documents",
+                "node_defaults": {
+                    "fill": "#ffffff",
+                    "stroke": "#333333",
+                    "stroke_width": 1,
+                    "font_family": "Inter, system-ui, sans-serif",
+                    "font_size": 14,
+                    "text_color": "#1a1a1a"
+                },
+                "edge_defaults": {
+                    "stroke": "#666666",
+                    "stroke_width": 1,
+                    "arrow_head": "normal"
+                },
+                "subgraph_defaults": {
+                    "fill": "#f5f5f5",
+                    "stroke": "#999999",
+                    "stroke_dasharray": "5,5"
+                }
+            },
+            "dark": {
+                "description": "Dark theme for presentations",
+                "node_defaults": {
+                    "fill": "#2d2d2d",
+                    "stroke": "#666666",
+                    "stroke_width": 1,
+                    "text_color": "#ffffff"
+                },
+                "edge_defaults": {
+                    "stroke": "#888888"
+                },
+                "subgraph_defaults": {
+                    "fill": "#1a1a1a",
+                    "stroke": "#444444"
+                }
+            },
+            "high-contrast": {
+                "description": "High contrast for accessibility",
+                "node_defaults": {
+                    "fill": "#ffffff",
+                    "stroke": "#000000",
+                    "stroke_width": 2,
+                    "text_color": "#000000"
+                },
+                "edge_defaults": {
+                    "stroke": "#000000",
+                    "stroke_width": 2
+                }
+            }
+        },
+        "chart_classes": {
+            "error": {
+                "fill": "#ffcccc",
+                "stroke": "#cc0000",
+                "stroke_width": 2,
+                "text_color": "#8b0000"
+            },
+            "success": {
+                "fill": "#ccffcc",
+                "stroke": "#00cc00",
+                "stroke_width": 1,
+                "text_color": "#006400"
+            },
+            "warning": {
+                "fill": "#fff3cd",
+                "stroke": "#ffc107",
+                "stroke_width": 1,
+                "text_color": "#856404"
+            },
+            "info": {
+                "fill": "#cce5ff",
+                "stroke": "#0066cc",
+                "stroke_width": 1,
+                "text_color": "#004085"
+            },
+            "decision": {
+                "fill": "#fff9c4",
+                "stroke": "#fbc02d",
+                "stroke_width": 1,
+                "shape": "diamond"
+            },
+            "process": {
+                "fill": "#fff3e0",
+                "stroke": "#f57c00",
+                "stroke_width": 1
+            },
+            "source": {
+                "fill": "#e3f2fd",
+                "stroke": "#1976d2",
+                "stroke_width": 1
+            },
+            "output": {
+                "fill": "#e8f5e9",
+                "stroke": "#388e3c",
+                "stroke_width": 1
+            },
+            "terminal": {
+                "fill": "#f0f0f0",
+                "stroke": "#666666",
+                "shape": "stadium"
+            },
+            "database": {
+                "fill": "#fff0e6",
+                "stroke": "#cc6600",
+                "shape": "cylinder"
+            },
+            "external": {
+                "fill": "#f5f5f5",
+                "stroke": "#999999",
+                "stroke_dasharray": "5,5"
+            },
+            "phase": {
+                "fill": "#fafafa",
+                "stroke": "#999999",
+                "stroke_dasharray": "5,5"
+            },
+            "highlight": {
+                "stroke_width": 3,
+                "stroke_dasharray": "none"
+            },
+            "error-highlight": {
+                "extends": ["error", "highlight"]
+            },
+            "critical-path": {
+                "extends": ["highlight"],
+                "stroke": "#cc0000"
+            }
+        },
+        "chart_edge_classes": {
+            "critical": {
+                "stroke": "#cc0000",
+                "stroke_width": 3
+            },
+            "optional": {
+                "stroke": "#999999",
+                "stroke_dasharray": "5,5"
+            },
+            "async": {
+                "stroke_dasharray": "10,5"
+            },
+            "error-path": {
+                "stroke": "#cc0000",
+                "stroke_dasharray": "5,5"
+            },
+            "success-path": {
+                "stroke": "#00cc00"
+            }
+        },
+        "chart_targets": {
+            "svg": {
+                "engine": "chart-schema-native",
+                "theme": "default",
+                "options": {
+                    "padding": 20,
+                    "background": "transparent",
+                    "embed_fonts": false,
+                    "minify": false
+                }
+            },
+            "svg-minified": {
+                "engine": "chart-schema-native",
+                "theme": "default",
+                "options": {
+                    "padding": 20,
+                    "background": "transparent",
+                    "minify": true
+                }
+            },
+            "png": {
+                "engine": "chart-schema-native",
+                "theme": "default",
+                "options": {
+                    "scale": 2,
+                    "width": "auto",
+                    "height": "auto",
+                    "padding": 40,
+                    "background": "#ffffff"
+                }
+            },
+            "png-retina": {
+                "engine": "chart-schema-native",
+                "theme": "default",
+                "options": {
+                    "scale": 3,
+                    "padding": 40,
+                    "background": "#ffffff"
+                }
+            },
+            "png-dark": {
+                "engine": "chart-schema-native",
+                "theme": "dark",
+                "options": {
+                    "scale": 2,
+                    "padding": 40,
+                    "background": "#1a1a1a"
+                }
+            },
+            "ascii": {
+                "engine": "chart-schema-ascii",
+                "options": {
+                    "max_width": 120,
+                    "box_chars": "unicode"
+                }
+            },
+            "ascii-plain": {
+                "engine": "chart-schema-ascii",
+                "options": {
+                    "max_width": 80,
+                    "box_chars": "ascii"
+                }
+            },
+            "mermaid": {
+                "engine": "chart-schema-mermaid-export",
+                "options": {
+                    "escape_mode": "html_entities"
+                }
+            }
+        },
+        "render_profiles": {
+            "diagram-documentation-v1": {
+                "description": "Standard documentation output",
+                "chart_targets": ["svg", "png"],
+                "chart_theme": "default"
+            },
+            "diagram-presentation-v1": {
+                "description": "High-res output for presentations",
+                "chart_targets": ["png-retina"],
+                "chart_theme": "default"
+            },
+            "diagram-dark-v1": {
+                "description": "Dark theme output",
+                "chart_targets": ["svg", "png-dark"],
+                "chart_theme": "dark"
+            },
+            "diagram-accessibility-v1": {
+                "description": "High contrast for accessibility",
+                "chart_targets": ["svg", "png"],
+                "chart_theme": "high-contrast"
+            },
+            "diagram-plaintext-v1": {
+                "description": "ASCII output for terminals",
+                "chart_targets": ["ascii"]
+            },
+            "diagram-mermaid-v1": {
+                "description": "Mermaid export for external tools",
+                "chart_targets": ["mermaid"]
+            }
+        },
+        "rulesets": [
+            {
+                "id": "chart-default-outputs",
+                "selectors": {
+                    "extensions": ["chart.yaml", "chart.json"]
+                },
+                "render": {
+                    "chart_targets": ["svg", "png"],
+                    "chart_theme": "default"
+                }
+            },
+            {
+                "id": "diagram-doc-type-outputs",
+                "selectors": {
+                    "doc_types": ["DIA"]
+                },
+                "render": {
+                    "chart_targets": ["svg", "png"],
+                    "chart_theme": "default",
+                    "output_dir": "."
+                }
+            }
+        ],
+        "precedence_notes": "Chart themes and classes cascade from imports. Theme in chart_targets overrides ruleset chart_theme."
+    }
+}

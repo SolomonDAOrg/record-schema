@@ -1,0 +1,543 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://solomondao.org/record-schema/formatting.pack.schema.json",
+    "title": "Formatting Pack",
+    "description": "Schema for document formatting packs defining source validation, normalization, shapes, and style profiles. Visual styling (colors, fonts) belongs in render packs.",
+    "type": "object",
+    "required": ["schema", "schema_version", "pack_id", "document_policies"],
+    "properties": {
+        "schema": {
+            "type": "string",
+            "const": "record-schema-formatting-pack"
+        },
+        "schema_version": {
+            "type": "integer",
+            "minimum": 1
+        },
+        "pack_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{2,}$"
+        },
+        "description": {
+            "type": "string"
+        },
+        "imports": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "minLength": 1
+            },
+            "uniqueItems": true,
+            "description": "Repo-relative paths to other packs to merge first."
+        },
+        "document_policies": {
+            "type": "object",
+            "properties": {
+                "defaults": {
+                    "$ref": "#/$defs/enforceBlock",
+                    "description": "Default enforcement settings inherited by all rulesets."
+                },
+                "dialect_packs": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/$defs/dialectPack"
+                    },
+                    "description": "Locale-specific spelling/grammar dialect definitions keyed by dialect ID."
+                },
+                "shapes": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/$defs/shape"
+                    },
+                    "description": "Named structural shapes for headers, footers, bodies, metadata blocks."
+                },
+                "style_profiles": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/$defs/styleProfile"
+                    },
+                    "description": "Named style profiles defining prose/formatting conventions."
+                },
+                "formatting_profiles": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/$defs/formattingProfile"
+                    },
+                    "description": "Named normalization profiles (e.g., canonical-ascii, baseline)."
+                },
+                "line_width_profiles": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/$defs/lineWidthProfile"
+                    },
+                    "description": "Named line width constraint profiles."
+                },
+                "rulesets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/ruleset"
+                    },
+                    "description": "Ordered list of selector-based enforcement rules."
+                },
+                "templates": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/$defs/template"
+                    },
+                    "description": "Named templates for document sections."
+                },
+                "precedence_notes": {
+                    "type": "string",
+                    "description": "Human-readable notes on rule precedence and merging behavior."
+                }
+            },
+            "additionalProperties": true
+        }
+    },
+    "additionalProperties": true,
+    "$defs": {
+        "shape": {
+            "type": "object",
+            "required": ["kind"],
+            "properties": {
+                "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Shape kind (e.g., fixed_lines, regex_pattern, template_ref, structured_block)."
+                },
+                "location": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Location within document (e.g., markdown_header, markdown_footer, metadata_block)."
+                },
+                "required_leading_lines": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Exact lines required at shape start."
+                },
+                "required_trailing_lines": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Exact lines required at shape end."
+                },
+                "pattern": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Regex pattern for regex_pattern kind."
+                },
+                "template_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Reference to a template for template_ref kind."
+                },
+                "fields": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/shapeField"
+                    },
+                    "description": "Field definitions for structured_block kind."
+                }
+            },
+            "additionalProperties": true
+        },
+        "shapeField": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "required": {
+                    "type": "boolean"
+                },
+                "pattern": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true
+        },
+        "dialectPack": {
+            "type": "object",
+            "properties": {
+                "locale": {
+                    "type": "string",
+                    "pattern": "^[a-z]{2}-[A-Z]{2}$",
+                    "description": "BCP-47 locale code."
+                },
+                "description": { "type": "string" },
+                "spelling_dictionary": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "preferred_terms": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Map of deprecated terms to preferred replacements."
+                },
+                "forbidden_terms": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "uniqueItems": true
+                }
+            },
+            "additionalProperties": true
+        },
+        "styleProfile": {
+            "type": "object",
+            "description": "Source document style conventions.",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "heading_style": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Markdown heading style (e.g., atx, setext)."
+                },
+                "heading_numbering": {
+                    "type": "string"
+                },
+                "subsection_numbering": {
+                    "type": "string"
+                },
+                "list_style": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "List marker style (e.g., dash, asterisk, plus)."
+                },
+                "emphasis_style": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Emphasis marker style (e.g., asterisk, underscore)."
+                },
+                "emphasis_policy": {
+                    "type": "string",
+                    "enum": ["allow", "discourage_in_normative", "forbid"]
+                },
+                "code_fence_style": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Code fence style (e.g., backtick, tilde)."
+                },
+                "section_format": { "type": "string" },
+                "inter_section_separator": { "type": "string" },
+                "inline_formatting": {
+                    "type": "string",
+                    "enum": ["preserve", "strip", "normalize"]
+                },
+                "blank_lines_before_heading": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "trailing_punctuation": { "type": "boolean" }
+            },
+            "additionalProperties": true
+        },
+        "formattingProfile": {
+            "type": "object",
+            "description": "Character normalization and encoding profile.",
+            "properties": {
+                "description": { "type": "string" },
+                "trim_trailing_whitespace": { "type": "boolean" },
+                "ensure_final_newline": { "type": "boolean" },
+                "normalize_whitespace": { "type": "boolean" },
+                "normalize_quotes": {
+                    "type": "object",
+                    "properties": {
+                        "single": { "type": "string" },
+                        "double": { "type": "string" }
+                    },
+                    "additionalProperties": true
+                },
+                "normalize_dashes": {
+                    "type": "object",
+                    "additionalProperties": { "type": "string" }
+                },
+                "normalize_ellipsis": { "type": "string" },
+                "disallowed_characters": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                    }
+                },
+                "substitutions": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "allowed_non_ascii": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                },
+                "unicode_allowed": { "type": "boolean" },
+                "emoji_policy": {
+                    "type": "string",
+                    "enum": ["forbid", "allowed_in_non_authoritative", "allow"]
+                }
+            },
+            "additionalProperties": true
+        },
+        "lineWidthProfile": {
+            "type": "object",
+            "required": ["max"],
+            "properties": {
+                "max": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "soft_wrap_preferred": { "type": "boolean" },
+                "applies_to": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "description": "Glob patterns this profile applies to."
+                }
+            },
+            "additionalProperties": true
+        },
+        "ruleset": {
+            "type": "object",
+            "required": ["id", "selectors", "enforce"],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "severity": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Severity level (e.g., error, warn, info)."
+                },
+                "selectors": {
+                    "$ref": "#/$defs/selectors"
+                },
+                "enforce": {
+                    "$ref": "#/$defs/enforceBlock"
+                }
+            },
+            "additionalProperties": true
+        },
+        "selectors": {
+            "type": "object",
+            "properties": {
+                "paths_glob": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "description": "Glob patterns matching file paths."
+                },
+                "is_root_file": {
+                    "type": "boolean",
+                    "description": "Match only files at repository root."
+                },
+                "doc_types": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^[A-Z]{2,5}$"
+                    },
+                    "uniqueItems": true,
+                    "description": "Document type codes (e.g., LIC, MEM, CHA, RES, POL, SOP, IND, DIA)."
+                },
+                "extensions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "uniqueItems": true,
+                    "description": "File extensions without leading dot."
+                }
+            },
+            "additionalProperties": true
+        },
+        "enforceBlock": {
+            "type": "object",
+            "description": "Source validation and normalization enforcement.",
+            "properties": {
+                "line_width": {
+                    "$ref": "#/$defs/lineWidthRule"
+                },
+                "language_locale": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "BCP-47 locale code (e.g., en-US, en-GB)."
+                },
+                "dialect_pack": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "formatting_profile": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Formatting profile ID (e.g., canonical-ascii, unicode-normalized)."
+                },
+                "header_shape_id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "footer_shape_id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "body_shape_id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "metadata_shape_id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "style_profile_id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "markdown_style_profile_id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "markdown_envelope_id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "markdown_hash_surface": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "header_template_path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Repo-relative path to header template file."
+                },
+                "footer_template_path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Repo-relative path to footer template file."
+                },
+                "require_metadata_block": {
+                    "type": "boolean"
+                },
+                "require_disclaimer_footer": {
+                    "type": "boolean"
+                },
+                "metadata_required_fields": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "uniqueItems": true
+                },
+                "metadata_optional_fields": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "uniqueItems": true
+                },
+                "chart_validation": {
+                    "$ref": "#/$defs/chartValidation",
+                    "description": "Chart-specific structural validation rules."
+                }
+            },
+            "additionalProperties": true
+        },
+        "lineWidthRule": {
+            "type": "object",
+            "required": ["max"],
+            "properties": {
+                "max": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "ignore_blocks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "uniqueItems": true,
+                    "description": "Block types to ignore (e.g., code, tables, urls, base58, base64, legal_citations)."
+                }
+            },
+            "additionalProperties": true
+        },
+        "template": {
+            "type": "object",
+            "required": ["content"],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Template lines with ${variable} placeholders."
+                }
+            },
+            "additionalProperties": true
+        },
+        "chartValidation": {
+            "type": "object",
+            "description": "Chart-specific structural validation rules (no visual styling).",
+            "properties": {
+                "require_metadata_title": {
+                    "type": "boolean",
+                    "description": "Require metadata.title field."
+                },
+                "require_metadata_record_id": {
+                    "type": "boolean",
+                    "description": "Require metadata.record_id field."
+                },
+                "warn_undefined_classes": {
+                    "type": "boolean",
+                    "description": "Warn when chart references classes not defined in render packs."
+                },
+                "warn_orphan_nodes": {
+                    "type": "boolean",
+                    "description": "Warn when nodes are not connected by any edge."
+                },
+                "warn_duplicate_ids": {
+                    "type": "boolean",
+                    "description": "Warn on duplicate node/state/entity IDs."
+                },
+                "max_nodes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Maximum allowed nodes (for complexity control)."
+                },
+                "max_edges": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Maximum allowed edges."
+                },
+                "allowed_chart_types": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["flowchart", "sequence", "state", "entity", "tree"]
+                    },
+                    "description": "Restrict allowed chart types for this context."
+                }
+            },
+            "additionalProperties": true
+        }
+    }
+}

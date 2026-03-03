@@ -1,0 +1,69 @@
+schema: record-schema-registry
+schema_version: 1
+
+series:
+  - code: PHS
+    tier: suggested
+    name: Phishing Incident
+    description: Phishing campaigns, lures, reported attempts, takedown notes.
+    recommended_doc_types: [REP, IOC, EVD, LOG, DOC]
+
+  - code: VUL
+    tier: suggested
+    name: Vulnerability
+    description: Vulnerability discovery, analysis, remediation tracking.
+    recommended_doc_types: [REP, EVD, LOG, DOC, ANN, DAT]
+
+  - code: AUD
+    tier: suggested
+    name: Audit
+    description: Security or financial audits and their deliverables.
+    recommended_doc_types: [REP, EVD, LOG, DOC, ANN]
+
+  - code: NDA
+    tier: suggested
+    name: Non-Disclosure Agreement
+    description: NDA packets and related correspondence.
+    recommended_doc_types: [DOC, EVD, LOG, DAT]
+
+  - code: MSA
+    tier: suggested
+    name: Master Services Agreement
+    description: Services umbrella contract records.
+    recommended_doc_types: [DOC, EVD, LOG, DAT]
+
+  - code: SOW
+    tier: suggested
+    name: Statement of Work
+    description: SOW records under an MSA or standalone.
+    recommended_doc_types: [DOC, EVD, LOG, DAT]
+
+  - code: POL
+    tier: suggested
+    name: Policy Record
+    description: Adopted or proposed policy.
+    recommended_doc_types: [POL, LOG, ANN, DAT]
+
+  - code: SOP
+    tier: suggested
+    name: Procedure Record
+    description: Runbooks and operating procedures.
+    recommended_doc_types: [SOP, LOG, ANN, DAT]
+
+  - code: RFC
+    tier: suggested
+    name: Request for Comments
+    description: Design proposals prior to adoption.
+    recommended_doc_types: [DOC, ANN, LOG, DAT]
+
+  - code: MIN
+    tier: suggested
+    name: Meeting Minutes
+    description: Minutes, agendas, attendance, decisions.
+    recommended_doc_types: [DOC, LOG, DAT]
+
+  - code: FIN
+    tier: suggested
+    name: Finance Record
+    description: Reconciliations, payouts, treasury ops, attestations.
+    recommended_doc_types: [REP, DAT, EVD, LOG, DOC]

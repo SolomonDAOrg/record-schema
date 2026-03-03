@@ -1,0 +1,246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solomondao.org/record-schema/overlays/dao-proposals.record.meta.schema.json",
+  "title": "DAO Proposals META Overlay",
+  "type": "object",
+  "description": "Overlay schema composed (allOf) with base record.meta.schema.json to constrain extensions.dao_proposals in DP-series META.yaml files.",
+  "allOf": [
+    {
+      "$ref": "../schema/record.meta.schema.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "extensions": {
+          "type": "object",
+          "properties": {
+            "formatting": {
+              "type": "object",
+              "properties": {
+                "profile": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[a-z0-9](?:[a-z0-9-]{0,126}[a-z0-9])?$"
+                },
+                "pack_paths": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "additionalProperties": true
+            },
+            "language": {
+              "type": "object",
+              "properties": {
+                "locale": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 35,
+                  "pattern": "^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$"
+                }
+              },
+              "additionalProperties": true
+            },
+            "dao_proposals": {
+              "$ref": "#/$defs/daoProposalsExtension"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  ],
+  "$defs": {
+    "daoProposalsExtension": {
+      "type": "object",
+      "required": [
+        "governance"
+      ],
+      "properties": {
+        "governance": {
+          "$ref": "#/$defs/governanceBlock"
+        },
+        "result": {
+          "$ref": "#/$defs/resultBlock"
+        }
+      },
+      "additionalProperties": true
+    },
+    "governanceBlock": {
+      "type": "object",
+      "required": [
+        "proposal_number",
+        "squads_dao_address"
+      ],
+      "properties": {
+        "proposal_number": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "proposer": {
+          "type": ["string", "null"],
+          "minLength": 1
+        },
+        "system": {
+          "type": ["string", "null"],
+          "description": "Governance system identifier (e.g., 'MetaDAO'). Null for pre-formation records."
+        },
+        "squads_dao_address": {
+          "type": "string",
+          "minLength": 32,
+          "maxLength": 44,
+          "pattern": "^[1-9A-HJ-NP-Za-km-z]{32,44}$"
+        },
+        "discussion_urls": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "uniqueItems": true
+        },
+        "vote": {
+          "$ref": "#/$defs/voteBlock"
+        },
+        "passed_commit": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "passed_tag": {
+          "type": ["string", "null"],
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "passed_pinned": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "adopted_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true,
+          "default": []
+        },
+        "executed_commit": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "executed_tag": {
+          "type": ["string", "null"],
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "executed_pinned": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "execution_txs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/txRef"
+          },
+          "default": []
+        }
+      },
+      "additionalProperties": true
+    },
+    "voteBlock": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": ["string", "null"],
+          "description": "Governance vote reference (e.g., 'MetaDAO#123'). REQUIRED once phase >= voting.",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "start": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "end": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "tx_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/txRef"
+          },
+          "default": []
+        }
+      },
+      "additionalProperties": true
+    },
+    "resultBlock": {
+      "type": "object",
+      "properties": {
+        "outcome": {
+          "type": ["string", "null"],
+          "enum": [
+            "pending_submission",
+            "pending_vote",
+            "passed",
+            "failed",
+            "withdrawn",
+            "expired",
+            null
+          ]
+        },
+        "for_votes": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "against_votes": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "abstain_votes": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "quorum_reached": {
+          "type": ["boolean", "null"]
+        },
+        "notes": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } },
+            { "type": "null" }
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "txRef": {
+      "type": "object",
+      "required": ["chain", "network", "signature"],
+      "properties": {
+        "chain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "network": {
+          "type": "string",
+          "minLength": 1
+        },
+        "signature": {
+          "type": "string",
+          "minLength": 1
+        },
+        "slot": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,66 @@
+schema: record-schema-registry-profile
+schema_version: 1
+licenseRef: LicenseRef-SOLOMON-DAO-PUBLIC-GOVERNANCE
+profile_id: sop-registry-v1
+name: SOP Registry Repository Profile
+description: >
+  Tightens record-schema for SOP Registry repos with three publication buckets:
+  living (current), interim (pre-ratification), and confidential (hash-only/redacted anchors).
+
+rules:
+  root:
+    required_paths:
+      - registry/living
+      - registry/interim
+      - registry/confidential
+    disallow_unknown_top_level: false
+
+  buckets:
+    - bucket: living
+      path: registry/living
+      record_constraints:
+        status_phase_allow: [ratified, adopted, effective, current]
+        require_meta: true
+        require_primary_document: true
+        require_documents_primary_ref: true
+        require_formatting_profile: true
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_doc_types: []
+        disallow_extensions: [pdf]
+        recommended_files:
+          - '{RECORD_ID}_IND-index.md'
+
+    - bucket: interim
+      path: registry/interim
+      record_constraints:
+        status_phase_allow: [interim, draft, proposed]
+        require_meta: true
+        require_primary_document: true
+        require_documents_primary_ref: true
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_doc_types: []
+        disallow_extensions: [pdf]
+        recommended_files:
+          - '{RECORD_ID}_IND-index.md'
+
+    - bucket: confidential
+      path: registry/confidential
+      record_constraints:
+        status_confidentiality_allow: [hash-only, confidential, redacted]
+        require_meta: true
+        require_primary_document: true
+        require_documents_primary_ref: true
+        require_commitments: true
+        require_commitment_kind_allow:
+          [confidential-fulltext, redacted-plus-fulltext, hash-only-replacement, government-form-original, identity-kyc-package]
+        require_commitment_hash_or_content_id: true
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_doc_types: []
+        disallow_extensions: []
+        recommended_files: []

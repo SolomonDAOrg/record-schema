@@ -1,0 +1,387 @@
+{
+    "schema": "record-schema-formatting-pack",
+    "schema_version": 1,
+    "pack_id": "base-v1",
+    "description": "Baseline formatting policy for source document validation and normalization. Render configuration is in render packs.",
+    "document_policies": {
+        "defaults": {
+            "language_locale": "en-US",
+            "dialect_pack": "en-US-basic-v1",
+            "line_width": {
+                "max": 80,
+                "ignore_blocks": [
+                    "code",
+                    "tables",
+                    "urls",
+                    "base58",
+                    "base64",
+                    "legal_citations"
+                ]
+            },
+            "markdown_style_profile_id": "informative-default-v1",
+            "encoding": "utf-8-no-bom",
+            "newlines": "lf",
+            "trailing_whitespace": "forbid"
+        },
+        "dialect_packs": {
+            "en-US-basic-v1": {
+                "locale": "en-US",
+                "pairs": [
+                    {
+                        "preferred": "color",
+                        "forbid": ["colour"]
+                    },
+                    {
+                        "preferred": "organize",
+                        "forbid": ["organise"]
+                    },
+                    {
+                        "preferred": "analyze",
+                        "forbid": ["analyse"]
+                    },
+                    {
+                        "preferred": "license",
+                        "forbid": ["licence"]
+                    },
+                    {
+                        "preferred": "defense",
+                        "forbid": ["defence"]
+                    },
+                    {
+                        "preferred": "center",
+                        "forbid": ["centre"]
+                    },
+                    {
+                        "preferred": "meter",
+                        "forbid": ["metre"]
+                    },
+                    {
+                        "preferred": "canceled",
+                        "forbid": ["cancelled"]
+                    },
+                    {
+                        "preferred": "traveler",
+                        "forbid": ["traveller"]
+                    },
+                    {
+                        "preferred": "fulfill",
+                        "forbid": ["fulfil"]
+                    },
+                    {
+                        "preferred": "practice",
+                        "forbid": ["practise"]
+                    }
+                ]
+            },
+            "en-GB-basic-v1": {
+                "locale": "en-GB",
+                "pairs": [
+                    {
+                        "preferred": "colour",
+                        "forbid": ["color"]
+                    },
+                    {
+                        "preferred": "organise",
+                        "forbid": ["organize"]
+                    },
+                    {
+                        "preferred": "analyse",
+                        "forbid": ["analyze"]
+                    },
+                    {
+                        "preferred": "licence",
+                        "forbid": ["license"]
+                    },
+                    {
+                        "preferred": "defence",
+                        "forbid": ["defense"]
+                    },
+                    {
+                        "preferred": "centre",
+                        "forbid": ["center"]
+                    },
+                    {
+                        "preferred": "metre",
+                        "forbid": ["meter"]
+                    },
+                    {
+                        "preferred": "cancelled",
+                        "forbid": ["canceled"]
+                    },
+                    {
+                        "preferred": "traveller",
+                        "forbid": ["traveler"]
+                    },
+                    {
+                        "preferred": "fulfil",
+                        "forbid": ["fulfill"]
+                    },
+                    {
+                        "preferred": "practise",
+                        "forbid": ["practice"]
+                    }
+                ]
+            }
+        },
+        "shapes": {
+            "license-header-v1": {
+                "kind": "structured_block",
+                "location": "file_start",
+                "description": "License header per FORMATTING.md §10.1-10.3",
+                "structure": [
+                    {
+                        "element": "title",
+                        "format": "uppercase",
+                        "required": true
+                    },
+                    {
+                        "element": "blank_line"
+                    },
+                    {
+                        "element": "version_line",
+                        "pattern": "^Version \\d+\\.\\d+ - Effective [A-Z][a-z]+ \\d{4}$",
+                        "required": true
+                    },
+                    {
+                        "element": "blank_line"
+                    },
+                    {
+                        "element": "rule_eq",
+                        "chars": 80,
+                        "char": "="
+                    },
+                    {
+                        "element": "blank_line"
+                    },
+                    {
+                        "element": "licensor_block",
+                        "required": true,
+                        "description": "Entity name, jurisdiction, governing law"
+                    },
+                    {
+                        "element": "canonical_url",
+                        "pattern": "^<https?://[^>]+>$",
+                        "required": true
+                    },
+                    {
+                        "element": "blank_line"
+                    },
+                    {
+                        "element": "rights_reservation",
+                        "required": true
+                    },
+                    {
+                        "element": "blank_line"
+                    },
+                    {
+                        "element": "scope_summary",
+                        "required": true,
+                        "description": "1-3 sentences describing license scope"
+                    },
+                    {
+                        "element": "blank_line"
+                    },
+                    {
+                        "element": "rule_eq",
+                        "chars": 80,
+                        "char": "="
+                    }
+                ]
+            },
+            "license-footer-v1": {
+                "kind": "fixed_lines",
+                "location": "file_end",
+                "description": "License footer per FORMATTING.md §10.5",
+                "required_trailing_lines": [
+                    "================================================================================",
+                    "",
+                    "END OF LICENSE",
+                    "",
+                    "================================================================================"
+                ]
+            },
+            "license-body-v1": {
+                "kind": "sectioned_body",
+                "location": "between_header_footer",
+                "description": "License body structure per FORMATTING.md §10.6",
+                "rules": {
+                    "major_section_format": "^(\\d+)\\.  ([A-Z][A-Z0-9 ]+)$",
+                    "subsection_titled_format": "^(\\d+)\\.(\\d+) (.+)$",
+                    "subsection_inline_format": "^(\\d+)\\.(\\d+)  (.+)$",
+                    "inter_section_separator": "--------------------------------------------------------------------------------",
+                    "horizontal_rules": {
+                        "rule_eq": "================================================================================",
+                        "rule_dash": "--------------------------------------------------------------------------------"
+                    },
+                    "rule_eq_allowed_locations": [
+                        "header_boundary",
+                        "toc_boundary",
+                        "footer_boundary"
+                    ],
+                    "rule_dash_allowed_locations": ["between_major_sections"],
+                    "indented_mode": {
+                        "indent_spaces": 12,
+                        "clause_nesting_order": [
+                            ["(a)", "(b)", "(c)"],
+                            ["(i)", "(ii)", "(iii)"],
+                            ["(A)", "(B)", "(C)"]
+                        ]
+                    }
+                }
+            },
+            "license-toc-v1": {
+                "kind": "optional_block",
+                "location": "after_header",
+                "description": "Optional table of contents for long licenses per FORMATTING.md §10.6.5",
+                "structure": [
+                    {
+                        "element": "rule_eq",
+                        "chars": 80,
+                        "char": "="
+                    },
+                    {
+                        "element": "blank_line"
+                    },
+                    {
+                        "element": "centered_title",
+                        "text": "TABLE OF CONTENTS"
+                    },
+                    {
+                        "element": "blank_line"
+                    },
+                    {
+                        "element": "toc_entries",
+                        "format": "^\\s+(\\d+)\\.  (.+)$"
+                    },
+                    {
+                        "element": "blank_line"
+                    },
+                    {
+                        "element": "rule_eq",
+                        "chars": 80,
+                        "char": "="
+                    }
+                ]
+            },
+            "document-metadata-block-v1": {
+                "kind": "pem_block",
+                "location": "file_end",
+                "description": "Document metadata block per FORMATTING.md §9",
+                "delimiters": {
+                    "begin": "----------------------------BEGIN DOCUMENT METADATA-----------------------------",
+                    "end": "-----------------------------END DOCUMENT METADATA------------------------------"
+                },
+                "placement_rules": {
+                    "after_content": true,
+                    "after_end_separator": true,
+                    "blank_line_before_begin": true
+                },
+                "field_format": "^([A-Z][A-Za-z0-9]*(?:-[A-Z][A-Za-z0-9]*)*): (.+)$",
+                "standard_fields": [
+                    "SPDX-LicenseIdentifier",
+                    "Document-Type",
+                    "Title",
+                    "Version",
+                    "Effective-Date",
+                    "Canonical-URL",
+                    "Record-ID",
+                    "Adopted-Date",
+                    "Created-At"
+                ]
+            }
+        },
+        "style_profiles": {
+            "informative-default-v1": {
+                "heading_numbering": "optional",
+                "subsection_numbering": "optional",
+                "list_style": "hyphen_only",
+                "emphasis_policy": "allow",
+                "inline_formatting": "preserve"
+            },
+            "informative-memo-v1": {
+                "heading_numbering": "optional",
+                "subsection_numbering": "optional",
+                "list_style": "hyphen_only",
+                "emphasis_policy": "allow",
+                "inline_formatting": "preserve"
+            },
+            "legal-instrument-v1": {
+                "heading_numbering": "required",
+                "subsection_numbering": "required",
+                "list_style": "hyphen_only",
+                "emphasis_policy": "discourage_in_normative",
+                "inline_formatting": "preserve"
+            },
+            "license-v1": {
+                "heading_numbering": "required",
+                "subsection_numbering": "optional",
+                "list_style": "any",
+                "emphasis_policy": "allow",
+                "section_format": "major_number_dot_double_space_uppercase",
+                "inter_section_separator": "rule_dash",
+                "inline_formatting": "preserve"
+            }
+        },
+        "formatting_profiles": {
+            "canonical-ascii": {
+                "description": "Canonical profile per FORMATTING.md §2.1",
+                "disallowed_characters": {
+                    "curly_quotes": ["\u201c", "\u201d", "\u2018", "\u2019"],
+                    "dashes": ["\u2013", "\u2014"],
+                    "ellipsis": ["\u2026"],
+                    "special_spaces": [
+                        "\u00a0",
+                        "\u2000",
+                        "\u2001",
+                        "\u2002",
+                        "\u2003",
+                        "\u2004",
+                        "\u2005",
+                        "\u2006",
+                        "\u2007",
+                        "\u2008",
+                        "\u2009",
+                        "\u200a",
+                        "\u200b"
+                    ]
+                },
+                "substitutions": {
+                    "quotes": "ascii_straight",
+                    "dashes": {
+                        "compound": "-",
+                        "parenthetical": " -- ",
+                        "range": "to"
+                    },
+                    "ellipsis": "..."
+                },
+                "allowed_non_ascii": ["§"],
+                "emoji_policy": "forbid"
+            },
+            "baseline": {
+                "description": "Baseline profile per FORMATTING.md §2.2",
+                "unicode_allowed": true,
+                "emoji_policy": "allowed_in_non_authoritative"
+            }
+        },
+        "line_width_profiles": {
+            "markdown-prose": {
+                "max": 80,
+                "applies_to": ["*_DOC-*.md", "*_MEM-*.md", "*_LOG-*.md"]
+            },
+            "yaml": {
+                "max": 120,
+                "applies_to": ["*_META.yaml", "*.registry.yaml"]
+            },
+            "json": {
+                "max": 120,
+                "applies_to": ["*.json"]
+            },
+            "legal-filing": {
+                "max": 100,
+                "soft_wrap_preferred": true,
+                "applies_to": ["*_CHA-*.md", "*_RES-*.md"]
+            }
+        },
+        "precedence_notes": "Defaults < extension/doc_type rules < path rules. For multiple matches, merge in order; later matches override field-by-field."
+    }
+}

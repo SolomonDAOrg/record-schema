@@ -1,0 +1,474 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solomondao.org/record-schema/record.meta.schema.json",
+  "title": "Record Metadata",
+  "type": "object",
+  "required": [
+    "schema",
+    "schema_version",
+    "id",
+    "series_code",
+    "series",
+    "title",
+    "status"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "record-schema"
+    },
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Z]{2,5}-\\d{5}$",
+      "description": "Record ID, e.g. PHS-00007. Tooling SHOULD emit 5-digit counters."
+    },
+    "series_code": {
+      "type": "string",
+      "pattern": "^[A-Z]{2,5}$",
+      "description": "Series code (SER) component of the record ID."
+    },
+    "series": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 99999,
+      "description": "Per-series counter (NNNNN), as an integer."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "owners": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "Optional; names, handles, teams, or roles."
+    },
+    "status": {
+      "type": "object",
+      "required": [
+        "phase",
+        "last_updated"
+      ],
+      "properties": {
+        "phase": {
+          "type": "string",
+          "minLength": 1
+        },
+        "last_updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "UTC timestamp (ISO-8601)."
+        },
+        "priority": {
+          "type": "string"
+        },
+        "confidentiality": {
+          "type": "string"
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "links": {
+      "type": "object",
+      "properties": {
+        "supersedes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{2,5}-\\d{5}$"
+          },
+          "uniqueItems": true
+        },
+        "superseded_by": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{2,5}-\\d{5}$"
+          },
+          "uniqueItems": true
+        },
+        "related": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "external": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "documents": {
+      "type": "object",
+      "description": "Source document references organized by authority tier. Every tier is a uniform array of document reference objects.",
+      "properties": {
+        "primary": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/documentRef"
+          },
+          "description": "Primary instruments (charters, operating agreements, founding documents). Highest authority among company documents."
+        },
+        "secondary": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/documentRef"
+          },
+          "description": "Secondary instruments (SOPs, policies, standing resolutions). Subordinate to primary instruments."
+        },
+        "tertiary": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/documentRef"
+          },
+          "description": "Tertiary instruments (registers, registries, schedules, annexes). Subordinate to secondary instruments."
+        },
+        "supplemental": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/documentRef"
+          },
+          "description": "Supplemental, non-authoritative material (memoranda, commentary, supporting narratives)."
+        },
+        "log": {
+          "$ref": "#/$defs/documentRef",
+          "description": "Chronological log / operational notes document."
+        },
+        "index": {
+          "$ref": "#/$defs/documentRef",
+          "description": "Human-readable per-record index / table-of-contents."
+        }
+      },
+      "additionalProperties": true
+    },
+    "assembly": {
+      "type": "object",
+      "description": "Build manifest for assembling record documents into compiled output artefacts (e.g., stitched PDFs for filings). Separate from document references because this is a build/transform concern, not a source document concern.",
+      "properties": {
+        "pack": {
+          "type": "array",
+          "description": "Ordered list of document parts used to assemble a compiled output. Canonical for ordering. Sort by (precedence asc, path asc).",
+          "items": {
+            "type": "object",
+            "required": [
+              "path"
+            ],
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "doc_type": {
+                "type": "string",
+                "pattern": "^[A-Z]{2,5}$"
+              },
+              "label": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "precedence": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 999,
+                "description": "Lower = earlier/higher precedence when assembling."
+              },
+              "include": {
+                "type": "boolean",
+                "default": true
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "packet": {
+          "$ref": "#/$defs/documentRef",
+          "description": "Reference to the compiled packet output artefact (e.g., stitched PDF). Tooling SHOULD treat this as derived; regenerate from pack rather than editing directly."
+        }
+      },
+      "additionalProperties": true
+    },
+    "timeline": {
+      "type": "object",
+      "properties": {
+        "opened_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "closed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Custom metadata fields. Tooling MUST allow this."
+    },
+    "commitments": {
+      "type": "array",
+      "description": "Optional cryptographic commitments (hash anchors) to confidential artefacts.",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "commitment_id",
+              "kind"
+            ],
+            "properties": {
+              "commitment_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "content_id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Immutable content identifier (e.g., IPFS CID, arweave tx id, git oid)."
+              },
+              "content_id_kind": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Namespace for content_id (ipfs, arweave, git, other)."
+              },
+              "kind": {
+                "type": "string",
+                "minLength": 1
+              },
+              "formatting_profile": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Formatting profile used to canonicalize text before hashing (if applicable)."
+              },
+              "hash_sha256_hex": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "hash_sha256_base58": {
+                "type": "string"
+              },
+              "disclosure": {
+                "type": "string"
+              },
+              "storage": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "hash_surface": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Optional identifier of the hashed surface (e.g., full, markdown-body-v1)."
+              },
+              "anchors": {
+                "type": "array",
+                "description": "Optional anchoring references that bind this commitment to an external timestamped system (e.g., on-chain memo tx).",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "kind",
+                    "ref"
+                  ],
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Anchor mechanism/type (e.g., solana-memo, bitcoin-opreturn, ethereum-tx, arweave, other)."
+                    },
+                    "network": {
+                      "type": "string",
+                      "description": "Optional network identifier (e.g., mainnet-beta, sepolia, btc-mainnet)."
+                    },
+                    "ref": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Anchor reference identifier (e.g., tx signature / hash)."
+                    },
+                    "created": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "notes": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              }
+            },
+            "additionalProperties": true
+          },
+          {
+            "type": "object",
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string"
+              },
+              "access": {
+                "type": "string"
+              },
+              "storage": {
+                "type": "string"
+              },
+              "hash": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Optional hash anchor (tooling-defined). Prefer hash_sha256_hex when available."
+              },
+              "hash_sha256_hex": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "hash_sha256_base58": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true,
+            "description": "Compact commitment entry (legacy/simple form)."
+          }
+        ]
+      }
+    },
+    "authority": {
+      "type": "object",
+      "description": "Optional legal/operational authority classification and precedence. Used to resolve conflicts and to drive deterministic assembly ordering.",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "enum": [
+            "government",
+            "company",
+            "counterparty",
+            "individual",
+            "third-party"
+          ]
+        },
+        "class": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": [
+                "statute",
+                "regulation",
+                "official-communication",
+                "primary-instrument",
+                "secondary-instrument",
+                "tertiary-instrument",
+                "supplemental",
+                "nonbinding"
+              ],
+              "description": "Standard authority class values."
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "description": "Custom authority class string (tooling-defined)."
+            }
+          ]
+        },
+        "precedence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999,
+          "description": "Lower numbers are higher precedence (0 is strongest). If omitted, tooling may derive an order from domain/class."
+        },
+        "jurisdiction": {
+          "type": "string"
+        },
+        "authority_ref": {
+          "type": "string",
+          "description": "Human citation/identifier, e.g. 'RMI DAO Act 2022', 'DAO Regulations 2024', 'Registrar email 2026-01-09'."
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "documentRef": {
+      "type": "object",
+      "required": [
+        "path"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Relative path to the document."
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label."
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional description of the document's role."
+        }
+      },
+      "additionalProperties": true,
+      "description": "Uniform document reference object."
+    }
+  }
+}

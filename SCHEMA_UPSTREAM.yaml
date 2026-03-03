@@ -1,0 +1,12 @@
+schema: record-schema-upstream
+schema_version: 1
+
+record_schema:
+  upstreams: []
+  provides:
+    - name: "Record Schema"
+      kind: "tooling"
+      id: "record-schema"
+      license: "SOLOMON DAO LLC SCHEMA REGISTRY REPOSITORY LICENSE (PERMISSIVE)"
+      licenseFile: "./LICENSE"
+      attributionFile: "./ATTRIBUTION.md"

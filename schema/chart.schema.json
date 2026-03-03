@@ -1,0 +1,546 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://solomondao.org/record-schema/chart.schema.json",
+    "title": "Chart Schema",
+    "description": "Schema for record-schema-chart diagram definitions. Supports flowcharts, sequence diagrams, state machines, ER diagrams, and trees. Style definitions belong in formatting packs; render configuration belongs in render packs.",
+    "type": "object",
+    "required": ["schema", "schema_version"],
+    "properties": {
+        "schema": {
+            "type": "string",
+            "const": "record-schema-chart"
+        },
+        "schema_version": {
+            "type": "integer",
+            "minimum": 1
+        },
+        "chart_type": {
+            "type": "string",
+            "enum": ["flowchart", "sequence", "state", "entity", "tree"],
+            "default": "flowchart"
+        },
+        "direction": {
+            "type": "string",
+            "enum": ["TD", "TB", "LR", "RL", "BT"],
+            "default": "TD",
+            "description": "Graph direction: TD/TB (top-down), LR (left-right), RL (right-left), BT (bottom-top)."
+        },
+        "metadata": {
+            "$ref": "#/$defs/metadata"
+        },
+        "nodes": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/node"
+            },
+            "description": "Node definitions for flowchart type."
+        },
+        "edges": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/edge"
+            },
+            "description": "Edge definitions for flowchart type."
+        },
+        "subgraphs": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/subgraph"
+            }
+        },
+        "participants": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/participant"
+            },
+            "description": "Participant definitions for sequence diagram type."
+        },
+        "messages": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/message"
+            },
+            "description": "Message definitions for sequence diagram type."
+        },
+        "notes": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/sequenceNote"
+            },
+            "description": "Note definitions for sequence diagram type."
+        },
+        "loops": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/loop"
+            },
+            "description": "Loop definitions for sequence diagram type."
+        },
+        "states": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/state"
+            },
+            "description": "State definitions for state diagram type."
+        },
+        "transitions": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/transition"
+            },
+            "description": "Transition definitions for state diagram type."
+        },
+        "entities": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/entity"
+            },
+            "description": "Entity definitions for ER diagram type."
+        },
+        "relationships": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/relationship"
+            },
+            "description": "Relationship definitions for ER diagram type."
+        },
+        "root": {
+            "$ref": "#/$defs/treeNode",
+            "description": "Root node for tree diagram type."
+        }
+    },
+    "additionalProperties": true,
+    "$defs": {
+        "nodeId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "minLength": 1
+        },
+        "classRef": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]*$",
+            "minLength": 1,
+            "description": "Reference to a style class defined in a formatting pack."
+        },
+        "metadata": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "record_id": {
+                    "type": "string",
+                    "pattern": "^[A-Z]{2,5}-\\d{5}$"
+                },
+                "created": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updated": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            },
+            "additionalProperties": true
+        },
+        "shape": {
+            "type": "string",
+            "enum": [
+                "rect",
+                "round",
+                "stadium",
+                "diamond",
+                "hexagon",
+                "parallelogram",
+                "trapezoid",
+                "circle",
+                "cylinder",
+                "subroutine",
+                "asymmetric",
+                "note",
+                "[ ]",
+                "( )",
+                "([ ])",
+                "{ }",
+                "{{ }}",
+                "[/ /]",
+                "[\\ /]",
+                "(( ))",
+                "[( )]",
+                "[[ ]]",
+                "> ]",
+                "[ . ]"
+            ],
+            "description": "Node shape, by name or symbol."
+        },
+        "arrow": {
+            "type": "string",
+            "enum": ["normal", "open", "cross", "none", "--->", "---o", "---x", "---"],
+            "default": "normal"
+        },
+        "lineStyle": {
+            "type": "string",
+            "enum": ["solid", "dashed", "dotted", "thick"],
+            "default": "solid"
+        },
+        "node": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+                "id": {
+                    "$ref": "#/$defs/nodeId"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "shape": {
+                    "$ref": "#/$defs/shape"
+                },
+                "class": {
+                    "$ref": "#/$defs/classRef"
+                },
+                "url": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "tooltip": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true
+        },
+        "edge": {
+            "oneOf": [
+                {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]*\\s*(-->|-.->|==>|<-->|--o|--x|---)\\s*[a-z][a-z0-9_]*(\\s*:\\s*.+)?$",
+                    "description": "Shorthand edge syntax: 'a --> b' or 'a --> b : label'"
+                },
+                {
+                    "type": "object",
+                    "required": ["from", "to"],
+                    "properties": {
+                        "from": {
+                            "$ref": "#/$defs/nodeId"
+                        },
+                        "to": {
+                            "$ref": "#/$defs/nodeId"
+                        },
+                        "label": {
+                            "type": "string"
+                        },
+                        "line_style": {
+                            "$ref": "#/$defs/lineStyle"
+                        },
+                        "arrow": {
+                            "$ref": "#/$defs/arrow"
+                        },
+                        "class": {
+                            "$ref": "#/$defs/classRef"
+                        },
+                        "bidirectional": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    "additionalProperties": true
+                }
+            ]
+        },
+        "subgraph": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+                "id": {
+                    "$ref": "#/$defs/nodeId"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "nodes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/nodeId"
+                    }
+                },
+                "contains": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/subgraph"
+                    },
+                    "description": "Nested subgraphs."
+                },
+                "class": {
+                    "$ref": "#/$defs/classRef"
+                }
+            },
+            "additionalProperties": true
+        },
+        "participant": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+                "id": {
+                    "$ref": "#/$defs/nodeId"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "class": {
+                    "$ref": "#/$defs/classRef"
+                }
+            },
+            "additionalProperties": true
+        },
+        "message": {
+            "type": "object",
+            "required": ["from", "to"],
+            "properties": {
+                "from": {
+                    "$ref": "#/$defs/nodeId"
+                },
+                "to": {
+                    "$ref": "#/$defs/nodeId"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": ["sync", "async", "reply"],
+                    "default": "sync"
+                },
+                "class": {
+                    "$ref": "#/$defs/classRef"
+                }
+            },
+            "additionalProperties": true
+        },
+        "sequenceNote": {
+            "type": "object",
+            "required": ["label"],
+            "properties": {
+                "over": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/nodeId"
+                    },
+                    "minItems": 1
+                },
+                "label": {
+                    "type": "string"
+                },
+                "position": {
+                    "type": "string",
+                    "enum": ["left", "right", "over"],
+                    "default": "over"
+                },
+                "class": {
+                    "$ref": "#/$defs/classRef"
+                }
+            },
+            "additionalProperties": true
+        },
+        "loop": {
+            "type": "object",
+            "required": ["label"],
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "messages": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "minimum": 0
+                    },
+                    "description": "Indices of messages included in this loop."
+                },
+                "class": {
+                    "$ref": "#/$defs/classRef"
+                }
+            },
+            "additionalProperties": true
+        },
+        "state": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+                "id": {
+                    "$ref": "#/$defs/nodeId"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "initial": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "final": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "entry_action": {
+                    "type": "string"
+                },
+                "exit_action": {
+                    "type": "string"
+                },
+                "substates": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/state"
+                    },
+                    "description": "Nested states for composite states."
+                },
+                "class": {
+                    "$ref": "#/$defs/classRef"
+                }
+            },
+            "additionalProperties": true
+        },
+        "transition": {
+            "type": "object",
+            "required": ["from", "to"],
+            "properties": {
+                "from": {
+                    "$ref": "#/$defs/nodeId"
+                },
+                "to": {
+                    "$ref": "#/$defs/nodeId"
+                },
+                "trigger": {
+                    "type": "string",
+                    "description": "Event that triggers the transition."
+                },
+                "guard": {
+                    "type": "string",
+                    "description": "Condition that must be true for transition."
+                },
+                "action": {
+                    "type": "string",
+                    "description": "Action executed on transition."
+                },
+                "line_style": {
+                    "$ref": "#/$defs/lineStyle"
+                },
+                "class": {
+                    "$ref": "#/$defs/classRef"
+                }
+            },
+            "additionalProperties": true
+        },
+        "entity": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+                "id": {
+                    "$ref": "#/$defs/nodeId"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "attributes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/attribute"
+                    }
+                },
+                "class": {
+                    "$ref": "#/$defs/classRef"
+                }
+            },
+            "additionalProperties": true
+        },
+        "attribute": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "type": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string",
+                    "enum": ["primary", "foreign", "unique", "index", "none"],
+                    "default": "none"
+                },
+                "nullable": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "default": {
+                    "type": ["string", "number", "boolean", "null"]
+                }
+            },
+            "additionalProperties": true
+        },
+        "relationship": {
+            "type": "object",
+            "required": ["from", "to", "cardinality"],
+            "properties": {
+                "from": {
+                    "$ref": "#/$defs/nodeId"
+                },
+                "to": {
+                    "$ref": "#/$defs/nodeId"
+                },
+                "cardinality": {
+                    "type": "string",
+                    "enum": ["1:1", "1:N", "N:1", "N:M", "0..1:1", "0..1:N", "1:0..1", "N:0..1"],
+                    "description": "Cardinality of the relationship."
+                },
+                "label": {
+                    "type": "string"
+                },
+                "identifying": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Whether this is an identifying relationship."
+                },
+                "line_style": {
+                    "$ref": "#/$defs/lineStyle"
+                },
+                "class": {
+                    "$ref": "#/$defs/classRef"
+                }
+            },
+            "additionalProperties": true
+        },
+        "treeNode": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+                "id": {
+                    "$ref": "#/$defs/nodeId"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/treeNode"
+                    }
+                },
+                "collapsed": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "class": {
+                    "$ref": "#/$defs/classRef"
+                }
+            },
+            "additionalProperties": true
+        }
+    }
+}
