@@ -9,7 +9,7 @@
   "packet_config": {
     "default_entity_name": "ENTITY",
     "default_document_title": "TEMPLATE AGREEMENT PACK",
-    "header_text": "DRAFT — INTERNAL TEMPLATE",
+    "header_text": "DRAFT - INTERNAL TEMPLATE",
     "series_prefix": "^([A-Z]{2,5}-\\d+_)?",
     "header_title_format": "plain",
     "section_page_break": "always",
@@ -198,7 +198,7 @@
         }
       },
       "tpl-master-agreement-v1": {
-        "description": "Master agreement rendering — tighter body, formal cover",
+        "description": "Master agreement rendering - tighter body, formal cover",
         "target": "pdf",
         "extends": "tpl-packet-v1",
         "overrides": {
@@ -241,6 +241,96 @@
             "suppress_footer": true,
             "suppress_page_numbering": true,
             "reserve_header_footer_space": false
+          }
+        }
+      },
+      "tpl-memorandum-v1": {
+        "description": "Memorandum rendering profile (memo theme)",
+        "target": "pdf",
+        "extends": "tpl-packet-v1",
+        "overrides": {
+          "horizontal_rule": {
+            "behavior": "rule",
+            "width_factor": 1,
+            "thickness": 1,
+            "color": "#1F4E79",
+            "spacing_before": 10,
+            "spacing_after": 14
+          },
+
+          "table": {
+            "border_width": 0.5,
+            "border_color": "#D0D7DE",
+            "header": {
+              "background_color": "#E7F0FF",
+              "text_color": "#0B2E4A",
+              "cell_padding": { "x": 4, "y": 3 }
+            },
+            "zebra": {
+              "enabled": true,
+              "odd_background": "#FFFFFF",
+              "even_background": "#F7FAFF"
+            }
+          },
+          "notice": {
+            "padding": 10,
+            "border_width": 1,
+            "border_color": "#1F4E79",
+            "background_color": "#F0F6FF",
+            "title_color": "#1F4E79"
+          },
+          "cover_config": {
+            "suppress_header": true,
+            "suppress_footer": true,
+            "suppress_page_numbering": true,
+            "reserve_header_footer_space": false,
+            "draft_watermark": {
+              "enabled": false
+            },
+            "cover_layout": {
+              "palette": {
+                "accent": "#1F4E79",
+                "title": "#0B2E4A",
+                "muted": "#6B7280",
+                "danger": "#B91C1C",
+                "paper": "#FFFFFF"
+              },
+              "title_block": {
+                "top_spacer": 96,
+                "align": "center",
+                "title_font_size": 28,
+                "entity_font_size": 18,
+                "after_spacer": 18,
+                "title_color": "#0B2E4A",
+                "entity_color": "#1F4E79",
+                "conjunction_color": "#6B7280"
+              },
+              "rule": {
+                "enabled": true,
+                "start_frac": 0.12,
+                "end_frac": 0.88,
+                "line_width": 1,
+                "color": "#1F4E79",
+                "after_spacer": 18
+              },
+              "metadata_block": {
+                "align": "left",
+                "font_size": 10,
+                "line_spacer": 8,
+                "separator": ": ",
+                "fields": [
+                  "document_id",
+                  "status",
+                  "version",
+                  "effective_date",
+                  "confidentiality"
+                ],
+                "label_align": "right",
+                "label_color": "#6B7280",
+                "value_color": "#111827",
+                "confidentiality_color": "#B91C1C"
+              }
+            }
           }
         }
       }
@@ -351,6 +441,21 @@
         "render": {
           "target": "pdf",
           "render_profile_id": "tpl-standard-v1"
+        }
+      },
+      {
+        "id": "tpl-memorandum-v1",
+        "selectors": {
+          "doc_types": [
+            "MEM"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "tpl-memorandum-v1"
         }
       }
     ],

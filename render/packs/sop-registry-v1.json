@@ -98,7 +98,7 @@
       }
     },
     "signing_page": {
-      "enabled": true,
+      "enabled": false,
       "witness_clause": "IN WITNESS WHEREOF, the Head Steward, being duly authorized, has executed this Company Agreement for and on behalf of the Company as of the Effective Date.",
       "execution_note": "The undersigned executes this Company Agreement solely in the capacity stated below, for and on behalf of the Company, and not in an individual capacity except as expressly stated herein.",
       "acknowledgment_title": "Acknowledgment/Affirmation.",

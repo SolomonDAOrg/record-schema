@@ -13,7 +13,14 @@ rules:
       - registry/living
       - registry/interim
       - registry/confidential
+      - README.md
+      - LICENSE
+      - DISCLAIMER.md
     disallow_unknown_top_level: false
+
+  meta_policies:
+    overlay_schema_paths:
+      - overlays/sop-registry.record.meta.schema.json
 
   buckets:
     - bucket: living
