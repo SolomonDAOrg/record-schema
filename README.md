@@ -37,7 +37,7 @@ Human-readable specifications live in `specifications/`:
 ## Contents
 
 - `specifications/` - human-readable specification documents
-- `schema/` - JSON Schemas for metadata and registries
+- `schema/` - JSON Schemas for metadata, registries, and typed structured documents
 - `registry/` - suggested series codes, document type codes, and commitment kind codes
   (non-limiting)
 
@@ -132,12 +132,29 @@ Documents MAY include a machine-readable metadata block at the end of the file (
 per `specifications/FORMATTING.md`). When computing a hash surface (e.g., `markdown-body-v1`), tooling SHOULD
 exclude the metadata block.
 
+### Verifiable licenses
+
+Custom licenses use the existing header structure plus a repeated top `Version:` and
+`Checksum-SHA256:` declaration. The trailing metadata block records the existing SPDX
+identifier, extensionless canonical URL, checksum, and `Checksum-Surface: license-body-v1`.
+
+`license-body-v1` begins immediately after the first exact 80-character `=` separator
+and includes every line through the closing separator after `END OF LICENSE`. It does
+not skip the following blank line and does not permit legal text or schedules to be
+removed. Canonical licenses are published by `SolomonDAOrg/licenses`; repository copies
+remain named `LICENSE` and verify against the same legal-body checksum.
+
 ## Using this
 
 - Copy a template pack from `templates/` to your repo.
 - Adopt the naming rules from `specifications/SPEC.md`.
 - Validate `*_META.yaml` files after YAML parse using `schema/record.meta.schema.json`.
 - Optionally use `registry/` to provide autocompletion, hints, and warnings in tooling.
+- Use `rules.structured_document_schemas` in a profile when JSON/YAML artefacts require field-level schema validation; use `required: true` and `max_count: 1` for machine-authoritative singleton documents.
+
+### Deployment and release evidence profile
+
+`profiles/deployment-release-evidence.profile.yaml` defines the `DEP` record surface for immutable initial-deployment and program-upgrade batches. It applies the deployment META overlay, validates exactly one PLAN/MAN/ATT/VER/EVD document against each dedicated JSON Schema, and selects the deployment formatting and render packs. The EVD document is the typed evidence dossier: it inventories report policy and retained files and normalizes transactions, actions, receipts, outcomes, and omitted optional artifacts. The deployment render pack selects an A4 portrait packet profile for `PACKET`/`PKT` documents so the retained toolkit produces a deterministic deployment-specific review surface. The attestation schema binds the immutable manifest/root plus the post-root cryptographic summary and PDF hashes, while upgrade plans bind the preceding MAN and ATT file hashes.
 
 ## Relationship to DAO proposals (DP)
 

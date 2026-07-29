@@ -1,0 +1,34 @@
+schema: record-schema
+schema_version: 1
+
+id: DOC-00001
+series_code: DOC
+series: 1
+title: Minimal
+slug: minimal
+
+status:
+  phase: draft
+  last_updated: "2026-01-07T00:00:00Z"
+
+summary: Minimal record template (baseline DOC + LOG + META).
+
+owners: []
+tags: []
+
+links:
+  supersedes: []
+  superseded_by: []
+  related: []
+  external: []
+
+documents:
+  primary: RECORD_ID_DOC-main.md
+  log: RECORD_ID_LOG-notes.md
+  annexes: []
+
+timeline:
+  opened_at: "2026-01-07T00:00:00Z"
+  closed_at: null
+
+extensions: {}

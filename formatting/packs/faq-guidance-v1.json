@@ -1,0 +1,234 @@
+{
+  "schema": "record-schema-formatting-pack",
+  "schema_version": 1,
+  "pack_id": "faq-guidance-v1",
+  "description": "FAQ, handbook, note, and internal guidance document policies. Imports base-v1 and applies lighter prose-first structure than legal instruments or agreements.",
+  "imports": [
+    "formatting/packs/base-v1.json"
+  ],
+  "document_policies": {
+    "style_profiles": {
+      "faq-guidance-v1": {
+        "description": "FAQ and internal guidance documents: prose-first, section headings optional, emphasis allowed, no legal-instrument density.",
+        "heading_numbering": "optional",
+        "subsection_numbering": "optional",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "hyphen",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "hyphen"
+            },
+            {
+              "level": 2,
+              "style": "hyphen"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 2
+        },
+        "section_dividers": {
+          "between_major_sections": "none",
+          "between_subsections": "none"
+        },
+        "bold_policy": {
+          "use": "sparingly",
+          "note": "Bold may be used for questions, labels, and short emphasis. Avoid legal-style density."
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve"
+      },
+      "faq-index-v1": {
+        "description": "Index and navigational overview documents for FAQ and guidance packets.",
+        "heading_numbering": "optional",
+        "subsection_numbering": "optional",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "hyphen",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "hyphen"
+            },
+            {
+              "level": 2,
+              "style": "hyphen"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 2
+        },
+        "section_dividers": {
+          "between_major_sections": "none",
+          "between_subsections": "none"
+        },
+        "bold_policy": {
+          "use": "sparingly",
+          "note": "Bold reserved for labels and section cues."
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve"
+      },
+      "internal-guidance-note-v1": {
+        "description": "Short internal notes and memos associated with FAQ and guidance packs.",
+        "heading_numbering": "optional",
+        "subsection_numbering": "optional",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "hyphen",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "hyphen"
+            },
+            {
+              "level": 2,
+              "style": "hyphen"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 2
+        },
+        "section_dividers": {
+          "between_major_sections": "none",
+          "between_subsections": "none"
+        },
+        "bold_policy": {
+          "use": "sparingly",
+          "note": "Bold allowed for labels and short emphasis."
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve"
+      }
+    },
+    "rulesets": [
+      {
+        "id": "faq-guidance-documents-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": [
+            "DOC",
+            "FAQ",
+            "GUIDE",
+            "NOTE",
+            "HBK",
+            "MAN"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "base58",
+              "base64"
+            ]
+          },
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "faq-guidance-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Effective-Date"
+          ],
+          "metadata_optional_fields": [
+            "Version",
+            "Created-At",
+            "Confidentiality",
+            "SPDX-LicenseIdentifier"
+          ]
+        }
+      },
+      {
+        "id": "faq-guidance-index-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": [
+            "IND"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls"
+            ]
+          },
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "faq-index-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Created-At"
+          ],
+          "metadata_optional_fields": [
+            "Version",
+            "Effective-Date",
+            "Confidentiality"
+          ]
+        }
+      },
+      {
+        "id": "faq-guidance-memo-v1",
+        "severity": "info",
+        "selectors": {
+          "doc_types": [
+            "MEM"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls"
+            ]
+          },
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "internal-guidance-note-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title"
+          ],
+          "metadata_optional_fields": [
+            "Version",
+            "Created-At",
+            "Effective-Date",
+            "Confidentiality"
+          ]
+        }
+      }
+    ],
+    "precedence_notes": "Defaults < line_width_profiles (glob) < rulesets. FAQ/guidance content intentionally uses lighter prose-first styles than legal-instrument or agreement packs."
+  }
+}

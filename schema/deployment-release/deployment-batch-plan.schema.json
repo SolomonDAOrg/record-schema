@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solomondao.org/record-schema/deployment-release/deployment-batch-plan.schema.json",
+  "title": "Deployment Batch Plan",
+  "type": "object",
+  "required": [
+    "schema",
+    "schema_version",
+    "batch_id",
+    "record_id",
+    "record_slug",
+    "sequence",
+    "batch_kind",
+    "title",
+    "network",
+    "cluster",
+    "program_id",
+    "expected_deployer_public_key",
+    "source_release",
+    "source_revision",
+    "final_execution_evidence_path",
+    "previous_batch",
+    "artifact_bindings",
+    "report",
+    "created_at_utc",
+    "tooling"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "deployment-release-batch-plan"
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "batch_id": {
+      "type": "string",
+      "pattern": "^DEP-\\d{5}$"
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^DEP-\\d{5}$"
+    },
+    "record_slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "batch_kind": {
+      "type": "string",
+      "enum": [
+        "initial_deployment",
+        "program_upgrade"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "network": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cluster": {
+      "type": "string",
+      "minLength": 1
+    },
+    "program_id": {
+      "type": "string",
+      "pattern": "^[1-9A-HJ-NP-Za-km-z]{32,44}$"
+    },
+    "expected_deployer_public_key": {
+      "type": "string",
+      "pattern": "^[1-9A-HJ-NP-Za-km-z]{32,44}$"
+    },
+    "source_release": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_revision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40,64}$"
+    },
+    "final_execution_evidence_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "previous_batch": {
+      "anyOf": [
+        {
+          "type": "object",
+          "required": [
+            "record_id",
+            "manifest_sha256",
+            "attestation_sha256"
+          ],
+          "properties": {
+            "record_id": {
+              "type": "string",
+              "pattern": "^DEP-\\d{5}$"
+            },
+            "manifest_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "attestation_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "artifact_bindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "source_path",
+          "archive_path",
+          "artifact_type",
+          "stage",
+          "media_type",
+          "report_detail"
+        ],
+        "properties": {
+          "source_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "archive_path": {
+            "type": "string",
+            "pattern": "^payload/[A-Za-z0-9._/-]+$"
+          },
+          "artifact_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stage": {
+            "type": "string",
+            "minLength": 1
+          },
+          "media_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "report_detail": {
+            "type": "string",
+            "enum": [
+              "full",
+              "summary",
+              "hash_only"
+            ]
+          },
+          "required": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "report": {
+      "type": "object",
+      "required": [
+        "entity_name",
+        "title",
+        "author",
+        "confidentiality"
+      ],
+      "properties": {
+        "entity_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "author": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confidentiality": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "created_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

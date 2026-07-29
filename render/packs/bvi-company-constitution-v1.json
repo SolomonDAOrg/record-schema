@@ -1,0 +1,889 @@
+{
+  "schema": "record-schema-render-pack",
+  "schema_version": 1,
+  "pack_id": "bvi-company-constitution-render-v1",
+  "description": "British Virgin Islands company constitution render variation. Classic Commonwealth law-office typography for Memorandum and Articles of Association, schedules, registers, indexes, and governance packets. Uses Caslon/Garamond roles with Times fallbacks and no bundled font files.",
+  "imports": [
+    "render/packs/base-v1.json",
+    "render/packs/entity-constitutional-v1.json"
+  ],
+  "packet_config": {
+    "default_entity_name": "BVI BUSINESS COMPANY",
+    "default_document_title": "MEMORANDUM AND ARTICLES OF ASSOCIATION",
+    "header_text": "BVI COMPANY CONSTITUTION",
+    "series_prefix": "^(ENT-\\d+_)?",
+    "header_title_format": "small_caps",
+    "section_page_break": "always",
+    "path_to_title": {
+      "Constitution": "CONSTITUTION",
+      "Bylaws": "BYLAWS",
+      "Articles": "ARTICLES",
+      "Articles_of_Association": "ARTICLES OF ASSOCIATION",
+      "Charter": "CHARTER",
+      "Founding_Charter": "FOUNDING CHARTER",
+      "Company_Agreement": "COMPANY AGREEMENT",
+      "Operating_Agreement": "OPERATING AGREEMENT",
+      "Memorandum": "MEMORANDUM",
+      "Resolution": "RESOLUTION",
+      "Document_Register": "DOCUMENT REGISTER",
+      "Index": "INDEX",
+      "Memorandum_of_Association": "MEMORANDUM OF ASSOCIATION",
+      "Schedule": "SCHEDULE",
+      "Register": "REGISTER",
+      "Governance_Log": "GOVERNANCE LOG"
+    },
+    "name_patterns": [
+      "Memorandum",
+      "Memorandum_of_Association",
+      "Articles",
+      "Articles_of_Association",
+      "Schedule_\\d+",
+      "AOA-SCH-\\d+",
+      "Resolution",
+      "Document_Register",
+      "Register",
+      "Governance_Log",
+      "index"
+    ],
+    "entity_extraction": {
+      "fields": [
+        "entity_name",
+        "title"
+      ],
+      "title_pattern": "^(?:\\s*(?:Constitution|Bylaws|Charter|Memorandum|Articles(?:[\\s_-]+of[\\s_-]+Association)?|Company[\\s_-]+Agreement|Operating[\\s_-]+Agreement)(?:[\\s_-]+of)?[\\s_-]+(.+?)\\s*$|\\s*(.+?)[\\s_-]+(?:Constitution|Bylaws|Charter|Memorandum|Articles(?:[\\s_-]+of[\\s_-]+Association)?|Company[\\s_-]+Agreement|Operating[\\s_-]+Agreement)\\s*$)"
+    },
+    "cover_config": {
+      "suppress_header": true,
+      "suppress_footer": true,
+      "suppress_page_numbering": true,
+      "reserve_header_footer_space": false,
+      "draft_watermark": {
+        "enabled": false,
+        "text": "",
+        "gray": 0.94,
+        "angle_deg": 35,
+        "font_size": 48
+      },
+      "cover_layout": {
+        "palette": {
+          "accent": "#641B2E",
+          "title": "#17130F",
+          "muted": "#6F665B",
+          "danger": "#7C1D1D",
+          "paper": "#FFFDF7",
+          "rule": "#B49A67"
+        },
+        "title_block": {
+          "top_spacer": 138,
+          "align": "center",
+          "title_font_size": 23,
+          "subtitle_font_size": 10.5,
+          "entity_font_size": 20,
+          "after_spacer": 32,
+          "include_conjunction_line": false,
+          "title_color": "#17130F",
+          "entity_color": "#641B2E",
+          "conjunction_color": "#6F665B"
+        },
+        "rule": {
+          "enabled": true,
+          "start_frac": 0.22,
+          "end_frac": 0.78,
+          "line_width": 0.55,
+          "color": "#B49A67",
+          "after_spacer": 26
+        },
+        "metadata_block": {
+          "layout": "columns",
+          "align": "left",
+          "label_align": "left",
+          "column_gap": 12,
+          "font_size": 9.5,
+          "line_spacer": 6,
+          "label_value_separator": ": ",
+          "separator": ": ",
+          "fields": [
+            {
+              "key": "document_id",
+              "label": "Document ID"
+            },
+            {
+              "key": "version",
+              "label": "Version"
+            },
+            {
+              "key": "status",
+              "label": "Status"
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective Date"
+            }
+          ],
+          "label_color": "#6F665B",
+          "value_color": "#17130F"
+        },
+        "description": "Classic BVI constitution cover: ivory paper, oxblood entity accent, muted gold rule, and restrained small-caps display typography.",
+        "page_background": {
+          "color": "#FCFCFA"
+        }
+      },
+      "font_roles": {
+        "title": "cover_title",
+        "subtitle": "cover_body",
+        "entity": "cover_entity",
+        "metadata_label": "cover_meta_label",
+        "metadata_value": "cover_meta_value"
+      }
+    },
+    "signing_page": {
+      "enabled": false
+    },
+    "packet_variants": {
+      "default": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "bvi_constitution": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "bvi_instrument_only": {
+        "include_cover": false,
+        "include_toc": false,
+        "signing_page": false
+      },
+      "bvi_register": {
+        "include_cover": true,
+        "include_toc": false
+      },
+      "notice": {
+        "include_cover": false,
+        "include_toc": false,
+        "signing_page": false
+      }
+    }
+  },
+  "document_policies": {
+    "defaults": {
+      "output_encoding": "utf-8",
+      "output_newlines": "lf",
+      "horizontal_rule_behavior": "page-break"
+    },
+    "targets": {
+      "pdf": {
+        "format": "pdf",
+        "page_size": "a4",
+        "orientation": "portrait",
+        "margins": {
+          "top": 72,
+          "bottom": 72,
+          "left": 78,
+          "right": 72,
+          "unit": "pt"
+        },
+        "fonts": {
+          "regular": "Times-Roman",
+          "bold": "Times-Bold",
+          "italic": "Times-Italic",
+          "bold_italic": "Times-BoldItalic",
+          "monospace": "Courier"
+        },
+        "base_font_size": 10.25,
+        "title_font_size": 16,
+        "heading_scales": {
+          "h1": 1.7,
+          "h2": 1.48,
+          "h3": 1.25,
+          "h4": 1.12
+        },
+        "line_spacing": 1.42,
+        "paragraph_spacing_factor": 0.42,
+        "list_indent_per_level": 22,
+        "code_block_indent": 36,
+        "horizontal_rule": {
+          "behavior": "page-break"
+        },
+        "inline_formatting": {
+          "enabled": true,
+          "underline_offset_factor": 0.15,
+          "underline_thickness_small": 0.5,
+          "underline_thickness_large": 0.75,
+          "underline_size_threshold": 12
+        },
+        "toc": {
+          "title_font_size": 14.5,
+          "level_styles": {
+            "1": {
+              "font_size_scale": 1.04,
+              "bold": true,
+              "indent": 0,
+              "spacing_after": 1.05,
+              "spacing_before": 1.2
+            },
+            "2": {
+              "font_size_scale": 0.94,
+              "bold": false,
+              "indent": 24,
+              "spacing_after": 1.1
+            },
+            "3": {
+              "font_size_scale": 0.86,
+              "bold": false,
+              "indent": 48,
+              "spacing_after": 1.0
+            },
+            "4": {
+              "font_size_scale": 0.8,
+              "bold": false,
+              "indent": 72,
+              "spacing_after": 0.95
+            }
+          }
+        },
+        "cover_page": {
+          "title_position": "upper-third",
+          "title_spacing": 30,
+          "company_name_font_size": 22,
+          "subtitle_font_size": 12
+        },
+        "table": {
+          "font_size_scale": 0.92,
+          "min_font_size": 6,
+          "max_font_size": 9.5,
+          "auto_shrink": true,
+          "cell_padding": {
+            "x": 4,
+            "y": 3
+          },
+          "border_width": 0.45,
+          "border_color": "#C8BFAE",
+          "header": {
+            "background_color": "#F1EDE5",
+            "text_color": "#17130F",
+            "cell_padding": {
+              "x": 4,
+              "y": 3
+            }
+          },
+          "zebra": {
+            "enabled": false
+          },
+          "line_height": 1.18,
+          "bleed_in": 0.2,
+          "bleed_if_columns_gt": 8,
+          "min_page_edge_inset_in": 0.25
+        },
+        "notice": {
+          "padding": 10,
+          "border_width": 0.75,
+          "border_color": "#641B2E",
+          "background_color": "#FFF8F2",
+          "title_color": "#641B2E"
+        },
+        "embedded_fonts": {
+          "enabled": false,
+          "note": "No font files are bundled. Built-in Times/Courier faces are used by default. The recommendations below are suitable if the renderer/project supplies those fonts separately.",
+          "roles": {
+            "cover_title": "Times-Bold",
+            "cover_body": "Times-Roman",
+            "cover_entity": "Times-Bold",
+            "cover_meta_label": "Times-Italic",
+            "cover_meta_value": "Times-Roman",
+            "body": "Times-Roman",
+            "body_regular": "Times-Roman",
+            "body_bold": "Times-Bold",
+            "body_italic": "Times-Italic",
+            "body_bold_italic": "Times-BoldItalic",
+            "heading_display": "Times-Bold",
+            "heading_display_regular": "Times-Bold",
+            "heading_display_bold": "Times-Bold",
+            "heading_display_italic": "Times-BoldItalic",
+            "heading_display_bold_italic": "Times-BoldItalic",
+            "toc_title": "Times-Bold",
+            "toc_title_bold": "Times-Bold",
+            "toc_entry": "Times-Roman",
+            "toc_entry_bold": "Times-Bold",
+            "table_heading": "Times-Bold",
+            "table_heading_bold": "Times-Bold",
+            "table_body": "Times-Roman",
+            "table_body_regular": "Times-Roman",
+            "table_body_bold": "Times-Bold",
+            "table_caption": "Times-Bold",
+            "table_caption_bold": "Times-Bold",
+            "definition_term": "Times-Bold",
+            "definition_term_bold": "Times-Bold",
+            "notice_title": "Times-Bold",
+            "notice_title_bold": "Times-Bold",
+            "signature_title": "Times-Bold",
+            "signature_title_bold": "Times-Bold",
+            "signature_label": "Times-Roman",
+            "signature_label_regular": "Times-Roman",
+            "signature_value": "Times-Roman",
+            "signature_value_regular": "Times-Roman",
+            "code": "Courier",
+            "code_monospace": "Courier"
+          },
+          "fallbacks": {
+            "regular": "Times-Roman",
+            "bold": "Times-Bold",
+            "italic": "Times-Italic",
+            "bold_italic": "Times-BoldItalic",
+            "monospace": "Courier"
+          }
+        },
+        "font_role_defaults": {
+          "body": "body",
+          "heading_1": "heading_display",
+          "heading_2": "heading_display",
+          "heading_3": "heading_display",
+          "heading_4": "heading_display",
+          "heading_5": "heading_display",
+          "heading_6": "heading_display",
+          "toc_title": "toc_title",
+          "toc_entry": "toc_entry",
+          "table_header": "table_heading",
+          "table_body": "table_body",
+          "table_caption": "table_caption",
+          "definition_term": "definition_term",
+          "notice_title": "notice_title",
+          "signature_title": "signature_title",
+          "signature_label": "signature_label",
+          "signature_value": "signature_value",
+          "code": "code"
+        },
+        "font_recommendations": {
+          "classic_bvi_constitution_preferred": {
+            "cover_title": "Cormorant SC",
+            "headings": "EB Garamond",
+            "body": "Libre Caslon Text",
+            "fallback": "Times-Roman / Times-Bold / Times-Italic",
+            "reason": "Caslon/Garamond reads like a classic common-law constitution without the ceremonial feel of Cinzel."
+          },
+          "strict_filing_safe": {
+            "cover_title": "Times-Bold",
+            "headings": "Times-Bold",
+            "body": "Times-Roman",
+            "fallback": "Courier for code/technical identifiers",
+            "reason": "Uses built-in PDF fonts and avoids missing font-file failures."
+          }
+        }
+      }
+    },
+    "render_profiles": {
+      "entity-legal-standard-v1": {
+        "description": "Standard entity legal document PDF rendering",
+        "target": "pdf",
+        "overrides": {
+          "break_mode": "always"
+        }
+      },
+      "entity-filing-packet-v1": {
+        "description": "Entity constitutive packet with cover page and TOC",
+        "target": "pdf",
+        "extends": "entity-legal-standard-v1",
+        "overrides": {
+          "base_font_size": 10,
+          "line_spacing": 1.5,
+          "margins": {
+            "top": 72,
+            "bottom": 72,
+            "left": 72,
+            "right": 72,
+            "unit": "pt"
+          },
+          "horizontal_rule": {
+            "behavior": "page-break"
+          },
+          "leading_section": {
+            "mode": "centered-title-block",
+            "max_nodes": 8,
+            "stop_at_metadata": true,
+            "stop_at_horizontal_rule": true
+          }
+        }
+      },
+      "entity-constitution-v1": {
+        "description": "Constitution rendering profile",
+        "target": "pdf",
+        "extends": "entity-filing-packet-v1"
+      },
+      "entity-bylaws-v1": {
+        "description": "Bylaws rendering profile",
+        "target": "pdf",
+        "extends": "entity-filing-packet-v1"
+      },
+      "entity-articles-v1": {
+        "description": "Articles rendering profile",
+        "target": "pdf",
+        "extends": "entity-filing-packet-v1"
+      },
+      "entity-charter-v1": {
+        "description": "Charter rendering profile",
+        "target": "pdf",
+        "extends": "entity-filing-packet-v1"
+      },
+      "entity-agreement-v1": {
+        "description": "Company or operating agreement rendering profile",
+        "target": "pdf",
+        "extends": "entity-filing-packet-v1"
+      },
+      "entity-memorandum-v1": {
+        "description": "Memorandum rendering profile",
+        "target": "pdf",
+        "extends": "entity-legal-standard-v1",
+        "overrides": {
+          "horizontal_rule": {
+            "behavior": "rule",
+            "width_factor": 1,
+            "thickness": 1,
+            "color": "#0F3D5E",
+            "spacing_before": 10,
+            "spacing_after": 14
+          },
+          "leading_section": {
+            "mode": "centered-title-block",
+            "max_nodes": 8,
+            "stop_at_metadata": true,
+            "stop_at_horizontal_rule": true
+          }
+        }
+      },
+      "entity-legal-part-only-v1": {
+        "description": "Entity legal doc rendering with Part-only section breaks",
+        "target": "pdf",
+        "extends": "entity-legal-standard-v1",
+        "overrides": {
+          "break_mode": "part-only"
+        }
+      },
+      "bvi-company-constitution-v1": {
+        "description": "BVI Memorandum and Articles of Association packet: classic law-office constitution typography, cover, TOC, A4 page, and conservative margins.",
+        "target": "pdf",
+        "extends": "entity-filing-packet-v1",
+        "overrides": {
+          "base_font_size": 11,
+          "line_spacing": 1.35,
+          "margins": {
+            "top": 72,
+            "bottom": 72,
+            "left": 78,
+            "right": 72,
+            "unit": "pt"
+          },
+          "horizontal_rule": {
+            "behavior": "page-break"
+          },
+          "leading_section": {
+            "mode": "centered-title-block",
+            "max_nodes": 8,
+            "stop_at_metadata": true,
+            "stop_at_horizontal_rule": true
+          }
+        }
+      },
+      "bvi-company-register-v1": {
+        "description": "BVI governance register/index rendering with the same font system but lighter front matter.",
+        "target": "pdf",
+        "extends": "entity-legal-standard-v1",
+        "overrides": {
+          "base_font_size": 10,
+          "line_spacing": 1.35,
+          "horizontal_rule": {
+            "behavior": "rule",
+            "width_factor": 1,
+            "thickness": 0.75,
+            "color": "#B49A67",
+            "spacing_before": 8,
+            "spacing_after": 12
+          }
+        }
+      }
+    },
+    "rulesets": [
+      {
+        "id": "bvi-company-constitution-packet-v1",
+        "selectors": {
+          "doc_types": [
+            "PKT"
+          ],
+          "extensions": [
+            "pdf"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "bvi-company-constitution-v1"
+        }
+      },
+      {
+        "id": "bvi-memorandum-render-v1",
+        "selectors": {
+          "doc_types": [
+            "MEM"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*memorandum*",
+            "**/*MEM-*",
+            "**/*_MEM-*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "bvi-company-constitution-v1"
+        }
+      },
+      {
+        "id": "bvi-articles-render-v1",
+        "selectors": {
+          "doc_types": [
+            "AOA",
+            "ART",
+            "CON"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*articles*",
+            "**/*AOA-*",
+            "**/*_AOA-*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "bvi-company-constitution-v1"
+        }
+      },
+      {
+        "id": "bvi-schedule-render-v1",
+        "selectors": {
+          "doc_types": [
+            "SCH",
+            "ANN"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*SCH-*",
+            "**/*schedule*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "bvi-company-constitution-v1"
+        }
+      },
+      {
+        "id": "bvi-register-index-render-v1",
+        "selectors": {
+          "doc_types": [
+            "IND",
+            "REG",
+            "LOG",
+            "DOC",
+            "RES"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "bvi-company-register-v1"
+        }
+      },
+      {
+        "id": "entity-packet-v1",
+        "selectors": {
+          "doc_types": [
+            "PKT"
+          ],
+          "extensions": [
+            "pdf"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-filing-packet-v1"
+        }
+      },
+      {
+        "id": "entity-constitution-v1",
+        "selectors": {
+          "doc_types": [
+            "CON"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Constitution*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-constitution-v1"
+        }
+      },
+      {
+        "id": "entity-bylaws-v1",
+        "selectors": {
+          "doc_types": [
+            "BYL"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Bylaws*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-bylaws-v1"
+        }
+      },
+      {
+        "id": "entity-articles-v1",
+        "selectors": {
+          "doc_types": [
+            "ART",
+            "AOA"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Articles*",
+            "**/*Articles_of_Association*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-articles-v1"
+        }
+      },
+      {
+        "id": "entity-charter-v1",
+        "selectors": {
+          "doc_types": [
+            "CHA"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Charter*",
+            "**/*Founding_Charter*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-charter-v1"
+        }
+      },
+      {
+        "id": "entity-agreement-v1",
+        "selectors": {
+          "doc_types": [
+            "AGR",
+            "OA"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Agreement*",
+            "**/*Company_Agreement*",
+            "**/*Operating_Agreement*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-agreement-v1"
+        }
+      },
+      {
+        "id": "entity-memorandum-v1",
+        "selectors": {
+          "doc_types": [
+            "MEM"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-memorandum-v1"
+        }
+      },
+      {
+        "id": "entity-resolution-v1",
+        "selectors": {
+          "doc_types": [
+            "RES"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-legal-standard-v1"
+        }
+      },
+      {
+        "id": "entity-annex-v1",
+        "selectors": {
+          "doc_types": [
+            "ANN",
+            "SCH",
+            "FRM"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-legal-part-only-v1"
+        }
+      },
+      {
+        "id": "entity-spine-v1",
+        "selectors": {
+          "doc_types": [
+            "DOC"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-legal-standard-v1"
+        }
+      },
+      {
+        "id": "entity-index-v1",
+        "selectors": {
+          "doc_types": [
+            "IND"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-legal-standard-v1"
+        }
+      },
+      {
+        "id": "entity-register-v1",
+        "selectors": {
+          "doc_types": [
+            "REG"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-legal-part-only-v1"
+        }
+      }
+    ],
+    "spacing_policy": {
+      "pair_rules": [
+        {
+          "prev": "heading",
+          "curr": "paragraph",
+          "before_em": 0.5
+        },
+        {
+          "prev": "paragraph",
+          "curr": "heading",
+          "before_em": 1.5
+        },
+        {
+          "prev": "heading",
+          "curr": "heading",
+          "before_em": 0.75
+        },
+        {
+          "prev": "list",
+          "curr": "heading",
+          "before_em": 1.5
+        },
+        {
+          "prev": "paragraph",
+          "curr": "paragraph",
+          "before_em": 0.75
+        },
+        {
+          "prev": "paragraph",
+          "curr": "list",
+          "before_em": 0.5
+        },
+        {
+          "prev": "list",
+          "curr": "paragraph",
+          "before_em": 0.75
+        },
+        {
+          "prev": "article",
+          "curr": "paragraph",
+          "before_em": 0.75
+        },
+        {
+          "prev": "section",
+          "curr": "paragraph",
+          "before_em": 0.5
+        }
+      ],
+      "defaults": {
+        "heading": {
+          "before_em": 1.2,
+          "after_em": 0.4
+        },
+        "paragraph": {
+          "before_em": 0.5,
+          "after_em": 0.5
+        },
+        "list": {
+          "before_em": 0.5,
+          "after_em": 0.5
+        },
+        "code-block": {
+          "before_em": 0.75,
+          "after_em": 0.75
+        },
+        "blockquote": {
+          "before_em": 0.75,
+          "after_em": 0.75
+        },
+        "table": {
+          "before_em": 0.75,
+          "after_em": 0.75
+        },
+        "article": {
+          "before_em": 1.5,
+          "after_em": 0.5
+        },
+        "section": {
+          "before_em": 1,
+          "after_em": 0.5
+        }
+      }
+    },
+    "precedence_notes": "BVI-specific selectors are intentionally listed before the generic entity selectors. The pack keeps classic constitution typography while preserving the entity packet renderer semantics."
+  }
+}

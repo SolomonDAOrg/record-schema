@@ -1,0 +1,52 @@
+schema: record-schema
+schema_version: 1
+
+id: DP-00000
+series_code: DP
+series: 0
+title: DAO Proposal Title
+slug: template-dao-proposal
+
+summary: >
+  One-paragraph summary of the proposal.
+
+tags: []
+owners: []
+
+status:
+  phase: draft
+  last_updated: "2026-01-07T00:00:00Z"
+  confidentiality: public
+
+links:
+  supersedes: []
+  superseded_by: []
+  related: []
+  external: []
+
+documents:
+  primary: DP-00000_MEM-main.md
+  log: DP-00000_LOG-governance.md
+  annexes: []
+
+timeline:
+  opened_at: "2026-01-07T00:00:00Z"
+  closed_at: null
+
+governance:
+  discussion_url: ""
+  vote_url: ""
+
+  passed_commit: ""
+  passed_tag: ""
+  passed_pinned: []
+  adopted_paths: []
+
+  executed_commit: ""
+  executed_tag: ""
+  executed_pinned: []
+  execution_txs: []
+
+extensions:
+  formatting:
+    profile: dao-proposals-v1/canonical-ascii-v1

@@ -1,0 +1,40 @@
+schema: record-schema
+schema_version: 1
+id: CPA-00012
+series_code: CPA
+series: 12
+title: "Counterparty Agreement - Alpha (hash-only integrity entry)"
+slug: counterparty-agreement-alpha
+
+status:
+  phase: interim
+  last_updated: "2026-03-01T00:00:00Z"
+  confidentiality: hash-only
+
+documents:
+  primary:
+    - path: CPA-00012_DOC-main.md
+      label: "Public integrity entry (hash-only)"
+  log:
+    path: CPA-00012_LOG-notes.md
+
+extensions:
+  formatting:
+    profile: canonical-ascii
+
+commitments:
+  - commitment_id: "cmt-sha256-0123456789ab"
+    kind: confidential-fulltext
+    formatting_profile: canonical-ascii
+    hash_sha256_hex: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    hash_sha256_base58: "11111111111111111111111111111111"
+    hash_surface: markdown-body-v1
+    disclosure: "Underlying instrument is confidential. This record publishes only an integrity commitment."
+    storage: "evidence-store://vault/CPA-00012/fulltext"
+    created: "2026-03-01T00:00:00Z"
+    anchors:
+      - kind: solana-memo
+        network: mainnet-beta
+        ref: "<tx-signature>"
+        created: "2026-03-01T00:00:00Z"
+        notes: "Anchor the sha256 hex in a memo; keep tx sig here."

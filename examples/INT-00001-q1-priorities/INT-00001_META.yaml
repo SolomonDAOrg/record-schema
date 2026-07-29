@@ -1,0 +1,36 @@
+schema: record-schema
+schema_version: 1
+
+id: INT-00001
+series_code: INT
+series: 1
+title: Q1 2026 Engineering Priorities
+
+status:
+  phase: final
+  confidentiality: internal
+  last_updated: "2026-01-06T00:00:00Z"
+
+tags:
+  - engineering
+  - planning
+  - q1-2026
+
+ownership:
+  author: engineering-leadership
+  distribution:
+    - engineering
+    - product
+
+summary: |
+  Internal memorandum establishing engineering priorities for Q1 2026.
+
+documents:
+  primary:
+    ref: INT-00001_MEM-main.md
+  log:
+    ref: INT-00001_LOG-notes.md
+
+extensions:
+  formatting:
+    profile: canonical-ascii

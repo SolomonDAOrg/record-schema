@@ -1,0 +1,171 @@
+schema: storage-layout
+schema_version: 1
+record_id: STO-00001
+
+description: |
+  Binary layout for limit order account on Solana.
+
+layout:
+  name: OrderAccount
+  total_size: 190
+  alignment: 1
+  byte_order: little_endian
+  serialization: borsh
+
+  discriminator:
+    offset: 0
+    size: 8
+    value: [0x4c, 0x4f, 0x52, 0x44, 0x45, 0x52, 0x00, 0x01]
+    description: "LORDER" + version (0) + revision (1)
+
+  fields:
+    - name: id
+      offset: 8
+      size: 8
+      type: u64
+      description: Unique order identifier
+      constraints:
+        - nonzero: true
+
+    - name: owner
+      offset: 16
+      size: 32
+      type: pubkey
+      description: Order owner public key
+      constraints:
+        - nonzero: true
+
+    - name: pool
+      offset: 48
+      size: 32
+      type: pubkey
+      description: Pool this order trades on
+      constraints:
+        - nonzero: true
+
+    - name: state
+      offset: 80
+      size: 1
+      type: u8
+      description: Current state code (see FSM-00001)
+      constraints:
+        - range: [0, 5]
+      enum_ref: OrderState
+
+    - name: side
+      offset: 81
+      size: 1
+      type: u8
+      description: Order side
+      constraints:
+        - range: [0, 1]
+      enum_values:
+        0: buy
+        1: sell
+
+    - name: trigger_price
+      offset: 82
+      size: 16
+      type: u128
+      description: Price threshold for execution (Q64.64 fixed-point)
+      encoding: q64.64
+      constraints:
+        - nonzero: true
+
+    - name: amount_in
+      offset: 98
+      size: 8
+      type: u64
+      description: Total input token amount
+      constraints:
+        - nonzero: true
+
+    - name: amount_filled
+      offset: 106
+      size: 8
+      type: u64
+      description: Amount already filled
+      constraints:
+        - lte_field: amount_in
+
+    - name: amount_out
+      offset: 114
+      size: 8
+      type: u64
+      description: Total output tokens received
+
+    - name: min_amount_out
+      offset: 122
+      size: 8
+      type: u64
+      description: Minimum acceptable output (slippage protection)
+
+    - name: created_slot
+      offset: 130
+      size: 8
+      type: u64
+      description: Slot when order was created
+      constraints:
+        - nonzero: true
+
+    - name: expiry_slot
+      offset: 138
+      size: 8
+      type: u64
+      description: Slot when order expires
+      constraints:
+        - gt_field: created_slot
+
+    - name: last_updated_slot
+      offset: 146
+      size: 8
+      type: u64
+      description: Slot of last state change
+      constraints:
+        - gte_field: created_slot
+
+    - name: fill_count
+      offset: 154
+      size: 2
+      type: u16
+      description: Number of partial fills
+
+    - name: flags
+      offset: 156
+      size: 2
+      type: u16
+      description: Reserved flags
+      reserved: true
+
+    - name: _padding
+      offset: 158
+      size: 32
+      type: bytes
+      description: Reserved for future use
+      reserved: true
+
+computed_fields:
+  - name: remaining
+    expression: amount_in - amount_filled
+    type: u64
+
+  - name: fill_percentage
+    expression: (amount_filled * 100) / amount_in
+    type: u8
+
+  - name: is_terminal
+    expression: state >= 3
+    type: bool
+
+validation:
+  - name: discriminator_valid
+    check: discriminator == [0x4c, 0x4f, 0x52, 0x44, 0x45, 0x52, 0x00, 0x01]
+
+  - name: amounts_consistent
+    check: amount_filled <= amount_in
+
+  - name: slots_ordered
+    check: created_slot <= last_updated_slot
+
+  - name: expiry_future
+    check: expiry_slot > created_slot

@@ -126,6 +126,52 @@
         },
         "meta_policies": {
           "$ref": "#/$defs/metaPolicies"
+        },
+        "structured_document_schemas": {
+          "type": "array",
+          "description": "Bindings from record document type codes to JSON Schemas for structured JSON/YAML documents.",
+          "items": {
+            "type": "object",
+            "required": [
+              "doc_type",
+              "schema_path"
+            ],
+            "properties": {
+              "doc_type": {
+                "type": "string",
+                "pattern": "^[A-Z]{2,5}$"
+              },
+              "schema_path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "extensions": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "json",
+                    "yaml",
+                    "yml"
+                  ]
+                },
+                "uniqueItems": true
+              },
+              "required": {
+                "type": "boolean",
+                "default": false
+              },
+              "min_count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "max_count": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "additionalProperties": false
+          }
         }
       },
       "additionalProperties": true

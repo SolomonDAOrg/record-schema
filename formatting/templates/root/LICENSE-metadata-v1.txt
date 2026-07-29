@@ -1,0 +1,11 @@
+----------------------------BEGIN DOCUMENT METADATA-----------------------------
+SPDX-License-Identifier: LicenseRef-<identifier>
+Document-Type: LICENSE
+Title: <LICENSE TITLE IN CAPS>
+Version: <version>
+Effective-Date: <YYYY-MM-DD>
+Canonical-URL: <https://github.com/SolomonDAOrg/licenses/blob/main/LICENSES/LicenseRef-identifier.txt>
+Checksum-SHA256: <64 lowercase hexadecimal characters>
+Checksum-Surface: license-body-v1
+Repository-Role: <canonical|repository-copy>
+-----------------------------END DOCUMENT METADATA------------------------------

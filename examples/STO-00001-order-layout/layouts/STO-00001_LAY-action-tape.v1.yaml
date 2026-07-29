@@ -1,0 +1,197 @@
+schema: storage-layout
+schema_version: 1
+record_id: STO-00001
+
+description: |
+  Binary layout for action tape entries recording state transitions.
+
+layout:
+  name: ActionTape
+  variable_size: true
+  alignment: 1
+  byte_order: little_endian
+  serialization: borsh
+
+header:
+  name: TapeHeader
+  size: 53
+  fields:
+    - name: version
+      offset: 0
+      size: 1
+      type: u8
+      description: Tape format version
+      default: 1
+
+    - name: pool
+      offset: 1
+      size: 32
+      type: pubkey
+      description: Pool this tape belongs to
+
+    - name: start_slot
+      offset: 33
+      size: 8
+      type: u64
+      description: First slot covered by tape
+
+    - name: end_slot
+      offset: 41
+      size: 8
+      type: u64
+      description: Last slot covered by tape (inclusive)
+
+    - name: entry_count
+      offset: 49
+      size: 4
+      type: u32
+      description: Number of entries in tape
+
+entry:
+  name: TapeEntry
+  variable_size: true
+  base_size: 91  # Fixed portion before variable data
+
+  fixed_fields:
+    - name: slot
+      offset: 0
+      size: 8
+      type: u64
+      description: Slot when action occurred
+
+    - name: timestamp
+      offset: 8
+      size: 8
+      type: i64
+      description: Unix timestamp (seconds)
+
+    - name: action_type
+      offset: 16
+      size: 1
+      type: u8
+      description: Action type code
+      enum_values:
+        1: activate
+        2: partial_fill
+        3: fill
+        4: cancel
+        5: expire
+
+    - name: order_id
+      offset: 17
+      size: 8
+      type: u64
+      description: Affected order ID
+
+    - name: prev_state
+      offset: 25
+      size: 1
+      type: u8
+      description: State before transition
+
+    - name: next_state
+      offset: 26
+      size: 1
+      type: u8
+      description: State after transition
+
+  variable_fields:
+    - name: data
+      offset: 27
+      type: action_data
+      description: Action-specific payload
+      discriminator: action_type
+
+  trailing_fields:
+    - name: signature
+      size: 64
+      type: bytes
+      description: Transaction signature
+
+action_data_variants:
+  - action_type: 1  # activate
+    name: ActivateData
+    size: 32
+    fields:
+      - name: trigger_price
+        offset: 0
+        size: 16
+        type: u128
+      - name: amount_in
+        offset: 16
+        size: 8
+        type: u64
+      - name: expiry_slot
+        offset: 24
+        size: 8
+        type: u64
+
+  - action_type: 2  # partial_fill
+    name: PartialFillData
+    size: 40
+    fields:
+      - name: fill_amount
+        offset: 0
+        size: 8
+        type: u64
+      - name: fill_price
+        offset: 8
+        size: 16
+        type: u128
+      - name: amount_out
+        offset: 24
+        size: 8
+        type: u64
+      - name: remaining
+        offset: 32
+        size: 8
+        type: u64
+
+  - action_type: 3  # fill
+    name: FillData
+    size: 32
+    fields:
+      - name: fill_amount
+        offset: 0
+        size: 8
+        type: u64
+      - name: fill_price
+        offset: 8
+        size: 16
+        type: u128
+      - name: amount_out
+        offset: 24
+        size: 8
+        type: u64
+
+  - action_type: 4  # cancel
+    name: CancelData
+    size: 9
+    fields:
+      - name: refund_amount
+        offset: 0
+        size: 8
+        type: u64
+      - name: reason
+        offset: 8
+        size: 1
+        type: u8
+
+  - action_type: 5  # expire
+    name: ExpireData
+    size: 16
+    fields:
+      - name: refund_amount
+        offset: 0
+        size: 8
+        type: u64
+      - name: expiry_slot
+        offset: 8
+        size: 8
+        type: u64
+
+encoding_notes:
+  - Entries are stored contiguously after header
+  - Entry size varies by action_type
+  - Reader must parse action_type to determine data size
+  - Signature is always 64 bytes at end of each entry

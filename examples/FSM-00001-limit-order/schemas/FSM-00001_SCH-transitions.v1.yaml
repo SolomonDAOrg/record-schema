@@ -1,0 +1,303 @@
+schema: fsm-transitions
+schema_version: 1
+record_id: FSM-00001
+
+description: |
+  Transition definitions for limit order state machine.
+  Each transition specifies source, event, target, guards, and actions.
+
+transitions:
+  - id: t1
+    name: activate_order
+    from: pending
+    event: activate
+    to: open
+    guards:
+      - id: valid_order
+        description: Order passes validation checks
+        conditions:
+          - check: balance_sufficient
+            params: [owner, token_in, amount_in]
+          - check: price_valid
+            params: [trigger_price]
+          - check: ttl_valid
+            params: [expiry_slot, current_slot]
+    actions:
+      - id: start_monitoring
+        params: []
+      - id: emit_event
+        params: [OrderActivated]
+      - id: record_tape
+        params: [activate]
+
+  - id: t2
+    name: cancel_pending
+    from: pending
+    event: cancel
+    to: cancelled
+    guards:
+      - id: is_owner
+        description: Signer is order owner
+        conditions:
+          - check: signer_equals
+            params: [signer, owner]
+    actions:
+      - id: refund_tokens
+        params: [owner, token_in, amount_in]
+      - id: emit_event
+        params: [OrderCancelled]
+      - id: record_tape
+        params: [cancel]
+
+  - id: t3
+    name: partial_fill_open
+    from: open
+    event: partial_fill
+    to: partial
+    guards:
+      - id: price_triggered
+        description: Pool price crossed trigger threshold
+        conditions:
+          - check: price_crossed
+            params: [pool_twap, trigger_price, side]
+      - id: fill_amount_valid
+        description: Fill amount meets minimum and available
+        conditions:
+          - check: amount_gte
+            params: [fill_amount, min_fill]
+          - check: amount_lt
+            params: [fill_amount, remaining]
+    actions:
+      - id: execute_swap
+        params: [fill_amount, pool]
+      - id: update_filled
+        params: [fill_amount]
+      - id: emit_event
+        params: [OrderPartiallyFilled]
+      - id: record_tape
+        params: [partial_fill]
+
+  - id: t4
+    name: fill_open
+    from: open
+    event: fill
+    to: filled
+    guards:
+      - id: price_triggered
+        conditions:
+          - check: price_crossed
+            params: [pool_twap, trigger_price, side]
+      - id: fill_amount_valid
+        conditions:
+          - check: amount_eq
+            params: [fill_amount, amount_in]
+    actions:
+      - id: execute_swap
+        params: [amount_in, pool]
+      - id: update_filled
+        params: [amount_in]
+      - id: stop_monitoring
+        params: []
+      - id: emit_event
+        params: [OrderFilled]
+      - id: record_tape
+        params: [fill]
+
+  - id: t5
+    name: cancel_open
+    from: open
+    event: cancel
+    to: cancelled
+    guards:
+      - id: is_owner
+        conditions:
+          - check: signer_equals
+            params: [signer, owner]
+    actions:
+      - id: stop_monitoring
+        params: []
+      - id: refund_tokens
+        params: [owner, token_in, amount_in]
+      - id: emit_event
+        params: [OrderCancelled]
+      - id: record_tape
+        params: [cancel]
+
+  - id: t6
+    name: expire_open
+    from: open
+    event: expire
+    to: expired
+    guards:
+      - id: ttl_exceeded
+        description: Current slot past expiry
+        conditions:
+          - check: slot_gt
+            params: [current_slot, expiry_slot]
+    actions:
+      - id: stop_monitoring
+        params: []
+      - id: refund_tokens
+        params: [owner, token_in, amount_in]
+      - id: emit_event
+        params: [OrderExpired]
+      - id: record_tape
+        params: [expire]
+
+  - id: t7
+    name: partial_fill_partial
+    from: partial
+    event: partial_fill
+    to: partial
+    guards:
+      - id: price_triggered
+        conditions:
+          - check: price_crossed
+            params: [pool_twap, trigger_price, side]
+      - id: fill_amount_valid
+        conditions:
+          - check: amount_gte
+            params: [fill_amount, min_fill]
+          - check: amount_lt
+            params: [fill_amount, remaining]
+    actions:
+      - id: execute_swap
+        params: [fill_amount, pool]
+      - id: update_filled
+        params: [fill_amount]
+      - id: emit_event
+        params: [OrderPartiallyFilled]
+      - id: record_tape
+        params: [partial_fill]
+
+  - id: t8
+    name: fill_partial
+    from: partial
+    event: fill
+    to: filled
+    guards:
+      - id: price_triggered
+        conditions:
+          - check: price_crossed
+            params: [pool_twap, trigger_price, side]
+      - id: fill_amount_valid
+        conditions:
+          - check: amount_eq
+            params: [fill_amount, remaining]
+    actions:
+      - id: execute_swap
+        params: [remaining, pool]
+      - id: update_filled
+        params: [remaining]
+      - id: stop_monitoring
+        params: []
+      - id: emit_event
+        params: [OrderFilled]
+      - id: record_tape
+        params: [fill]
+
+  - id: t9
+    name: cancel_partial
+    from: partial
+    event: cancel
+    to: cancelled
+    guards:
+      - id: is_owner
+        conditions:
+          - check: signer_equals
+            params: [signer, owner]
+    actions:
+      - id: stop_monitoring
+        params: []
+      - id: refund_tokens
+        params: [owner, token_in, remaining]
+      - id: emit_event
+        params: [OrderCancelled]
+      - id: record_tape
+        params: [cancel]
+
+  - id: t10
+    name: expire_partial
+    from: partial
+    event: expire
+    to: expired
+    guards:
+      - id: ttl_exceeded
+        conditions:
+          - check: slot_gt
+            params: [current_slot, expiry_slot]
+    actions:
+      - id: stop_monitoring
+        params: []
+      - id: refund_tokens
+        params: [owner, token_in, remaining]
+      - id: emit_event
+        params: [OrderExpired]
+      - id: record_tape
+        params: [expire]
+
+guard_definitions:
+  - id: balance_sufficient
+    params: [account, mint, amount]
+    expression: "getBalance(account, mint) >= amount"
+
+  - id: price_valid
+    params: [price]
+    expression: "price > 0"
+
+  - id: ttl_valid
+    params: [expiry, current]
+    expression: "expiry > current"
+
+  - id: signer_equals
+    params: [signer, expected]
+    expression: "signer == expected"
+
+  - id: price_crossed
+    params: [twap, trigger, side]
+    expression: "side == Buy ? twap <= trigger : twap >= trigger"
+
+  - id: amount_gte
+    params: [a, b]
+    expression: "a >= b"
+
+  - id: amount_lt
+    params: [a, b]
+    expression: "a < b"
+
+  - id: amount_eq
+    params: [a, b]
+    expression: "a == b"
+
+  - id: slot_gt
+    params: [a, b]
+    expression: "a > b"
+
+action_definitions:
+  - id: start_monitoring
+    description: Begin price monitoring for order
+    side_effects: [index_add]
+
+  - id: stop_monitoring
+    description: Stop price monitoring for order
+    side_effects: [index_remove]
+
+  - id: execute_swap
+    description: Execute token swap at current price
+    side_effects: [token_transfer, pool_state_update]
+
+  - id: update_filled
+    description: Update amount_filled field
+    side_effects: [account_update]
+
+  - id: refund_tokens
+    description: Return tokens to owner
+    side_effects: [token_transfer]
+
+  - id: emit_event
+    description: Emit program event
+    side_effects: [event_log]
+
+  - id: record_tape
+    description: Record action to tape
+    side_effects: [tape_append]

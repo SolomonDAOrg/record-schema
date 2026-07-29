@@ -1,0 +1,547 @@
+{
+  "schema": "record-schema-render-pack",
+  "schema_version": 1,
+  "pack_id": "policy-v1",
+  "description": "Policy render pack for internal policy and procedure packets. Uses a controlled amber cover treatment and preserves horizontal rules as visible separators rather than page breaks.",
+  "imports": [
+    "render/packs/base-v1.json"
+  ],
+  "packet_config": {
+    "default_entity_name": "ENTITY",
+    "default_document_title": "POLICY PACK",
+    "header_text": "CONTROLLED - INTERNAL POLICY",
+    "series_prefix": "^([A-Z]{2,5}-\\d+_)?",
+    "header_title_format": "plain",
+    "path_to_title": {
+      "POL": "POLICY",
+      "SOP": "PROCEDURE",
+      "FAQ": "GUIDANCE",
+      "DOC": "DOCUMENT",
+      "Guide": "GUIDANCE",
+      "Manual": "MANUAL",
+      "Register": "REGISTER",
+      "Checklist": "CHECKLIST",
+      "Index": "INDEX"
+    },
+    "name_patterns": [
+      "Policy",
+      "Procedure",
+      "Manual",
+      "Guide",
+      "Register",
+      "Checklist",
+      "AML",
+      "KYC",
+      "CDD",
+      "EDD",
+      "Sanctions",
+      "Screening",
+      "Monitoring",
+      "Index"
+    ],
+    "entity_extraction": {
+      "fields": [
+        "entity_name",
+        "title"
+      ]
+    },
+    "cover_config": {
+      "suppress_header": true,
+      "suppress_footer": true,
+      "suppress_page_numbering": true,
+      "reserve_header_footer_space": false,
+      "draft_watermark": {
+        "enabled": false
+      },
+      "cover_layout": {
+        "description": "Controlled internal-policy cover. Muted amber-brown background, pale inset frame, white typography, and warm control-document accents.",
+        "palette": {
+          "accent": "#F1E7C9",
+          "title": "#FFFCF4",
+          "muted": "#E8DDBD",
+          "danger": "#FFFCF4",
+          "paper": "#B8871E",
+          "note_fill": "#6B531B",
+          "note_border": "#F0E2BC",
+          "badge_text": "#FFFDF7",
+          "badge_fill": "#72591E",
+          "badge_rule": "#F0E2BC"
+        },
+        "eyebrow": {
+          "enabled": true,
+          "text": "CONTROLLED INTERNAL / POLICY",
+          "align": "left",
+          "font_size": 10,
+          "color": "#FFFDF7",
+          "after_spacer": 10,
+          "letter_spacing": 0.8,
+          "background_color": "#6B531B",
+          "border_color": "#F1E7C9",
+          "padding_x": 10,
+          "padding_y": 6,
+          "top_spacer": 10,
+          "after_spacer": 16
+        },
+        "title_block": {
+          "top_spacer": 0,
+          "align": "left",
+          "title_font_size": 28,
+          "subtitle_font_size": 12.5,
+          "entity_font_size": 12.5,
+          "include_conjunction_line": false,
+          "after_title_spacer": 7,
+          "after_subtitle_spacer": 10,
+          "after_entity_spacer": 12,
+          "title_color": "#FFFCF4",
+          "subtitle_color": "#EEE4C7",
+          "entity_color": "#FFF8E8"
+        },
+        "rule": {
+          "enabled": true,
+          "start_frac": 0.0,
+          "end_frac": 0.42,
+          "line_width": 1.6,
+          "color": "#F0E2BC",
+          "after_spacer": 14
+        },
+        "metadata_block": {
+          "layout": "columns",
+          "align": "left",
+          "label_align": "left",
+          "column_gap": 16,
+          "font_size": 9.5,
+          "line_spacer": 7,
+          "separator": ": ",
+          "fields": [
+            {
+              "key": "document_id",
+              "label": "Doc"
+            },
+            {
+              "key": "version",
+              "label": "Version"
+            },
+            {
+              "key": "effective_date",
+              "label": "Date"
+            },
+            {
+              "key": "status",
+              "label": "Status"
+            },
+            {
+              "key": "confidentiality",
+              "label": "Conf"
+            }
+          ],
+          "label_color": "#F0E2BC",
+          "value_color": "#FFFFFF",
+          "background_color": "#6B531B",
+          "border_color": "#F1E7C9",
+          "padding": 10
+        },
+        "footer_note": {
+          "enabled": true,
+          "align": "left",
+          "font_size": 9,
+          "color": "#EADFC3",
+          "top_spacer": 18,
+          "text": "Controlled internal policy material only. Operational controls, required procedures, and no external circulation."
+        },
+        "page_background": {
+          "color": "#B8871E"
+        }
+      }
+    },
+    "signing_page": {
+      "enabled": false
+    },
+    "packet_variants": {
+      "default": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "brief": {
+        "include_cover": true,
+        "include_toc": false
+      },
+      "notice": {
+        "include_cover": false,
+        "include_toc": false,
+        "signing_page": false
+      }
+    }
+  },
+  "document_policies": {
+    "defaults": {
+      "output_encoding": "utf-8",
+      "output_newlines": "lf",
+      "horizontal_rule_behavior": "rule"
+    },
+    "targets": {
+      "pdf": {
+        "format": "pdf",
+        "page_size": "letter",
+        "orientation": "portrait",
+        "margins": {
+          "top": 72,
+          "bottom": 72,
+          "left": 72,
+          "right": 72,
+          "unit": "pt"
+        },
+        "fonts": {
+          "regular": "Helvetica",
+          "bold": "Helvetica-Bold",
+          "italic": "Helvetica-Oblique",
+          "bold_italic": "Helvetica-BoldOblique",
+          "monospace": "Courier"
+        },
+        "base_font_size": 10,
+        "title_font_size": 18,
+        "heading_scales": {
+          "h1": 1.55,
+          "h2": 1.32,
+          "h3": 1.18,
+          "h4": 1.08
+        },
+        "line_spacing": 1.45,
+        "paragraph_spacing_factor": 0.55,
+        "list_indent_per_level": 20,
+        "code_block_indent": 36,
+        "horizontal_rule": {
+          "behavior": "rule",
+          "width_factor": 1,
+          "thickness": 0.75,
+          "color": "#A98A4A",
+          "spacing_before": 10,
+          "spacing_after": 14
+        },
+        "inline_formatting": {
+          "enabled": true,
+          "underline_offset_factor": 0.15,
+          "underline_thickness_small": 0.5,
+          "underline_thickness_large": 0.75,
+          "underline_size_threshold": 12
+        },
+        "toc": {
+          "title_font_size": 15,
+          "level_styles": {
+            "1": {
+              "font_size_scale": 1.08,
+              "bold": true,
+              "indent": 0,
+              "spacing_after": 1.1,
+              "spacing_before": 1.1
+            },
+            "2": {
+              "font_size_scale": 0.94,
+              "bold": true,
+              "indent": 20,
+              "spacing_after": 1.1
+            },
+            "3": {
+              "font_size_scale": 0.86,
+              "bold": false,
+              "indent": 40,
+              "spacing_after": 1.0
+            },
+            "4": {
+              "font_size_scale": 0.8,
+              "bold": false,
+              "indent": 60,
+              "spacing_after": 1.0
+            }
+          }
+        },
+        "cover_page": {
+          "title_position": "upper-third",
+          "title_spacing": 30,
+          "company_name_font_size": 24,
+          "subtitle_font_size": 14
+        },
+        "table": {
+          "font_size_scale": 0.95,
+          "min_font_size": 6,
+          "max_font_size": 10,
+          "auto_shrink": true,
+          "cell_padding": {
+            "x": 4,
+            "y": 3
+          },
+          "border_width": 0.5,
+          "border_color": "#D9CAA1",
+          "header": {
+            "background_color": "#F3E9D2",
+            "text_color": "#4E3C14",
+            "cell_padding": {
+              "x": 4,
+              "y": 3
+            }
+          },
+          "zebra": {
+            "enabled": true,
+            "odd_background": "#FFFFFF",
+            "even_background": "#FCF8EF"
+          },
+          "line_height": 1.2,
+          "bleed_in": 0.2,
+          "bleed_if_columns_gt": 8,
+          "min_page_edge_inset_in": 0.25
+        },
+        "notice": {
+          "padding": 10,
+          "border_width": 1,
+          "border_color": "#8C7440",
+          "background_color": "#FBF7EE",
+          "title_color": "#4E3C14"
+        }
+      }
+    },
+    "render_profiles": {
+      "policy-standard-v1": {
+        "description": "Standard policy document PDF rendering",
+        "target": "pdf",
+        "overrides": {
+          "break_mode": "part-only"
+        }
+      },
+      "policy-packet-v1": {
+        "description": "Policy packet with dedicated cover layout and TOC",
+        "target": "pdf",
+        "extends": "policy-standard-v1",
+        "overrides": {
+          "base_font_size": 10,
+          "line_spacing": 1.45,
+          "margins": {
+            "top": 72,
+            "bottom": 72,
+            "left": 72,
+            "right": 72,
+            "unit": "pt"
+          },
+          "horizontal_rule": {
+            "behavior": "rule",
+            "width_factor": 1,
+            "thickness": 0.75,
+            "color": "#A98A4A",
+            "spacing_before": 10,
+            "spacing_after": 14
+          }
+        }
+      },
+      "policy-policy-v1": {
+        "description": "Policy document rendering",
+        "target": "pdf",
+        "extends": "policy-standard-v1"
+      },
+      "policy-sop-v1": {
+        "description": "Procedure document rendering with slightly tighter body spacing",
+        "target": "pdf",
+        "extends": "policy-standard-v1",
+        "overrides": {
+          "base_font_size": 9.75,
+          "line_spacing": 1.4
+        }
+      },
+      "policy-memo-v1": {
+        "description": "Compact note and memo rendering",
+        "target": "pdf",
+        "extends": "policy-standard-v1",
+        "overrides": {
+          "base_font_size": 9.5,
+          "line_spacing": 1.35
+        }
+      }
+    },
+    "rulesets": [
+      {
+        "id": "policy-packet-v1",
+        "selectors": {
+          "doc_types": [
+            "PACKET",
+            "PKT"
+          ],
+          "extensions": [
+            "pdf"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "policy-packet-v1"
+        }
+      },
+      {
+        "id": "policy-policy-v1",
+        "selectors": {
+          "doc_types": [
+            "POL"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "policy-policy-v1"
+        }
+      },
+      {
+        "id": "policy-sop-v1",
+        "selectors": {
+          "doc_types": [
+            "SOP"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "policy-sop-v1"
+        }
+      },
+      {
+        "id": "policy-guidance-v1",
+        "selectors": {
+          "doc_types": [
+            "DOC",
+            "GUIDE",
+            "FAQ",
+            "NOTE"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "policy-standard-v1"
+        }
+      },
+      {
+        "id": "policy-index-v1",
+        "selectors": {
+          "doc_types": [
+            "IND"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "policy-standard-v1"
+        }
+      },
+      {
+        "id": "policy-memo-v1",
+        "selectors": {
+          "doc_types": [
+            "MEM"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "policy-memo-v1"
+        }
+      },
+      {
+        "id": "policy-registry-v1",
+        "selectors": {
+          "doc_types": [
+            "REG",
+            "LOG",
+            "FRM",
+            "CHK"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "policy-standard-v1"
+        }
+      }
+    ],
+    "spacing_policy": {
+      "pair_rules": [
+        {
+          "prev": "heading",
+          "curr": "paragraph",
+          "before_em": 0.45
+        },
+        {
+          "prev": "paragraph",
+          "curr": "heading",
+          "before_em": 1.2
+        },
+        {
+          "prev": "heading",
+          "curr": "heading",
+          "before_em": 0.6
+        },
+        {
+          "prev": "list",
+          "curr": "heading",
+          "before_em": 1.2
+        },
+        {
+          "prev": "paragraph",
+          "curr": "paragraph",
+          "before_em": 0.65
+        },
+        {
+          "prev": "paragraph",
+          "curr": "list",
+          "before_em": 0.4
+        },
+        {
+          "prev": "list",
+          "curr": "paragraph",
+          "before_em": 0.65
+        },
+        {
+          "prev": "table",
+          "curr": "paragraph",
+          "before_em": 0.75
+        }
+      ],
+      "defaults": {
+        "heading": {
+          "before_em": 1.0,
+          "after_em": 0.35
+        },
+        "paragraph": {
+          "before_em": 0.45,
+          "after_em": 0.45
+        },
+        "list": {
+          "before_em": 0.4,
+          "after_em": 0.4
+        },
+        "code-block": {
+          "before_em": 0.7,
+          "after_em": 0.7
+        },
+        "blockquote": {
+          "before_em": 0.7,
+          "after_em": 0.7
+        },
+        "table": {
+          "before_em": 0.7,
+          "after_em": 0.7
+        },
+        "section": {
+          "before_em": 0.9,
+          "after_em": 0.45
+        }
+      }
+    },
+    "precedence_notes": "Rules are evaluated in order. First match applies. Policy packets use a dedicated internal cover layout and preserve horizontal rules as visible separators rather than page breaks."
+  }
+}

@@ -1,6 +1,8 @@
 <LICENSE TITLE IN CAPS>
 
 Version <X.Y> - Effective <Month YYYY>
+Version: <X.Y>
+Checksum-SHA256: <64 lowercase hexadecimal characters>
 
 ================================================================================
 

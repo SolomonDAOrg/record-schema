@@ -1,0 +1,75 @@
+schema: record-schema-registry-profile
+schema_version: 1
+profile_id: deployment-release-evidence
+name: Deployment and Release Evidence
+description: Typed, immutable deployment and program-upgrade evidence batches with detached deployer attestations and PDF reports.
+
+rules:
+  root:
+    required_paths:
+      - schema
+      - profiles
+      - registry
+      - overlays
+      - formatting
+      - render
+      - toolkit
+      - SCHEMA_UPSTREAM.yaml
+    disallow_unknown_top_level: false
+
+  meta_policies:
+    overlay_schema_paths:
+      - overlays/deployment-release.record.meta.schema.json
+
+  structured_document_schemas:
+    - doc_type: PLAN
+      schema_path: schema/deployment-release/deployment-batch-plan.schema.json
+      extensions: [json]
+      required: true
+      max_count: 1
+    - doc_type: MAN
+      schema_path: schema/deployment-release/deployment-batch-manifest.schema.json
+      extensions: [json]
+      required: true
+      max_count: 1
+    - doc_type: ATT
+      schema_path: schema/deployment-release/deployment-batch-attestation.schema.json
+      extensions: [json]
+      required: true
+      max_count: 1
+    - doc_type: VER
+      schema_path: schema/deployment-release/deployment-batch-verification.schema.json
+      extensions: [json]
+      required: true
+      max_count: 1
+    - doc_type: EVD
+      schema_path: schema/deployment-release/deployment-batch-report-data.schema.json
+      extensions: [json]
+      required: true
+      max_count: 1
+
+  buckets:
+    - bucket: deployment_batches
+      path: records
+      record_constraints:
+        require_series_code: DEP
+        require_record_directory_regex: '^[A-Z]{2,5}-\d{5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?$'
+        require_file_name_regex: '^[A-Z]{2,5}-\d{5}_[A-Z]{2,5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?\.[A-Za-z0-9]+$'
+        require_meta: true
+        require_primary_document: true
+        require_documents_primary_ref: true
+        require_formatting_profile: true
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        recommended_files:
+          - '{RECORD_ID}_IND-index.md'
+        disallow_doc_types: []
+        disallow_extensions: []
+
+  document_policies:
+    pack_paths:
+      - type: formatting
+        path: formatting/packs/deployment-release.json
+      - type: render
+        path: render/packs/deployment-release.json

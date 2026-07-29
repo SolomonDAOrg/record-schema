@@ -105,3 +105,23 @@ doc_types:
   name: Diagram
   description: Chart or diagram source definition using record-schema-chart format.
   recommended_extensions: [chart.yaml, chart.json]
+
+- code: PLAN
+  name: Deployment Batch Plan
+  description: Reviewed plan defining a deployment or program-upgrade evidence batch before execution.
+  recommended_extensions: [json]
+
+- code: MAN
+  name: Artifact Manifest
+  description: Canonical inventory and cryptographic digest root for a record's retained artefacts.
+  recommended_extensions: [json]
+
+- code: ATT
+  name: Cryptographic Attestation
+  description: Detached signature binding an accountable signer to an exact record manifest.
+  recommended_extensions: [json]
+
+- code: VER
+  name: Verification Receipt
+  description: Machine-readable result of independently validating a manifest, signature, and retained artefacts.
+  recommended_extensions: [json]

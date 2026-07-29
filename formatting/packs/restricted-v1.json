@@ -1,0 +1,562 @@
+{
+  "schema": "record-schema-formatting-pack",
+  "schema_version": 1,
+  "pack_id": "restricted-v1",
+  "description": "Restricted registry document policies for limited-circulation internal matter files and sensitive operational records. Imports base-v1.",
+  "imports": [
+    "formatting/packs/base-v1.json"
+  ],
+  "document_policies": {
+    "style_profiles": {
+      "restricted-v1": {
+        "description": "Restricted internal records. Structured, plain, tightly controlled, and suitable for need-to-know material.",
+        "heading_numbering": "optional",
+        "subsection_numbering": "optional",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "hyphen",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "hyphen"
+            },
+            {
+              "level": 2,
+              "style": "hyphen"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 2
+        },
+        "section_dividers": {
+          "between_major_sections": "none",
+          "between_subsections": "none"
+        },
+        "bold_policy": {
+          "use": "sparingly",
+          "note": "Bold reserved for confidentiality labels, control cues, defined terms, and short emphasis."
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve"
+      },
+      "restricted-sop-v1": {
+        "description": "Restricted procedures, handling instructions, and controlled workflow notes.",
+        "heading_numbering": "optional",
+        "subsection_numbering": "optional",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "hyphen",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "hyphen"
+            },
+            {
+              "level": 2,
+              "style": "hyphen"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 2
+        },
+        "section_dividers": {
+          "between_major_sections": "none",
+          "between_subsections": "none"
+        },
+        "bold_policy": {
+          "use": "sparingly",
+          "note": "Bold may be used for handling steps, escalation cues, and access-control labels."
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve"
+      },
+      "restricted-index-v1": {
+        "description": "Indexes and navigational documents for restricted packs and matter files.",
+        "heading_numbering": "optional",
+        "subsection_numbering": "optional",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "hyphen",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "hyphen"
+            },
+            {
+              "level": 2,
+              "style": "hyphen"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 2
+        },
+        "section_dividers": {
+          "between_major_sections": "none",
+          "between_subsections": "none"
+        },
+        "bold_policy": {
+          "use": "sparingly",
+          "note": "Bold reserved for labels, section cues, and handling notes."
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve"
+      },
+      "restricted-note-v1": {
+        "description": "Restricted notes, memoranda, briefings, and supporting internal guidance.",
+        "heading_numbering": "optional",
+        "subsection_numbering": "optional",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "hyphen",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "hyphen"
+            },
+            {
+              "level": 2,
+              "style": "hyphen"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 2
+        },
+        "section_dividers": {
+          "between_major_sections": "none",
+          "between_subsections": "none"
+        },
+        "bold_policy": {
+          "use": "sparingly",
+          "note": "Bold allowed for labels, warnings, and short emphasis."
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve"
+      },
+      "restricted-matter-v1": {
+        "description": "Restricted matter files such as incidents, investigations, legal holds, disciplinary files, and breach-response records.",
+        "heading_numbering": "optional",
+        "subsection_numbering": "optional",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "hyphen",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "hyphen"
+            },
+            {
+              "level": 2,
+              "style": "hyphen"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 2
+        },
+        "section_dividers": {
+          "between_major_sections": "none",
+          "between_subsections": "none"
+        },
+        "bold_policy": {
+          "use": "sparingly",
+          "note": "Bold may be used for timeline markers, evidence labels, hold instructions, and disposition cues."
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve"
+      }
+    },
+    "rulesets": [
+      {
+        "id": "root-license-v1",
+        "severity": "error",
+        "selectors": {
+          "paths_glob": [
+            "LICENSE"
+          ],
+          "is_root_file": true
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "base58",
+              "base64",
+              "legal_citations"
+            ]
+          },
+          "language_locale": "en-US",
+          "dialect_pack": "en-US-basic-v1",
+          "formatting_profile": "canonical-ascii",
+          "header_shape_id": "license-header-v1",
+          "footer_shape_id": "license-footer-v1",
+          "body_shape_id": "license-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+              "SPDX-LicenseIdentifier",
+              "Document-Type",
+              "Title",
+              "Version",
+              "Effective-Date",
+              "Canonical-URL",
+              "Checksum-SHA256",
+              "Checksum-Surface"
+          ],
+          "style_profile_id": "license-v1",
+          "header_template_path": "formatting/templates/root/LICENSE-header-v1.txt",
+          "footer_template_path": "formatting/templates/root/LICENSE-footer-v1.txt"
+        }
+      },
+      {
+        "id": "license-documents-v1",
+        "severity": "error",
+        "selectors": {
+          "doc_types": [
+            "LIC"
+          ],
+          "paths_glob": [
+            "**/LICENSE",
+            "**/LICENSE-*.md",
+            "**/*_LIC-*.md"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "base58",
+              "base64",
+              "legal_citations"
+            ]
+          },
+          "formatting_profile": "canonical-ascii",
+          "header_shape_id": "license-header-v1",
+          "footer_shape_id": "license-footer-v1",
+          "body_shape_id": "license-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "style_profile_id": "license-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "SPDX-LicenseIdentifier",
+            "Document-Type",
+            "Title",
+            "Version",
+            "Effective-Date",
+            "Canonical-URL",
+            "Checksum-SHA256",
+            "Checksum-Surface"
+          ]
+        }
+      },
+      {
+        "id": "restricted-policy-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": [
+            "POL"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "base58",
+              "base64"
+            ]
+          },
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "restricted-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Effective-Date",
+            "Confidentiality"
+          ],
+          "metadata_optional_fields": [
+            "Version",
+            "Adopted-Date",
+            "Review-Date",
+            "Owner",
+            "SPDX-LicenseIdentifier"
+          ]
+        }
+      },
+      {
+        "id": "restricted-sop-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": [
+            "SOP"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "base58",
+              "base64"
+            ]
+          },
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "restricted-sop-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Effective-Date",
+            "Confidentiality"
+          ],
+          "metadata_optional_fields": [
+            "Version",
+            "Adopted-Date",
+            "Review-Date",
+            "Owner",
+            "SPDX-LicenseIdentifier"
+          ]
+        }
+      },
+      {
+        "id": "restricted-guidance-v1",
+        "severity": "info",
+        "selectors": {
+          "doc_types": [
+            "DOC",
+            "GUIDE",
+            "FAQ",
+            "NOTE",
+            "MEM"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "base58",
+              "base64"
+            ]
+          },
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "restricted-note-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Created-At",
+            "Confidentiality"
+          ],
+          "metadata_optional_fields": [
+            "Version",
+            "Effective-Date",
+            "Owner",
+            "SPDX-LicenseIdentifier"
+          ]
+        }
+      },
+      {
+        "id": "restricted-index-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": [
+            "IND"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls"
+            ]
+          },
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "restricted-index-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Created-At",
+            "Confidentiality"
+          ],
+          "metadata_optional_fields": [
+            "Version",
+            "Effective-Date"
+          ]
+        }
+      },
+      {
+        "id": "restricted-register-log-v1",
+        "severity": "info",
+        "selectors": {
+          "doc_types": [
+            "REG",
+            "LOG",
+            "FRM",
+            "CHK"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls"
+            ]
+          },
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "restricted-sop-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Created-At",
+            "Confidentiality"
+          ],
+          "metadata_optional_fields": [
+            "Version",
+            "Effective-Date",
+            "Owner"
+          ]
+        }
+      },
+      {
+        "id": "restricted-matter-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": [
+            "INC",
+            "INV",
+            "LGL",
+            "DISC",
+            "BRH"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "base58",
+              "base64"
+            ]
+          },
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "restricted-matter-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Created-At",
+            "Confidentiality"
+          ],
+          "metadata_optional_fields": [
+            "Version",
+            "Opened-At",
+            "Closed-At",
+            "Incident-Date",
+            "Review-Date",
+            "Matter-ID",
+            "Owner",
+            "Related-Record",
+            "SPDX-LicenseIdentifier"
+          ]
+        }
+      }
+    ],
+    "templates": {
+      "restricted-metadata-block-v1": {
+        "description": "Template for restricted internal document metadata block",
+        "content": [
+          "",
+          "----------------------------BEGIN DOCUMENT METADATA-----------------------------",
+          "Document-Type: ${document_type}",
+          "Record-ID: ${record_id}",
+          "Title: ${title}",
+          "Version: ${version}",
+          "Created-At: ${created_at}",
+          "Effective-Date: ${effective_date}",
+          "Review-Date: ${review_date}",
+          "Confidentiality: ${confidentiality}",
+          "-----------------------------END DOCUMENT METADATA------------------------------"
+        ]
+      },
+      "restricted-matter-metadata-block-v1": {
+        "description": "Template for restricted matter-file metadata block",
+        "content": [
+          "",
+          "----------------------------BEGIN DOCUMENT METADATA-----------------------------",
+          "Document-Type: ${document_type}",
+          "Record-ID: ${record_id}",
+          "Title: ${title}",
+          "Version: ${version}",
+          "Created-At: ${created_at}",
+          "Opened-At: ${opened_at}",
+          "Incident-Date: ${incident_date}",
+          "Confidentiality: ${confidentiality}",
+          "-----------------------------END DOCUMENT METADATA------------------------------"
+        ]
+      }
+    },
+    "precedence_notes": "Defaults < line_width_profiles (glob) < rulesets. Restricted documents require markdown envelopes and confidentiality metadata; incident, investigation, legal-hold, disciplinary, and breach records use the restricted matter style."
+  }
+}

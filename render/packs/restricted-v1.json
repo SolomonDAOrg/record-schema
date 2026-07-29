@@ -1,0 +1,590 @@
+{
+  "schema": "record-schema-render-pack",
+  "schema_version": 1,
+  "pack_id": "restricted-v1",
+  "description": "Restricted render pack for limited-circulation internal packets. Uses a deep oxblood cover treatment, stronger restricted labeling, and preserves horizontal rules as visible separators rather than page breaks.",
+  "imports": [
+    "render/packs/base-v1.json"
+  ],
+  "packet_config": {
+    "default_entity_name": "ENTITY",
+    "default_document_title": "RESTRICTED PACK",
+    "header_text": "STRICTLY LIMITED - INTERNAL",
+    "series_prefix": "^([A-Z]{2,5}-\\d+_)?",
+    "header_title_format": "plain",
+    "path_to_title": {
+      "POL": "POLICY",
+      "SOP": "PROCEDURE",
+      "FAQ": "GUIDANCE",
+      "DOC": "DOCUMENT",
+      "Guide": "GUIDANCE",
+      "Manual": "MANUAL",
+      "Register": "REGISTER",
+      "Checklist": "CHECKLIST",
+      "Index": "INDEX",
+      "INC": "INCIDENT",
+      "INV": "INVESTIGATION",
+      "LGL": "LEGAL HOLD",
+      "DISC": "DISCIPLINARY",
+      "BRH": "BREACH RESPONSE"
+    },
+    "name_patterns": [
+      "Policy",
+      "Procedure",
+      "Manual",
+      "Guide",
+      "Register",
+      "Checklist",
+      "AML",
+      "KYC",
+      "CDD",
+      "EDD",
+      "Sanctions",
+      "Screening",
+      "Monitoring",
+      "Index",
+      "Incident",
+      "Investigation",
+      "Legal Hold",
+      "Disciplinary",
+      "Breach",
+      "Restricted"
+    ],
+    "entity_extraction": {
+      "fields": [
+        "entity_name",
+        "title"
+      ]
+    },
+    "cover_config": {
+      "suppress_header": true,
+      "suppress_footer": true,
+      "suppress_page_numbering": true,
+      "reserve_header_footer_space": false,
+      "draft_watermark": {
+        "enabled": false
+      },
+      "cover_layout": {
+        "description": "Restricted internal cover. Deep oxblood background, pale signal frame, white typography, and strong limited-circulation markers for need-to-know material.",
+        "palette": {
+          "accent": "#F2D9D6",
+          "title": "#FFF8F7",
+          "muted": "#EACAC7",
+          "danger": "#FFF8F7",
+          "paper": "#4C1418",
+          "note_fill": "#651C22",
+          "note_border": "#F0D2CF",
+          "badge_text": "#FFF8F7",
+          "badge_fill": "#6E2027",
+          "badge_rule": "#F0D2CF"
+        },
+        "eyebrow": {
+          "enabled": true,
+          "text": "STRICTLY LIMITED / DO NOT CIRCULATE",
+          "align": "left",
+          "font_size": 10,
+          "color": "#FFF8F7",
+          "after_spacer": 10,
+          "letter_spacing": 0.8,
+          "background_color": "#651C22",
+          "border_color": "#F2D9D6",
+          "padding_x": 10,
+          "padding_y": 6,
+          "top_spacer": 10,
+          "after_spacer": 16
+        },
+        "title_block": {
+          "top_spacer": 0,
+          "align": "left",
+          "title_font_size": 28,
+          "subtitle_font_size": 12.5,
+          "entity_font_size": 12.5,
+          "include_conjunction_line": false,
+          "after_title_spacer": 7,
+          "after_subtitle_spacer": 10,
+          "after_entity_spacer": 12,
+          "title_color": "#FFF8F7",
+          "subtitle_color": "#EFD6D3",
+          "entity_color": "#FFF2F1"
+        },
+        "rule": {
+          "enabled": true,
+          "start_frac": 0.0,
+          "end_frac": 0.42,
+          "line_width": 1.6,
+          "color": "#F0D2CF",
+          "after_spacer": 14
+        },
+        "metadata_block": {
+          "layout": "columns",
+          "align": "left",
+          "label_align": "left",
+          "column_gap": 16,
+          "font_size": 9.5,
+          "line_spacer": 7,
+          "separator": ": ",
+          "fields": [
+            {
+              "key": "document_id",
+              "label": "Doc"
+            },
+            {
+              "key": "version",
+              "label": "Version"
+            },
+            {
+              "key": "effective_date",
+              "label": "Date"
+            },
+            {
+              "key": "status",
+              "label": "Status"
+            },
+            {
+              "key": "confidentiality",
+              "label": "Conf"
+            }
+          ],
+          "label_color": "#F0D2CF",
+          "value_color": "#FFFFFF",
+          "background_color": "#651C22",
+          "border_color": "#F2D9D6",
+          "padding": 10
+        },
+        "footer_note": {
+          "enabled": true,
+          "align": "left",
+          "font_size": 9,
+          "color": "#E8CCCC",
+          "top_spacer": 18,
+          "text": "Strictly limited circulation only. Need-to-know handling, controlled copy practices, and no external distribution."
+        },
+        "page_background": {
+          "color": "#4C1418"
+        },
+        "page_frame": {
+          "enabled": true,
+          "inset": 14,
+          "line_width": 1.6,
+          "color": "#F4E1DE"
+        },
+        "content_margins": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    "signing_page": {
+      "enabled": false
+    },
+    "packet_variants": {
+      "default": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "brief": {
+        "include_cover": true,
+        "include_toc": false
+      },
+      "notice": {
+        "include_cover": false,
+        "include_toc": false,
+        "signing_page": false
+      }
+    }
+  },
+  "document_policies": {
+    "defaults": {
+      "output_encoding": "utf-8",
+      "output_newlines": "lf",
+      "horizontal_rule_behavior": "rule"
+    },
+    "targets": {
+      "pdf": {
+        "format": "pdf",
+        "page_size": "letter",
+        "orientation": "portrait",
+        "margins": {
+          "top": 72,
+          "bottom": 72,
+          "left": 72,
+          "right": 72,
+          "unit": "pt"
+        },
+        "fonts": {
+          "regular": "Helvetica",
+          "bold": "Helvetica-Bold",
+          "italic": "Helvetica-Oblique",
+          "bold_italic": "Helvetica-BoldOblique",
+          "monospace": "Courier"
+        },
+        "base_font_size": 10,
+        "title_font_size": 18,
+        "heading_scales": {
+          "h1": 1.55,
+          "h2": 1.32,
+          "h3": 1.18,
+          "h4": 1.08
+        },
+        "line_spacing": 1.45,
+        "paragraph_spacing_factor": 0.55,
+        "list_indent_per_level": 20,
+        "code_block_indent": 36,
+        "horizontal_rule": {
+          "behavior": "rule",
+          "width_factor": 1,
+          "thickness": 0.75,
+          "color": "#A45E61",
+          "spacing_before": 10,
+          "spacing_after": 14
+        },
+        "inline_formatting": {
+          "enabled": true,
+          "underline_offset_factor": 0.15,
+          "underline_thickness_small": 0.5,
+          "underline_thickness_large": 0.75,
+          "underline_size_threshold": 12
+        },
+        "toc": {
+          "title_font_size": 15,
+          "level_styles": {
+            "1": {
+              "font_size_scale": 1.08,
+              "bold": true,
+              "indent": 0,
+              "spacing_after": 1.1,
+              "spacing_before": 1.1
+            },
+            "2": {
+              "font_size_scale": 0.94,
+              "bold": true,
+              "indent": 20,
+              "spacing_after": 1.1
+            },
+            "3": {
+              "font_size_scale": 0.86,
+              "bold": false,
+              "indent": 40,
+              "spacing_after": 1.0
+            },
+            "4": {
+              "font_size_scale": 0.8,
+              "bold": false,
+              "indent": 60,
+              "spacing_after": 1.0
+            }
+          }
+        },
+        "cover_page": {
+          "title_position": "upper-third",
+          "title_spacing": 30,
+          "company_name_font_size": 24,
+          "subtitle_font_size": 14
+        },
+        "table": {
+          "font_size_scale": 0.95,
+          "min_font_size": 6,
+          "max_font_size": 10,
+          "auto_shrink": true,
+          "cell_padding": {
+            "x": 4,
+            "y": 3
+          },
+          "border_width": 0.5,
+          "border_color": "#DFC0BC",
+          "header": {
+            "background_color": "#F6E3E1",
+            "text_color": "#56181C",
+            "cell_padding": {
+              "x": 4,
+              "y": 3
+            }
+          },
+          "zebra": {
+            "enabled": true,
+            "odd_background": "#FFFFFF",
+            "even_background": "#FDF3F2"
+          },
+          "line_height": 1.2,
+          "bleed_in": 0.2,
+          "bleed_if_columns_gt": 8,
+          "min_page_edge_inset_in": 0.25
+        },
+        "notice": {
+          "padding": 10,
+          "border_width": 1,
+          "border_color": "#98555A",
+          "background_color": "#FDF3F2",
+          "title_color": "#56181C"
+        }
+      }
+    },
+    "render_profiles": {
+      "restricted-standard-v1": {
+        "description": "Standard restricted document PDF rendering",
+        "target": "pdf",
+        "overrides": {
+          "break_mode": "part-only"
+        }
+      },
+      "restricted-packet-v1": {
+        "description": "Restricted packet with dedicated cover layout and TOC",
+        "target": "pdf",
+        "extends": "restricted-standard-v1",
+        "overrides": {
+          "base_font_size": 10,
+          "line_spacing": 1.45,
+          "margins": {
+            "top": 72,
+            "bottom": 72,
+            "left": 72,
+            "right": 72,
+            "unit": "pt"
+          },
+          "horizontal_rule": {
+            "behavior": "rule",
+            "width_factor": 1,
+            "thickness": 0.75,
+            "color": "#A45E61",
+            "spacing_before": 10,
+            "spacing_after": 14
+          }
+        }
+      },
+      "restricted-policy-v1": {
+        "description": "Restricted document rendering",
+        "target": "pdf",
+        "extends": "restricted-standard-v1"
+      },
+      "restricted-sop-v1": {
+        "description": "Restricted procedure document rendering with slightly tighter body spacing",
+        "target": "pdf",
+        "extends": "restricted-standard-v1",
+        "overrides": {
+          "base_font_size": 9.75,
+          "line_spacing": 1.4
+        }
+      },
+      "restricted-memo-v1": {
+        "description": "Compact restricted note and memo rendering",
+        "target": "pdf",
+        "extends": "restricted-standard-v1",
+        "overrides": {
+          "base_font_size": 9.5,
+          "line_spacing": 1.35
+        }
+      }
+    },
+    "rulesets": [
+      {
+        "id": "restricted-packet-v1",
+        "selectors": {
+          "doc_types": [
+            "PACKET",
+            "PKT"
+          ],
+          "extensions": [
+            "pdf"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "restricted-packet-v1"
+        }
+      },
+      {
+        "id": "restricted-special-v1",
+        "selectors": {
+          "doc_types": [
+            "RST",
+            "INC",
+            "INV",
+            "LGL",
+            "DISC",
+            "BRH"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "restricted-standard-v1"
+        }
+      },
+      {
+        "id": "restricted-policy-v1",
+        "selectors": {
+          "doc_types": [
+            "POL"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "restricted-policy-v1"
+        }
+      },
+      {
+        "id": "restricted-sop-v1",
+        "selectors": {
+          "doc_types": [
+            "SOP"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "restricted-sop-v1"
+        }
+      },
+      {
+        "id": "restricted-guidance-v1",
+        "selectors": {
+          "doc_types": [
+            "DOC",
+            "GUIDE",
+            "FAQ",
+            "NOTE"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "restricted-standard-v1"
+        }
+      },
+      {
+        "id": "restricted-index-v1",
+        "selectors": {
+          "doc_types": [
+            "IND"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "restricted-standard-v1"
+        }
+      },
+      {
+        "id": "restricted-memo-v1",
+        "selectors": {
+          "doc_types": [
+            "MEM"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "restricted-memo-v1"
+        }
+      },
+      {
+        "id": "restricted-registry-v1",
+        "selectors": {
+          "doc_types": [
+            "REG",
+            "LOG",
+            "FRM",
+            "CHK"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "restricted-standard-v1"
+        }
+      }
+    ],
+    "spacing_policy": {
+      "pair_rules": [
+        {
+          "prev": "heading",
+          "curr": "paragraph",
+          "before_em": 0.45
+        },
+        {
+          "prev": "paragraph",
+          "curr": "heading",
+          "before_em": 1.2
+        },
+        {
+          "prev": "heading",
+          "curr": "heading",
+          "before_em": 0.6
+        },
+        {
+          "prev": "list",
+          "curr": "heading",
+          "before_em": 1.2
+        },
+        {
+          "prev": "paragraph",
+          "curr": "paragraph",
+          "before_em": 0.65
+        },
+        {
+          "prev": "paragraph",
+          "curr": "list",
+          "before_em": 0.4
+        },
+        {
+          "prev": "list",
+          "curr": "paragraph",
+          "before_em": 0.65
+        },
+        {
+          "prev": "table",
+          "curr": "paragraph",
+          "before_em": 0.75
+        }
+      ],
+      "defaults": {
+        "heading": {
+          "before_em": 1.0,
+          "after_em": 0.35
+        },
+        "paragraph": {
+          "before_em": 0.45,
+          "after_em": 0.45
+        },
+        "list": {
+          "before_em": 0.4,
+          "after_em": 0.4
+        },
+        "code-block": {
+          "before_em": 0.7,
+          "after_em": 0.7
+        },
+        "blockquote": {
+          "before_em": 0.7,
+          "after_em": 0.7
+        },
+        "table": {
+          "before_em": 0.7,
+          "after_em": 0.7
+        },
+        "section": {
+          "before_em": 0.9,
+          "after_em": 0.45
+        }
+      }
+    },
+    "precedence_notes": "Rules are evaluated in order. First match applies. Policy packets use a dedicated internal cover layout and preserve horizontal rules as visible separators rather than page breaks."
+  }
+}

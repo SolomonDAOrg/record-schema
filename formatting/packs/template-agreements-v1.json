@@ -2,7 +2,7 @@
     "schema": "record-schema-formatting-pack",
     "schema_version": 1,
     "pack_id": "template-agreements-v1",
-    "description": "Template agreements document policies (shapes, templates, and rulesets). Imports base-v1 + IND index conventions.",
+    "description": "Template agreements document policies. Imports base-v1.",
     "imports": [
         "formatting/packs/base-v1.json"
     ],
@@ -43,6 +43,17 @@
                     "footer_shape_id": "license-footer-v1",
                     "body_shape_id": "license-body-v1",
                     "metadata_shape_id": "document-metadata-block-v1",
+                    "require_metadata_block": true,
+                    "metadata_required_fields": [
+                        "SPDX-LicenseIdentifier",
+                        "Document-Type",
+                        "Title",
+                        "Version",
+                        "Effective-Date",
+                        "Canonical-URL",
+                        "Checksum-SHA256",
+                        "Checksum-Surface"
+                    ],
                     "style_profile_id": "license-v1",
                     "header_template_path": "formatting/templates/root/LICENSE-header-v1.txt",
                     "footer_template_path": "formatting/templates/root/LICENSE-footer-v1.txt"
@@ -79,8 +90,43 @@
                         "Document-Type",
                         "Title",
                         "Version",
-                        "Effective-Date"
+                        "Effective-Date",
+                        "Canonical-URL",
+                        "Checksum-SHA256",
+                        "Checksum-Surface"
                     ]
+                }
+            },
+            {
+                "id": "master-agreement-v1",
+                "severity": "warn",
+                "selectors": {
+                    "doc_types": ["MA"],
+                    "extensions": ["md"]
+                },
+                "enforce": {
+                    "formatting_profile": "canonical-ascii",
+                    "markdown_style_profile_id": "legal-master-agreement-v1",
+                    "markdown_envelope_id": "record-markdown-envelope-v1",
+                    "metadata_shape_id": "document-metadata-block-v1",
+                    "require_metadata_block": true,
+                    "metadata_required_fields": [
+                        "Document-Type", "Record-ID", "Title", "Effective-Date"
+                    ]
+                }
+            },
+            {
+                "id": "agreement-schedules-v1",
+                "severity": "warn",
+                "selectors": {
+                    "doc_types": ["SCH", "ANN", "FRM"],
+                    "extensions": ["md"]
+                },
+                "enforce": {
+                    "formatting_profile": "canonical-ascii",
+                    "markdown_style_profile_id": "legal-master-agreement-v1",
+                    "markdown_envelope_id": "record-markdown-envelope-v1",
+                    "metadata_shape_id": "document-metadata-block-v1"
                 }
             },
             {
@@ -148,14 +194,6 @@
                     ]
                 },
                 "enforce": {
-                    "line_width": {
-                        "max": 80,
-                        "ignore_blocks": [
-                            "code",
-                            "tables",
-                            "urls"
-                        ]
-                    },
                     "markdown_style_profile_id": "legal-instrument-v1",
                     "markdown_envelope_id": "record-markdown-envelope-v1",
                     "metadata_shape_id": "document-metadata-block-v1",
@@ -193,6 +231,8 @@
                     "Version: ${version}",
                     "Effective-Date: ${effective_date}",
                     "Canonical-URL: ${canonical_url}",
+                    "Checksum-SHA256: ${checksum_sha256}",
+                    "Checksum-Surface: license-body-v1",
                     "-----------------------------END DOCUMENT METADATA------------------------------"
                 ]
             },
@@ -211,6 +251,6 @@
                 ]
             }
         },
-        "precedence_notes": "Defaults < extension/doc_type rules < path rules. For multiple matches, merge in order; later matches override field-by-field."
+        "precedence_notes": "Defaults < line_width_profiles (glob) < rulesets. For multiple matches, merge in order; later overrides field-by-field."
     }
 }

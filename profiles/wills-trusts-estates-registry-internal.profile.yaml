@@ -1,0 +1,52 @@
+schema: record-schema-registry-profile
+schema_version: 1
+licenseRef: CONFIDENTIAL
+profile_id: wills-trusts-estates-registry-internal
+name: Private Wills, Trusts and Estates Registry Profile
+description: Internal registry profile for private wills, trusts, estate plans,
+  codicils, letters of wishes, and related personal planning records in the WTE
+  series. Uses the wills and estates render pack for formal stitched packets and
+  draft working copies.
+rules:
+  root:
+    required_paths:
+      - INDEX.md
+      - README.md
+      - DISCLAIMER.md
+    disallow_unknown_top_level: false
+  buckets:
+    - bucket: estate_records
+      path: .
+      record_constraints:
+        require_series_code: WTE
+        require_record_directory_regex: ^[A-Z]{2,5}-\d{5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?$
+        require_file_name_regex: ^[A-Z]{2,5}-\d{5}_[A-Z]{2,5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?\.[A-Za-z0-9]+$
+        require_meta: true
+        require_primary_document: true
+        require_documents_primary_ref: true
+        status_phase_allow:
+          - draft
+          - reviewed
+          - approved
+          - current
+          - superseded
+          - retired
+        require_markdown_envelope_for_extensions:
+          - md
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_extensions:
+          - pdf
+        recommended_files:
+          - '{RECORD_ID}_META.yaml'
+          - '{RECORD_ID}_IND-index.md'
+          - '{RECORD_ID}_WIL-last-will-and-testament.md'
+          - '{RECORD_ID}_MEM-execution-memorandum.md'
+          - '{RECORD_ID}_ANN-estate-summary.md'
+          - '{RECORD_ID}_LOW-letter-of-wishes.md'
+  document_policies:
+    pack_paths:
+      - type: formatting
+        path: formatting/packs/wills-trusts-estates-v1.json
+      - type: render
+        path: render/packs/wills-trusts-estates-render-v1.json

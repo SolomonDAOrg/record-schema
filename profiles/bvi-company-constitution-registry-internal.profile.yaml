@@ -1,0 +1,78 @@
+schema: record-schema-registry-profile
+schema_version: 1
+licenseRef: LicenseRef-CONFIDENTIAL
+profile_id: bvi-company-constitution-internal-v1
+name: BVI Company Constitution Corporate Governance Registry Profile
+description: Internal registry profile for BVI business company constitutional and governance records,
+  including Memorandum and Articles of Association, schedules, register/index records, board and parent
+  reserved matter records, filing-support records, and controlled governance logs.
+rules:
+  root:
+    required_paths:
+    - INDEX.md
+    - README.md
+    - LICENSE
+    - DISCLAIMER.md
+    disallow_unknown_top_level: false
+  buckets:
+  - bucket: bvi_companies
+    path: .
+    record_constraints:
+      require_series_code: GOV
+      require_record_directory_regex: ^[A-Z]{2,5}-\d{5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?$
+      require_file_name_regex: ^[A-Z]{2,5}-\d{5}_[A-Z]{2,5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?\.[A-Za-z0-9]+$
+      require_meta: true
+      require_primary_document: true
+      require_documents_primary_ref: true
+      status_phase_allow:
+      - draft
+      - replacement-draft
+      - counsel-review
+      - registered-agent-review
+      - approved
+      - adopted
+      - executed
+      - filed
+      - effective
+      - current
+      - superseded
+      - retired
+      require_markdown_envelope_for_extensions:
+      - md
+      markdown_envelope_id: record-markdown-envelope-v1
+      markdown_hash_surface_default: markdown-body-v1
+      disallow_extensions:
+      - pdf
+      recommended_files:
+      - '{RECORD_ID}_IND-index.md'
+      - '{RECORD_ID}_MEM-memorandum.md'
+      - '{RECORD_ID}_AOA-articles-of-association.md'
+      - '{RECORD_ID}_AOA-SCH-1-share-ownership-and-parent-reserved-share.md'
+      - '{RECORD_ID}_LOG-notes.md'
+  document_policies:
+    pack_paths:
+    - type: formatting
+      path: formatting/packs/base-v1.json
+    - type: formatting
+      path: formatting/packs/entity-constitutional-v1.json
+    - type: formatting
+      path: formatting/packs/bvi-company-constitution-v1.json
+    - type: render
+      path: render/packs/base-v1.json
+    - type: render
+      path: render/packs/entity-constitutional-v1.json
+    - type: render
+      path: render/packs/bvi-company-constitution-v1.json
+    overrides:
+      default_render_profile: bvi-company-constitution-v1
+      default_packet_variant: bvi_constitution
+      language_locale: en-GB
+extensions:
+  jurisdiction:
+    jurisdiction_name: British Virgin Islands
+    entity_type: business company limited by shares
+    document_family: Memorandum and Articles of Association
+    visual_identity: bvi-classic-law-office-v1
+    font_intent: Caslon/Garamond common-law constitutional instrument; restrained cover; no modern sans-serif
+      primary font.
+

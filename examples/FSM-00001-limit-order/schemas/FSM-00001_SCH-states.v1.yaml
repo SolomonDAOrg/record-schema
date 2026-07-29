@@ -1,0 +1,100 @@
+schema: fsm-states
+schema_version: 1
+record_id: FSM-00001
+
+description: |
+  State definitions for limit order state machine.
+  Each state has a unique code, terminal flag, and invariant conditions.
+
+states:
+  - name: pending
+    code: 0
+    terminal: false
+    description: Order created, awaiting activation.
+    invariants:
+      - field: amount_filled
+        condition: eq
+        value: 0
+      - field: is_monitoring
+        condition: eq
+        value: false
+    allowed_events: [activate, cancel]
+
+  - name: open
+    code: 1
+    terminal: false
+    description: Order active, monitoring pool price for trigger.
+    invariants:
+      - field: amount_filled
+        condition: eq
+        value: 0
+      - field: is_monitoring
+        condition: eq
+        value: true
+    allowed_events: [partial_fill, fill, cancel, expire]
+
+  - name: partial
+    code: 2
+    terminal: false
+    description: Order partially filled, continuing to monitor.
+    invariants:
+      - field: amount_filled
+        condition: gt
+        value: 0
+      - field: amount_filled
+        condition: lt
+        value_ref: amount_in
+      - field: is_monitoring
+        condition: eq
+        value: true
+    allowed_events: [partial_fill, fill, cancel, expire]
+
+  - name: filled
+    code: 3
+    terminal: true
+    description: Order completely filled.
+    invariants:
+      - field: amount_filled
+        condition: eq
+        value_ref: amount_in
+      - field: is_monitoring
+        condition: eq
+        value: false
+    allowed_events: []
+
+  - name: cancelled
+    code: 4
+    terminal: true
+    description: Order cancelled by owner, tokens refunded.
+    invariants:
+      - field: refund_issued
+        condition: eq
+        value: true
+      - field: is_monitoring
+        condition: eq
+        value: false
+    allowed_events: []
+
+  - name: expired
+    code: 5
+    terminal: true
+    description: Order TTL exceeded, tokens refunded.
+    invariants:
+      - field: refund_issued
+        condition: eq
+        value: true
+      - field: is_monitoring
+        condition: eq
+        value: false
+      - field: current_slot
+        condition: gt
+        value_ref: expiry_slot
+    allowed_events: []
+
+state_encoding:
+  type: u8
+  range: [0, 5]
+
+initial_state: pending
+
+terminal_states: [filled, cancelled, expired]

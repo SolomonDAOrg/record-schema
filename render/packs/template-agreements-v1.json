@@ -9,7 +9,7 @@
   "packet_config": {
     "default_entity_name": "ENTITY",
     "default_document_title": "TEMPLATE AGREEMENT PACK",
-    "header_text": "DRAFT - INTERNAL TEMPLATE",
+    "header_text": "",
     "series_prefix": "^([A-Z]{2,5}-\\d+_)?",
     "header_title_format": "plain",
     "section_page_break": "always",

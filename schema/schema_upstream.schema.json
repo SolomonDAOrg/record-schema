@@ -42,7 +42,66 @@
               "license": {
                 "type": "string",
                 "minLength": 1
+              },
+              "licenseRef": {
+                "type": "string",
+                "pattern": "^LicenseRef-[A-Za-z0-9][A-Za-z0-9.-]{0,127}$"
+              },
+              "licenseCanonicalUrl": {
+                "type": "string",
+                "pattern": "^https://github\\.com/SolomonDAOrg/licenses/blob/main/LICENSES/LicenseRef-[A-Za-z0-9][A-Za-z0-9.-]{0,127}$"
+              },
+              "licenseChecksumSha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "licenseChecksumSurface": {
+                "type": "string",
+                "const": "license-body-v1"
+              },
+              "licenseFile": {
+                "type": "string",
+                "minLength": 1
               }
+            },
+            "dependentRequired": {
+              "license": [
+                "licenseRef",
+                "licenseCanonicalUrl",
+                "licenseChecksumSha256",
+                "licenseChecksumSurface"
+              ],
+              "licenseRef": [
+                "license",
+                "licenseCanonicalUrl",
+                "licenseChecksumSha256",
+                "licenseChecksumSurface"
+              ],
+              "licenseCanonicalUrl": [
+                "license",
+                "licenseRef",
+                "licenseChecksumSha256",
+                "licenseChecksumSurface"
+              ],
+              "licenseChecksumSha256": [
+                "license",
+                "licenseRef",
+                "licenseCanonicalUrl",
+                "licenseChecksumSurface"
+              ],
+              "licenseChecksumSurface": [
+                "license",
+                "licenseRef",
+                "licenseCanonicalUrl",
+                "licenseChecksumSha256"
+              ],
+              "licenseFile": [
+                "license",
+                "licenseRef",
+                "licenseCanonicalUrl",
+                "licenseChecksumSha256",
+                "licenseChecksumSurface"
+              ]
             },
             "additionalProperties": true
           }
@@ -68,7 +127,70 @@
               "kind": {
                 "type": "string",
                 "minLength": 1
+              },
+              "license": {
+                "type": "string",
+                "minLength": 1
+              },
+              "licenseRef": {
+                "type": "string",
+                "pattern": "^LicenseRef-[A-Za-z0-9][A-Za-z0-9.-]{0,127}$"
+              },
+              "licenseCanonicalUrl": {
+                "type": "string",
+                "pattern": "^https://github\\.com/SolomonDAOrg/licenses/blob/main/LICENSES/LicenseRef-[A-Za-z0-9][A-Za-z0-9.-]{0,127}$"
+              },
+              "licenseChecksumSha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "licenseChecksumSurface": {
+                "type": "string",
+                "const": "license-body-v1"
+              },
+              "licenseFile": {
+                "type": "string",
+                "minLength": 1
               }
+            },
+            "dependentRequired": {
+              "license": [
+                "licenseRef",
+                "licenseCanonicalUrl",
+                "licenseChecksumSha256",
+                "licenseChecksumSurface"
+              ],
+              "licenseRef": [
+                "license",
+                "licenseCanonicalUrl",
+                "licenseChecksumSha256",
+                "licenseChecksumSurface"
+              ],
+              "licenseCanonicalUrl": [
+                "license",
+                "licenseRef",
+                "licenseChecksumSha256",
+                "licenseChecksumSurface"
+              ],
+              "licenseChecksumSha256": [
+                "license",
+                "licenseRef",
+                "licenseCanonicalUrl",
+                "licenseChecksumSurface"
+              ],
+              "licenseChecksumSurface": [
+                "license",
+                "licenseRef",
+                "licenseCanonicalUrl",
+                "licenseChecksumSha256"
+              ],
+              "licenseFile": [
+                "license",
+                "licenseRef",
+                "licenseCanonicalUrl",
+                "licenseChecksumSha256",
+                "licenseChecksumSurface"
+              ]
             },
             "additionalProperties": true
           }

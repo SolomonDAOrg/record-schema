@@ -67,3 +67,9 @@ series:
     name: Finance Record
     description: Reconciliations, payouts, treasury ops, attestations.
     recommended_doc_types: [REP, DAT, EVD, LOG, DOC]
+
+  - code: DEP
+    tier: suggested
+    name: Deployment and Release Batch
+    description: Immutable deployment or program-upgrade release batches with artefact manifests, signatures, verification receipts, and human-readable reports.
+    recommended_doc_types: [DOC, PLAN, MAN, ATT, VER, EVD, IND, PKT, LOG]

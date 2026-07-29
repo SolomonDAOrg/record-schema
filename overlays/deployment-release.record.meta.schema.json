@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solomondao.org/record-schema/overlays/deployment-release.record.meta.schema.json",
+  "title": "Deployment and Release META Overlay",
+  "type": "object",
+  "properties": {
+    "extensions": {
+      "type": "object",
+      "required": [
+        "deployment_release"
+      ],
+      "properties": {
+        "deployment_release": {
+          "type": "object",
+          "required": [
+            "batch_id",
+            "batch_kind",
+            "sequence",
+            "network",
+            "cluster",
+            "program_id",
+            "source_release",
+            "source_revision",
+            "expected_deployer_public_key"
+          ],
+          "properties": {
+            "batch_id": {
+              "type": "string",
+              "pattern": "^[A-Z]{2,5}-\\d{5}$"
+            },
+            "batch_kind": {
+              "type": "string",
+              "enum": [
+                "initial_deployment",
+                "program_upgrade"
+              ]
+            },
+            "sequence": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "network": {
+              "type": "string",
+              "minLength": 1
+            },
+            "cluster": {
+              "type": "string",
+              "minLength": 1
+            },
+            "program_id": {
+              "type": "string",
+              "pattern": "^[1-9A-HJ-NP-Za-km-z]{32,44}$"
+            },
+            "source_release": {
+              "type": "string",
+              "minLength": 1
+            },
+            "source_revision": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40,64}$"
+            },
+            "expected_deployer_public_key": {
+              "type": "string",
+              "pattern": "^[1-9A-HJ-NP-Za-km-z]{32,44}$"
+            },
+            "previous_record_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[A-Z]{2,5}-\\d{5}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "manifest_path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "attestation_path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "verification_path": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

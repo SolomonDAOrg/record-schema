@@ -1,0 +1,95 @@
+schema: record-schema-chart
+schema_version: 1
+chart_type: flowchart
+direction: TD
+
+metadata:
+  title: "Document Processing Pipeline"
+  description: |
+    Shows the flow from source document through
+    formatting validation to rendered outputs.
+
+    Note: This label contains (parentheses), "quotes",
+    and multiple lines -- no escaping needed.
+  author: "Ben"
+  record_id: "ADR-00001"
+
+nodes:
+  - id: source
+    label: "Source Document"
+    class: source
+
+  - id: parser
+    label: |
+      Parser
+      (Markdown, YAML, JSON)
+    class: process
+
+  - id: ast
+    label: "AST"
+    shape: cylinder
+
+  - id: valid
+    label: "Valid?"
+    class: decision
+
+  - id: formatting_pack
+    label: |
+      Formatting Pack
+      - Validate structure
+      - Check dialect
+      - Normalize chars
+    class: process
+
+  - id: render_pack
+    label: |
+      Render Pack
+      - Select target
+      - Apply transforms
+      - Configure engine
+    class: process
+
+  - id: error
+    label: "Validation Error"
+    class: error
+
+  - id: svg
+    label: "SVG"
+    class: output
+
+  - id: png
+    label: "PNG"
+    class: output
+
+  - id: ascii
+    label: "ASCII"
+    class: output
+
+  - id: mermaid
+    label: |
+      Mermaid
+      (escaped automatically)
+    class: output
+
+edges:
+  - "source --> parser"
+  - "parser --> ast"
+  - "ast --> formatting_pack"
+  - "formatting_pack --> valid"
+  - "valid --> render_pack : yes"
+  - "valid --> error : no"
+  - "render_pack --> svg"
+  - "render_pack --> png"
+  - "render_pack --> ascii"
+  - "render_pack --> mermaid"
+
+subgraphs:
+  - id: validation
+    label: "Validation Phase"
+    nodes: [parser, ast, formatting_pack, valid]
+    class: phase
+
+  - id: rendering
+    label: "Rendering Phase"
+    nodes: [render_pack, svg, png, ascii, mermaid]
+    class: phase

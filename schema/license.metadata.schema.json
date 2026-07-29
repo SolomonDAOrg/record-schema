@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solomondao.org/record-schema/license.metadata.schema.json",
+  "title": "License Document Metadata",
+  "description": "Required trailing metadata for a verifiable LICENSE document. Existing SPDX field spelling is preserved per document.",
+  "allOf": [
+    {
+      "$ref": "./document.metadata.schema.json"
+    },
+    {
+      "type": "object",
+      "required": [
+        "Document-Type",
+        "Title",
+        "Version",
+        "Effective-Date",
+        "Canonical-URL",
+        "Checksum-SHA256",
+        "Checksum-Surface"
+      ],
+      "oneOf": [
+        {
+          "required": ["SPDX-LicenseIdentifier"],
+          "not": { "required": ["SPDX-License-Identifier"] }
+        },
+        {
+          "required": ["SPDX-License-Identifier"],
+          "not": { "required": ["SPDX-LicenseIdentifier"] }
+        }
+      ],
+      "properties": {
+        "SPDX-LicenseIdentifier": {
+          "$ref": "./document.metadata.schema.json#/$defs/spdxLike"
+        },
+        "SPDX-License-Identifier": {
+          "$ref": "./document.metadata.schema.json#/$defs/spdxLike"
+        },
+        "Document-Type": {
+          "type": "string",
+          "const": "LICENSE"
+        },
+        "Title": {
+          "$ref": "./document.metadata.schema.json#/$defs/nonEmptyString"
+        },
+        "Version": {
+          "$ref": "./document.metadata.schema.json#/$defs/nonEmptyString"
+        },
+        "Effective-Date": {
+          "$ref": "./document.metadata.schema.json#/$defs/date"
+        },
+        "Canonical-URL": {
+          "type": "string",
+          "pattern": "^https://github\\.com/SolomonDAOrg/licenses/blob/main/LICENSES/LicenseRef-[A-Za-z0-9][A-Za-z0-9.-]{0,127}$"
+        },
+        "Checksum-SHA256": {
+          "$ref": "./document.metadata.schema.json#/$defs/sha256Hex"
+        },
+        "Checksum-Surface": {
+          "type": "string",
+          "const": "license-body-v1"
+        }
+      }
+    }
+  ]
+}

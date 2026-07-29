@@ -1,0 +1,578 @@
+{
+  "schema": "record-schema-render-pack",
+  "schema_version": 1,
+  "pack_id": "magick-runbooks-v1",
+  "description": "Magick runbooks render pack with embedded-font contract for ceremonial black-cover packets and non-core PDF fonts.",
+  "imports": [
+    "render/packs/base-v1.json"
+  ],
+  "packet_config": {
+    "default_entity_name": "KING SOLOMON'S TEMPLE",
+    "default_document_title": "MAGICK RUNBOOK",
+    "header_text": "INTERNAL MAGICK RUNBOOK",
+    "series_prefix": "^([A-Z]{2,5}-\\d+_)?",
+    "header_title_format": "plain",
+    "path_to_title": {
+      "Runbook": "MAGICK RUNBOOK",
+      "Architecture": "FINAL ARCHITECTURE",
+      "Temple": "TEMPLE TEXT",
+      "Doctrine": "DOCTRINE",
+      "Manual": "MANUAL",
+      "Guide": "GUIDE",
+      "Index": "INDEX"
+    },
+    "name_patterns": [
+      "Runbook",
+      "Architecture",
+      "Temple",
+      "Doctrine",
+      "Guide",
+      "Manual",
+      "Memo",
+      "Index",
+      "index"
+    ],
+    "entity_extraction": {
+      "fields": [
+        "entity_name",
+        "title"
+      ]
+    },
+    "cover_config": {
+      "suppress_header": true,
+      "suppress_footer": true,
+      "suppress_page_numbering": true,
+      "reserve_header_footer_space": false,
+      "draft_watermark": {
+        "enabled": false
+      },
+      "font_roles": {
+        "eyebrow": "cover_eyebrow",
+        "title": "cover_title",
+        "subtitle": "cover_subtitle",
+        "entity": "cover_entity",
+        "metadata_label": "cover_meta_label",
+        "metadata_value": "cover_meta_value",
+        "footer_note": "cover_footer"
+      },
+      "cover_layout": {
+        "description": "Black-field ceremonial cover with white esoteric typography and embedded display/body font roles.",
+        "palette": {
+          "accent": "#ECE7D8",
+          "title": "#FFFDF7",
+          "muted": "#DDD5C4",
+          "danger": "#FFFDF7",
+          "paper": "#050505",
+          "note_fill": "#0A0A0A",
+          "note_border": "#E7DDC2",
+          "badge_text": "#FFFDF7",
+          "badge_fill": "#0A0A0A",
+          "badge_rule": "#E7DDC2"
+        },
+        "eyebrow": {
+          "enabled": true,
+          "text": "MAGICK RUNBOOK / INTERNAL REGISTRY",
+          "align": "left",
+          "font_size": 10.5,
+          "color": "#FFFDF7",
+          "after_spacer": 12,
+          "letter_spacing": 1.4,
+          "background_color": "#0A0A0A",
+          "border_color": "#E7DDC2",
+          "padding_x": 10,
+          "padding_y": 6,
+          "top_spacer": 10
+        },
+        "title_block": {
+          "top_spacer": 0,
+          "align": "left",
+          "title_font_size": 30,
+          "subtitle_font_size": 12.5,
+          "entity_font_size": 13.5,
+          "include_conjunction_line": false,
+          "after_title_spacer": 8,
+          "after_subtitle_spacer": 10,
+          "after_entity_spacer": 12,
+          "title_color": "#FFFDF7",
+          "subtitle_color": "#E6DECC",
+          "entity_color": "#F6F0E3"
+        },
+        "rule": {
+          "enabled": true,
+          "start_frac": 0.0,
+          "end_frac": 0.42,
+          "line_width": 1.2,
+          "color": "#E7DDC2",
+          "after_spacer": 16
+        },
+        "metadata_block": {
+          "layout": "columns",
+          "align": "left",
+          "label_align": "left",
+          "column_gap": 16,
+          "font_size": 9.75,
+          "line_spacer": 7,
+          "separator": ": ",
+          "start_frac": 0.0,
+          "end_frac": 0.42,
+          "fields": [
+            {
+              "key": "document_id",
+              "label": "Doc"
+            },
+            {
+              "key": "version",
+              "label": "Version"
+            },
+            {
+              "key": "effective_date",
+              "label": "Date"
+            },
+            {
+              "key": "status",
+              "label": "Status"
+            }
+          ],
+          "label_color": "#D9CFBB",
+          "value_color": "#FFFDF7",
+          "background_color": "#0A0A0A",
+          "border_color": "#E7DDC2",
+          "padding": 0
+        },
+        "footer_note": {
+          "enabled": true,
+          "align": "left",
+          "font_size": 9.25,
+          "color": "#DCD3C2",
+          "top_spacer": 22,
+          "text": "Internal working doctrine. Controlled text, symbolic direction, and no external reliance."
+        },
+        "page_background": {
+          "color": "#050505"
+        }
+      }
+    },
+    "signing_page": {
+      "enabled": false
+    },
+    "packet_variants": {
+      "default": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "brief": {
+        "include_cover": true,
+        "include_toc": false
+      },
+      "notice": {
+        "include_cover": false,
+        "include_toc": false,
+        "signing_page": false
+      }
+    }
+  },
+  "document_policies": {
+    "defaults": {
+      "output_encoding": "utf-8",
+      "output_newlines": "lf",
+      "horizontal_rule_behavior": "rule"
+    },
+    "targets": {
+      "pdf": {
+        "format": "pdf",
+        "page_size": "letter",
+        "orientation": "portrait",
+        "margins": {
+          "top": 72,
+          "bottom": 72,
+          "left": 72,
+          "right": 72,
+          "unit": "pt"
+        },
+        "fonts": {
+          "regular": "MGKBody-Regular",
+          "bold": "MGKBody-Semibold",
+          "italic": "MGKBody-Italic",
+          "bold_italic": "MGKBody-SemiboldItalic",
+          "monospace": "Courier"
+        },
+        "embedded_fonts": {
+          "enabled": true,
+          "resolve_relative_to": "pack",
+          "register_before_layout": true,
+          "encoding": "WinAnsiEncoding",
+          "families": {
+            "mgk-body": {
+              "display_name": "Cormorant Garamond",
+              "purpose": "body",
+              "faces": {
+                "regular": {
+                  "path": "assets/fonts/CormorantGaramond-Regular.ttf",
+                  "format": "ttf",
+                  "postscript_name": "MGKBody-Regular",
+                  "embed": true
+                },
+                "bold": {
+                  "path": "assets/fonts/CormorantGaramond-SemiBold.ttf",
+                  "format": "ttf",
+                  "postscript_name": "MGKBody-Semibold",
+                  "embed": true
+                },
+                "italic": {
+                  "path": "assets/fonts/CormorantGaramond-Italic.ttf",
+                  "format": "ttf",
+                  "postscript_name": "MGKBody-Italic",
+                  "embed": true
+                },
+                "bold_italic": {
+                  "path": "assets/fonts/CormorantGaramond-SemiBoldItalic.ttf",
+                  "format": "ttf",
+                  "postscript_name": "MGKBody-SemiboldItalic",
+                  "embed": true
+                }
+              }
+            },
+            "mgk-display": {
+              "display_name": "Cinzel Decorative",
+              "purpose": "display",
+              "faces": {
+                "regular": {
+                  "path": "assets/fonts/CinzelDecorative-Regular.ttf",
+                  "format": "ttf",
+                  "postscript_name": "MGKDisplay-Regular",
+                  "embed": true
+                },
+                "bold": {
+                  "path": "assets/fonts/CinzelDecorative-Bold.ttf",
+                  "format": "ttf",
+                  "postscript_name": "MGKDisplay-Bold",
+                  "embed": true
+                }
+              }
+            }
+          },
+          "roles": {
+            "body_regular": "MGKBody-Regular",
+            "body_bold": "MGKBody-Semibold",
+            "body_italic": "MGKBody-Italic",
+            "body_bold_italic": "MGKBody-SemiboldItalic",
+            "cover_title": "MGKDisplay-Regular",
+            "cover_eyebrow": "MGKDisplay-Bold",
+            "cover_subtitle": "MGKBody-Regular",
+            "cover_entity": "MGKBody-Semibold",
+            "cover_meta_label": "MGKBody-Regular",
+            "cover_meta_value": "MGKBody-Semibold",
+            "cover_footer": "MGKBody-Italic",
+            "heading_1": "MGKDisplay-Regular",
+            "heading_2": "MGKDisplay-Regular",
+            "heading_3": "MGKBody-Semibold",
+            "running_header": "MGKBody-Regular",
+            "toc_title": "MGKDisplay-Regular",
+            "toc_entry": "MGKBody-Regular"
+          },
+          "fallbacks": {
+            "regular": "Times-Roman",
+            "bold": "Times-Bold",
+            "italic": "Times-Italic",
+            "bold_italic": "Times-BoldItalic",
+            "monospace": "Courier"
+          },
+          "subsetting": {
+            "strategy": "full-file",
+            "allow_unicode": false,
+            "notes": "Conservative default until the renderer/font pipeline is widened beyond single-byte PDF encoding assumptions."
+          }
+        },
+        "font_role_defaults": {
+          "paragraph": "body_regular",
+          "blockquote": "body_italic",
+          "heading_1": "heading_1",
+          "heading_2": "heading_2",
+          "heading_3": "heading_3",
+          "heading_4": "body_bold",
+          "toc_title": "toc_title",
+          "toc_entry": "toc_entry",
+          "code": "monospace"
+        },
+        "base_font_size": 10.75,
+        "title_font_size": 18,
+        "heading_scales": {
+          "h1": 1.65,
+          "h2": 1.38,
+          "h3": 1.22,
+          "h4": 1.08
+        },
+        "line_spacing": 1.48,
+        "paragraph_spacing_factor": 0.56,
+        "list_indent_per_level": 20,
+        "code_block_indent": 36,
+        "horizontal_rule": {
+          "behavior": "rule",
+          "width_factor": 1,
+          "thickness": 0.75,
+          "color": "#8A8A8A",
+          "spacing_before": 10,
+          "spacing_after": 14
+        },
+        "inline_formatting": {
+          "enabled": true,
+          "underline_offset_factor": 0.15,
+          "underline_thickness_small": 0.5,
+          "underline_thickness_large": 0.75,
+          "underline_size_threshold": 12
+        },
+        "toc": {
+          "title_font_size": 15,
+          "level_styles": {
+            "1": {
+              "font_size_scale": 1.08,
+              "bold": true,
+              "indent": 0,
+              "spacing_after": 1.1,
+              "spacing_before": 1.1
+            },
+            "2": {
+              "font_size_scale": 0.94,
+              "bold": true,
+              "indent": 20,
+              "spacing_after": 1.08
+            },
+            "3": {
+              "font_size_scale": 0.86,
+              "bold": false,
+              "indent": 40,
+              "spacing_after": 1.0
+            },
+            "4": {
+              "font_size_scale": 0.8,
+              "bold": false,
+              "indent": 60,
+              "spacing_after": 1.0
+            }
+          }
+        },
+        "cover_page": {
+          "title_position": "upper-third",
+          "title_spacing": 30,
+          "company_name_font_size": 24,
+          "subtitle_font_size": 14
+        },
+        "table": {
+          "font_size_scale": 0.94,
+          "min_font_size": 6,
+          "max_font_size": 10,
+          "auto_shrink": true,
+          "cell_padding": {
+            "x": 4,
+            "y": 3
+          },
+          "border_width": 0.5,
+          "border_color": "#D9D9D9",
+          "header": {
+            "background_color": "#EFEFEF",
+            "text_color": "#111111",
+            "cell_padding": {
+              "x": 4,
+              "y": 3
+            }
+          },
+          "zebra": {
+            "enabled": true,
+            "odd_background": "#FFFFFF",
+            "even_background": "#F8F8F8"
+          },
+          "line_height": 1.2,
+          "bleed_in": 0.2,
+          "bleed_if_columns_gt": 8,
+          "min_page_edge_inset_in": 0.25
+        },
+        "notice": {
+          "padding": 10,
+          "border_width": 1,
+          "border_color": "#555555",
+          "background_color": "#F8F8F8",
+          "title_color": "#111111"
+        }
+      }
+    },
+    "render_profiles": {
+      "magick-runbook-standard-v1": {
+        "description": "Standard magick runbook PDF rendering with embedded body/display font contract",
+        "target": "pdf",
+        "overrides": {
+          "break_mode": "part-only"
+        }
+      },
+      "magick-runbook-packet-v1": {
+        "description": "Magick runbook packet with ceremonial black cover and embedded font roles",
+        "target": "pdf",
+        "extends": "magick-runbook-standard-v1",
+        "overrides": {
+          "base_font_size": 10.75,
+          "line_spacing": 1.48,
+          "horizontal_rule": {
+            "behavior": "rule",
+            "width_factor": 1,
+            "thickness": 0.75,
+            "color": "#8A8A8A",
+            "spacing_before": 10,
+            "spacing_after": 14
+          }
+        }
+      },
+      "magick-runbook-compact-v1": {
+        "description": "Compact magick runbook rendering",
+        "target": "pdf",
+        "extends": "magick-runbook-standard-v1",
+        "overrides": {
+          "base_font_size": 10.0,
+          "line_spacing": 1.38
+        }
+      }
+    },
+    "rulesets": [
+      {
+        "id": "magick-runbook-packet-v1",
+        "selectors": {
+          "doc_types": [
+            "PACKET",
+            "PKT"
+          ],
+          "extensions": [
+            "pdf"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "magick-runbook-packet-v1"
+        }
+      },
+      {
+        "id": "magick-runbook-doc-v1",
+        "selectors": {
+          "doc_types": [
+            "RUN",
+            "RBK",
+            "CLT",
+            "DOC",
+            "GUIDE",
+            "MAN",
+            "NOTE"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "magick-runbook-standard-v1"
+        }
+      },
+      {
+        "id": "magick-runbook-index-v1",
+        "selectors": {
+          "doc_types": [
+            "IND"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "magick-runbook-standard-v1"
+        }
+      },
+      {
+        "id": "magick-runbook-memo-v1",
+        "selectors": {
+          "doc_types": [
+            "MEM"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "magick-runbook-compact-v1"
+        }
+      }
+    ],
+    "spacing_policy": {
+      "pair_rules": [
+        {
+          "prev": "heading",
+          "curr": "paragraph",
+          "before_em": 0.45
+        },
+        {
+          "prev": "paragraph",
+          "curr": "heading",
+          "before_em": 1.25
+        },
+        {
+          "prev": "heading",
+          "curr": "heading",
+          "before_em": 0.62
+        },
+        {
+          "prev": "list",
+          "curr": "heading",
+          "before_em": 1.2
+        },
+        {
+          "prev": "paragraph",
+          "curr": "paragraph",
+          "before_em": 0.68
+        },
+        {
+          "prev": "paragraph",
+          "curr": "list",
+          "before_em": 0.42
+        },
+        {
+          "prev": "list",
+          "curr": "paragraph",
+          "before_em": 0.68
+        },
+        {
+          "prev": "table",
+          "curr": "paragraph",
+          "before_em": 0.75
+        }
+      ],
+      "defaults": {
+        "heading": {
+          "before_em": 1.02,
+          "after_em": 0.36
+        },
+        "paragraph": {
+          "before_em": 0.46,
+          "after_em": 0.46
+        },
+        "list": {
+          "before_em": 0.42,
+          "after_em": 0.42
+        },
+        "code-block": {
+          "before_em": 0.7,
+          "after_em": 0.7
+        },
+        "blockquote": {
+          "before_em": 0.7,
+          "after_em": 0.7
+        },
+        "table": {
+          "before_em": 0.7,
+          "after_em": 0.7
+        },
+        "section": {
+          "before_em": 0.9,
+          "after_em": 0.46
+        }
+      }
+    },
+    "precedence_notes": "Rules are evaluated in order. First match applies. This v1 pack adds embedded-font declarations and role mapping while preserving fallback base fonts for non-embedded or partial-render environments."
+  }
+}

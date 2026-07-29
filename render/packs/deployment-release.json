@@ -1,0 +1,169 @@
+{
+  "schema": "record-schema-render-pack",
+  "schema_version": 1,
+  "pack_id": "deployment-release",
+  "description": "Professional deployment and release evidence packet.",
+  "imports": [
+    "render/packs/base-v1.json"
+  ],
+  "packet_config": {
+    "default_entity_name": "CHANCERY",
+    "default_document_title": "DEPLOYMENT AND RELEASE EVIDENCE",
+    "header_text": "CHANCERY DEPLOYMENT RECORD",
+    "header_title_format": "plain",
+    "section_page_break": "always",
+    "cover_config": {
+      "suppress_header": true,
+      "suppress_footer": true,
+      "suppress_page_numbering": true,
+      "reserve_header_footer_space": false,
+      "draft_watermark": {
+        "enabled": false,
+        "text": "",
+        "gray": 0.9,
+        "angle_deg": 35,
+        "font_size": 84
+      },
+      "cover_layout": {
+        "title_block": {
+          "top_spacer": 120,
+          "align": "center",
+          "title_font_size": 24,
+          "include_conjunction_line": false,
+          "entity_font_size": 18,
+          "after_spacer": 36
+        },
+        "rule": {
+          "enabled": true,
+          "start_frac": 0.2,
+          "end_frac": 0.8,
+          "line_width": 0.5,
+          "gray": 0.45,
+          "after_spacer": 24
+        },
+        "metadata_block": {
+          "layout": "columns",
+          "align": "left",
+          "label_align": "left",
+          "column_gap": 12,
+          "font_size": 10,
+          "line_spacer": 6,
+          "label_value_separator": ": ",
+          "separator": ": ",
+          "fields": [
+            {
+              "key": "document_id",
+              "label": "Record ID"
+            },
+            {
+              "key": "version",
+              "label": "Batch Sequence"
+            },
+            {
+              "key": "status",
+              "label": "Status"
+            },
+            {
+              "key": "effective_date",
+              "label": "Finalized"
+            }
+          ]
+        }
+      }
+    },
+    "packet_variants": {
+      "default": {
+        "include_cover": true,
+        "include_toc": true
+      }
+    }
+  },
+  "document_policies": {
+    "targets": {
+      "pdf": {
+        "format": "pdf",
+        "page_size": "a4",
+        "orientation": "portrait",
+        "margins": {
+          "top": 58,
+          "bottom": 58,
+          "left": 58,
+          "right": 58,
+          "unit": "pt"
+        },
+        "fonts": {
+          "regular": "Helvetica",
+          "bold": "Helvetica-Bold",
+          "italic": "Helvetica-Oblique",
+          "bold_italic": "Helvetica-BoldOblique",
+          "monospace": "Courier"
+        },
+        "base_font_size": 9.5,
+        "title_font_size": 18,
+        "heading_scales": {
+          "h1": 1.6,
+          "h2": 1.35,
+          "h3": 1.18,
+          "h4": 1.08
+        },
+        "line_spacing": 1.35,
+        "paragraph_spacing_factor": 0.5,
+        "list_indent_per_level": 18,
+        "code_block_indent": 30,
+        "horizontal_rule": {
+          "behavior": "page-break"
+        },
+        "table": {
+          "font_size_scale": 0.9,
+          "min_font_size": 6,
+          "max_font_size": 9,
+          "auto_shrink": true,
+          "cell_padding": {
+            "x": 3,
+            "y": 2.5
+          },
+          "border_width": 0.5,
+          "border_color": 0.75,
+          "header": {
+            "background_color": 0.92,
+            "text_color": 0,
+            "cell_padding": {
+              "x": 3,
+              "y": 2.5
+            }
+          },
+          "zebra": {
+            "enabled": true,
+            "odd_background": 0.98,
+            "even_background": "none"
+          },
+          "line_height": 1.15
+        }
+      }
+    },
+    "render_profiles": {
+      "deployment-release-packet-v1": {
+        "description": "Deployment and release evidence filing packet.",
+        "target": "pdf"
+      }
+    },
+    "rulesets": [
+      {
+        "id": "deployment-release-packet-v1",
+        "selectors": {
+          "doc_types": [
+            "PACKET",
+            "PKT"
+          ],
+          "extensions": [
+            "pdf"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "deployment-release-packet-v1"
+        }
+      }
+    ]
+  }
+}

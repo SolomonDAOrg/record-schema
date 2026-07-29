@@ -1,0 +1,87 @@
+schema: record-schema-registry-profile
+schema_version: 1
+licenseRef: LicenseRef-OPCO-INTERNAL
+profile_id: policy-registry-internal-v1
+name: Internal Policy Registry Profile
+description: >
+  Tightens record-schema for private policy registries containing internal
+  control documents. The registry supports policy (POL) and procedure (SOP)
+  records, plus lifecycle buckets for active, draft, archived, and anchors.
+
+rules:
+  root:
+    required_paths:
+      - registry/active
+      - registry/draft
+      - registry/archived
+      - registry/anchors
+    disallow_unknown_top_level: false
+
+  buckets:
+    - bucket: active
+      path: registry/active
+      record_constraints:
+        require_meta: true
+        require_primary_document: true
+        require_documents_primary_ref: true
+        status_phase_allow: [approved, adopted, effective, current]
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_extensions: [pdf]
+        recommended_files:
+          - "{RECORD_ID}_IND-index.md"
+
+    - bucket: draft
+      path: registry/draft
+      record_constraints:
+        require_meta: true
+        require_primary_document: true
+        require_documents_primary_ref: true
+        status_phase_allow: [interim, draft, proposed, reviewed]
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_extensions: [pdf]
+        recommended_files:
+          - "{RECORD_ID}_IND-index.md"
+
+    - bucket: archived
+      path: registry/archived
+      record_constraints:
+        require_meta: true
+        require_primary_document: true
+        require_documents_primary_ref: true
+        status_phase_allow: [superseded, retired, rescinded, archived]
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_extensions: [pdf]
+
+    - bucket: anchors
+      path: registry/anchors
+      record_constraints:
+        status_confidentiality_allow: [hash-only, confidential, redacted]
+        require_commitments: true
+        require_commitment_kind_allow:
+          [
+            confidential-fulltext,
+            redacted-plus-fulltext,
+            hash-only-replacement,
+            government-form-original,
+            identity-kyc-package,
+            sanctions-screening-evidence,
+            third-party-verification-package
+          ]
+        require_commitment_hash_or_content_id: true
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_extensions: [pdf]
+
+  document_policies:
+    pack_paths:
+      - type: formatting
+        path: formatting/packs/policy-v1.json
+      - type: render
+        path: render/packs/policy-v1.json

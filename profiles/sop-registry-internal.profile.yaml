@@ -1,10 +1,10 @@
 schema: record-schema-registry-profile
 schema_version: 1
-licenseRef: LicenseRef-OPCO-INTERNAL
+licenseRef: LicenseRef-INTERNAL
 profile_id: sop-registry-internal-v1
 name: Internal SOP Registry Repository Profile
 description: >
-  Tightens record-schema for private OpCo/service-entity SOP registries with lifecycle buckets:
+  Tightens record-schema for private SOP registries with lifecycle buckets:
   active, draft, archived, and anchors (hash/CID commitments for artefacts that should not live in-repo).
 
 rules:

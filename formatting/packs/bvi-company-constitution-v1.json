@@ -1,0 +1,230 @@
+{
+  "schema": "record-schema-formatting-pack",
+  "schema_version": 1,
+  "pack_id": "bvi-company-constitution-v1",
+  "description": "British Virgin Islands company constitutional formatting variation for Memorandum and Articles, schedules, registers, indexes, resolutions, and related corporate governance records. Uses en-GB/Commonwealth drafting conventions and keeps the source text clause-oriented, conservative, and suitable for a BVI business company constitution.",
+  "imports": [
+    "formatting/packs/base-v1.json",
+    "formatting/packs/entity-constitutional-v1.json"
+  ],
+  "document_policies": {
+    "defaults": {
+      "language_locale": "en-GB",
+      "dialect_pack": "en-GB-basic-v1",
+      "line_width": {
+        "max": 88,
+        "ignore_blocks": [
+          "code",
+          "tables",
+          "urls",
+          "base58",
+          "base64",
+          "legal_citations",
+          "long_defined_terms"
+        ]
+      },
+      "markdown_style_profile_id": "bvi-constitutional-instrument-v1",
+      "encoding": "utf-8-no-bom",
+      "newlines": "lf",
+      "trailing_whitespace": "forbid"
+    },
+    "style_profiles": {
+      "bvi-constitutional-instrument-v1": {
+        "description": "Classic Commonwealth company constitution source style for BVI Memorandum and Articles. Dense, formal, numbered, and restrained. Appropriate for filed/adopted constitutional instruments rather than marketing decks or DAO proposals.",
+        "heading_style": "atx",
+        "heading_numbering": "required_for_articles_and_schedules",
+        "subsection_numbering": "required",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "numbered",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "lower-alpha-parenthesised"
+            },
+            {
+              "level": 2,
+              "style": "lower-roman-parenthesised"
+            },
+            {
+              "level": 3,
+              "style": "upper-alpha-parenthesised"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 4
+        },
+        "section_dividers": {
+          "between_major_sections": "page-break-horizontal-rule",
+          "between_subsections": "none"
+        },
+        "bold_policy": {
+          "use": "defined_terms_and_labels_only",
+          "note": "Use bold for defined terms, short labels, and signature labels only. Avoid promotional emphasis in constitutional instruments."
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve",
+        "trailing_punctuation": true
+      },
+      "bvi-memorandum-v1": {
+        "description": "BVI Memorandum of Association source style. More formal title block, strict objects/capacity clauses, and minimal prose ornamentation.",
+        "heading_style": "atx",
+        "heading_numbering": "required",
+        "subsection_numbering": "required",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "numbered",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "lower-alpha-parenthesised"
+            },
+            {
+              "level": 2,
+              "style": "lower-roman-parenthesised"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 4
+        },
+        "bold_policy": {
+          "use": "defined_terms_and_labels_only"
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve"
+      },
+      "bvi-schedule-v1": {
+        "description": "Schedules annexed to the Articles. Keeps schedule title prominent but follows the same constitutional numbering and indentation as the Articles.",
+        "heading_style": "atx",
+        "heading_numbering": "required",
+        "subsection_numbering": "required",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "numbered",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "lower-alpha-parenthesised"
+            },
+            {
+              "level": 2,
+              "style": "lower-roman-parenthesised"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 4
+        },
+        "bold_policy": {
+          "use": "defined_terms_and_labels_only"
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve"
+      },
+      "bvi-register-index-v1": {
+        "description": "Indexes, registers, controlled document lists, and governance logs for a BVI corporate governance registry. Allows tables and navigational labels while retaining conservative legal source style.",
+        "heading_style": "atx",
+        "heading_numbering": "optional",
+        "subsection_numbering": "optional",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "hyphen",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "hyphen"
+            },
+            {
+              "level": 2,
+              "style": "hyphen"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 2
+        },
+        "bold_policy": {
+          "use": "labels_and_defined_terms"
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve"
+      }
+    },
+    "rulesets": [
+      {
+        "id": "bvi-memorandum-source-v1",
+        "severity": "error",
+        "selectors": {
+          "doc_types": [
+            "MEM"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "enforce": {
+          "language_locale": "en-GB",
+          "dialect_pack": "en-GB-basic-v1",
+          "markdown_style_profile_id": "bvi-memorandum-v1"
+        }
+      },
+      {
+        "id": "bvi-articles-source-v1",
+        "severity": "error",
+        "selectors": {
+          "doc_types": [
+            "AOA",
+            "ART",
+            "CON"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "enforce": {
+          "language_locale": "en-GB",
+          "dialect_pack": "en-GB-basic-v1",
+          "markdown_style_profile_id": "bvi-constitutional-instrument-v1"
+        }
+      },
+      {
+        "id": "bvi-schedules-source-v1",
+        "severity": "error",
+        "selectors": {
+          "doc_types": [
+            "SCH",
+            "ANN"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "enforce": {
+          "language_locale": "en-GB",
+          "dialect_pack": "en-GB-basic-v1",
+          "markdown_style_profile_id": "bvi-schedule-v1"
+        }
+      },
+      {
+        "id": "bvi-register-index-source-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": [
+            "IND",
+            "REG",
+            "LOG",
+            "DOC",
+            "RES"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "enforce": {
+          "language_locale": "en-GB",
+          "dialect_pack": "en-GB-basic-v1",
+          "markdown_style_profile_id": "bvi-register-index-v1"
+        }
+      }
+    ],
+    "precedence_notes": "Import entity-constitutional-v1 first, then apply BVI-specific en-GB/Commonwealth source style. The BVI rules deliberately use GOV/MEM/AOA/SCH/IND/REG/LOG/DOC selectors used by corporate governance registries rather than DAO proposal selectors."
+  }
+}

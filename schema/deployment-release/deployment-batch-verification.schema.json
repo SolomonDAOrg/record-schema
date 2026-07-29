@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solomondao.org/record-schema/deployment-release/deployment-batch-verification.schema.json",
+  "title": "Deployment Batch Verification Receipt",
+  "type": "object",
+  "required": [
+    "schema",
+    "schema_version",
+    "batch_id",
+    "record_id",
+    "verified",
+    "verified_at_utc",
+    "manifest_sha256",
+    "attestation_sha256",
+    "signer_public_key",
+    "signature_valid",
+    "artifact_root_valid",
+    "all_artifacts_valid",
+    "cryptographic_summary_valid",
+    "report_pdf_valid",
+    "record_schema_valid",
+    "artifact_count",
+    "errors",
+    "cryptographically_valid",
+    "checksum_claims_valid",
+    "temporal_order_valid"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "deployment-release-batch-verification"
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "batch_id": {
+      "type": "string",
+      "pattern": "^DEP-\\d{5}$"
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^DEP-\\d{5}$"
+    },
+    "verified": {
+      "type": "boolean"
+    },
+    "verified_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "attestation_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "signer_public_key": {
+      "type": "string",
+      "pattern": "^[1-9A-HJ-NP-Za-km-z]{32,44}$"
+    },
+    "signature_valid": {
+      "type": "boolean"
+    },
+    "artifact_root_valid": {
+      "type": "boolean"
+    },
+    "all_artifacts_valid": {
+      "type": "boolean"
+    },
+    "record_schema_valid": {
+      "type": "boolean"
+    },
+    "artifact_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cryptographic_summary_valid": {
+      "type": "boolean"
+    },
+    "report_pdf_valid": {
+      "type": "boolean"
+    },
+    "cryptographically_valid": {
+      "type": "boolean"
+    },
+    "checksum_claims_valid": {
+      "type": "boolean"
+    },
+    "temporal_order_valid": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

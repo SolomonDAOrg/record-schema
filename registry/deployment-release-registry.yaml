@@ -1,0 +1,53 @@
+schema: record-schema-registry
+schema_version: 1
+
+series:
+  - code: DEP
+    tier: suggested
+    name: Deployment and Release Batch
+    description: Immutable initial-deployment and program-upgrade evidence batches.
+    recommended_doc_types: [DOC, PLAN, MAN, ATT, VER, EVD, IND, PKT, LOG]
+
+doc_types:
+  - code: META
+    name: Metadata
+    description: Machine-readable record metadata.
+  - code: DOC
+    name: Deployment Report
+    description: Human-readable deployment and release evidence report.
+    recommended_extensions: [md]
+    markdown_envelope: record-markdown-envelope-v1
+  - code: PLAN
+    name: Deployment Batch Plan
+    description: Reviewed batch intent and exact required artefact bindings.
+    recommended_extensions: [json]
+  - code: MAN
+    name: Artifact Manifest
+    description: Canonical inventory and digest root for retained artefacts.
+    recommended_extensions: [json]
+  - code: ATT
+    name: Deployer Attestation
+    description: Detached Ed25519 signature binding the manifest, artefact root, final evidence, cryptographic summary, PDF, and prior batch.
+    recommended_extensions: [json]
+  - code: VER
+    name: Verification Receipt
+    description: Independent validation result for the batch.
+    recommended_extensions: [json]
+  - code: EVD
+    name: Evidence Dossier Data
+    description: Typed normalized register of retained artifacts, transactions, actions, receipts, and report policy.
+    recommended_extensions: [json]
+  - code: IND
+    name: Index
+    description: Human-readable record index.
+    recommended_extensions: [md]
+    markdown_envelope: record-markdown-envelope-v1
+  - code: LOG
+    name: Log
+    description: Batch lifecycle notes.
+    recommended_extensions: [md]
+    markdown_envelope: record-markdown-envelope-v1
+  - code: PKT
+    name: Packet
+    description: Derived PDF report packet.
+    recommended_extensions: [pdf]

@@ -1,0 +1,421 @@
+{
+  "schema": "record-schema-formatting-pack",
+  "schema_version": 1,
+  "pack_id": "relocation-governance-v1",
+  "description": "Formatting pack for internal relocation governance, substance evidence, CM&C hygiene, role-capacity separation, technical authority, and professional adviser appendix records.",
+  "imports": [
+    "formatting/packs/base-v1.json"
+  ],
+  "document_policies": {
+    "defaults": {
+      "language_locale": "en-GB",
+      "dialect_pack": "en-GB-basic-v1",
+      "line_width": {
+        "max": 100,
+        "ignore_blocks": [
+          "code",
+          "tables",
+          "urls",
+          "base58",
+          "base64",
+          "legal_citations"
+        ]
+      },
+      "markdown_style_profile_id": "relocation-governance-memorandum-v1",
+      "encoding": "utf-8-no-bom",
+      "newlines": "lf",
+      "trailing_whitespace": "forbid"
+    },
+    "style_profiles": {
+      "relocation-governance-memorandum-v1": {
+        "description": "Formal explanatory memoranda for relocation, governance, substance, and regulatory perimeter analysis.",
+        "heading_numbering": "optional",
+        "subsection_numbering": "optional",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "hyphen",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "paren_alpha_lower"
+            },
+            {
+              "level": 2,
+              "style": "paren_roman_lower"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 4
+        },
+        "section_dividers": {
+          "between_major_sections": "none",
+          "between_subsections": "none"
+        },
+        "bold_policy": {
+          "use": "sparingly",
+          "note": "Bold reserved for short labels, document status cues, and defined concepts."
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve"
+      },
+      "relocation-governance-protocol-v1": {
+        "description": "Operational protocols and control procedures for relocation governance and evidentiary hygiene.",
+        "heading_numbering": "required",
+        "subsection_numbering": "required",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "hyphen",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "paren_alpha_lower"
+            },
+            {
+              "level": 2,
+              "style": "paren_roman_lower"
+            },
+            {
+              "level": 3,
+              "style": "paren_alpha_upper"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 4
+        },
+        "section_dividers": {
+          "between_major_sections": "none",
+          "between_subsections": "none"
+        },
+        "bold_policy": {
+          "use": "sparingly",
+          "note": "Bold reserved for operative labels, warning labels, and defined control terms."
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve"
+      },
+      "relocation-governance-index-v1": {
+        "description": "Indexes, registers, checklists, and navigational records for the relocation governance pack.",
+        "heading_numbering": "optional",
+        "subsection_numbering": "optional",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "hyphen",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "hyphen"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 2
+        },
+        "section_dividers": {
+          "between_major_sections": "none",
+          "between_subsections": "none"
+        },
+        "bold_policy": {
+          "use": "sparingly",
+          "note": "Bold reserved for labels and table headings."
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve"
+      },
+      "relocation-governance-annex-v1": {
+        "description": "Professional adviser appendix shells and evidence annex records.",
+        "heading_numbering": "optional",
+        "subsection_numbering": "optional",
+        "clause_style": "atx_heading",
+        "list_markers": {
+          "top_level": "hyphen",
+          "sub_item_nesting": [
+            {
+              "level": 1,
+              "style": "paren_alpha_lower"
+            },
+            {
+              "level": 2,
+              "style": "paren_roman_lower"
+            }
+          ],
+          "sub_item_placement": "block",
+          "indent_spaces_per_level": 4
+        },
+        "section_dividers": {
+          "between_major_sections": "none",
+          "between_subsections": "none"
+        },
+        "bold_policy": {
+          "use": "sparingly",
+          "note": "Bold reserved for adviser prompts, labels, and section cues."
+        },
+        "emphasis_policy": "allow",
+        "inline_formatting": "preserve"
+      }
+    },
+    "rulesets": [
+      {
+        "id": "relocation-governance-index-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": [
+            "IND",
+            "REG",
+            "LOG"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "RGOV-00001_IND-*",
+            "RGOV-00001_REG-*",
+            "RGOV-00001_LOG-*"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 100,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "base58",
+              "base64",
+              "legal_citations"
+            ]
+          },
+          "language_locale": "en-GB",
+          "dialect_pack": "en-GB-basic-v1",
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "relocation-governance-index-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Version",
+            "Effective-Date"
+          ],
+          "metadata_optional_fields": [
+            "Status",
+            "Confidentiality",
+            "SPDX-LicenseIdentifier",
+            "Created-At",
+            "Render-Pack",
+            "Formatting-Pack"
+          ]
+        }
+      },
+      {
+        "id": "relocation-governance-primary-docs-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": [
+            "DOC"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "RGOV-00001_DOC-*"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 100,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "base58",
+              "base64",
+              "legal_citations"
+            ]
+          },
+          "language_locale": "en-GB",
+          "dialect_pack": "en-GB-basic-v1",
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "relocation-governance-memorandum-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Version",
+            "Effective-Date"
+          ],
+          "metadata_optional_fields": [
+            "Status",
+            "Confidentiality",
+            "SPDX-LicenseIdentifier",
+            "Created-At",
+            "Render-Pack",
+            "Formatting-Pack"
+          ]
+        }
+      },
+      {
+        "id": "relocation-governance-memoranda-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": [
+            "MEM",
+            "SUPP"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "RGOV-00001_MEM-*",
+            "RGOV-00001_SUPP-*"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 100,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "base58",
+              "base64",
+              "legal_citations"
+            ]
+          },
+          "language_locale": "en-GB",
+          "dialect_pack": "en-GB-basic-v1",
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "relocation-governance-memorandum-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Version",
+            "Effective-Date"
+          ],
+          "metadata_optional_fields": [
+            "Status",
+            "Confidentiality",
+            "SPDX-LicenseIdentifier",
+            "Created-At",
+            "Render-Pack",
+            "Formatting-Pack"
+          ]
+        }
+      },
+      {
+        "id": "relocation-governance-protocols-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": [
+            "SOP",
+            "POL"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "RGOV-00001_SOP-*",
+            "RGOV-00001_POL-*"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 100,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "base58",
+              "base64",
+              "legal_citations"
+            ]
+          },
+          "language_locale": "en-GB",
+          "dialect_pack": "en-GB-basic-v1",
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "relocation-governance-protocol-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Version",
+            "Effective-Date"
+          ],
+          "metadata_optional_fields": [
+            "Status",
+            "Confidentiality",
+            "SPDX-LicenseIdentifier",
+            "Created-At",
+            "Render-Pack",
+            "Formatting-Pack"
+          ]
+        }
+      },
+      {
+        "id": "relocation-governance-annexes-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": [
+            "ANN"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "RGOV-00001_ANN-*"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 100,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "base58",
+              "base64",
+              "legal_citations"
+            ]
+          },
+          "language_locale": "en-GB",
+          "dialect_pack": "en-GB-basic-v1",
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "relocation-governance-annex-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Version",
+            "Effective-Date"
+          ],
+          "metadata_optional_fields": [
+            "Status",
+            "Confidentiality",
+            "SPDX-LicenseIdentifier",
+            "Created-At",
+            "Render-Pack",
+            "Formatting-Pack"
+          ]
+        }
+      }
+    ]
+  }
+}

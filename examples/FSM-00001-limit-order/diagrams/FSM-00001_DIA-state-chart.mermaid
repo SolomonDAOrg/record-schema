@@ -1,0 +1,58 @@
+---
+title: FSM-00001 Limit Order State Machine
+---
+stateDiagram-v2
+    [*] --> pending: create
+
+    pending --> open: activate [valid_order]
+    pending --> cancelled: cancel [is_owner]
+
+    open --> partial: partial_fill [price_triggered ∧ amount < remaining]
+    open --> filled: fill [price_triggered ∧ amount = remaining]
+    open --> cancelled: cancel [is_owner]
+    open --> expired: expire [slot > expiry]
+
+    partial --> partial: partial_fill [price_triggered ∧ amount < remaining]
+    partial --> filled: fill [price_triggered ∧ amount = remaining]
+    partial --> cancelled: cancel [is_owner]
+    partial --> expired: expire [slot > expiry]
+
+    filled --> [*]
+    cancelled --> [*]
+    expired --> [*]
+
+    state pending {
+        [*] --> awaiting_activation
+        awaiting_activation: amount_filled = 0
+        awaiting_activation: is_monitoring = false
+    }
+
+    state open {
+        [*] --> monitoring_price
+        monitoring_price: amount_filled = 0
+        monitoring_price: is_monitoring = true
+    }
+
+    state partial {
+        [*] --> partially_filled
+        partially_filled: 0 < amount_filled < amount_in
+        partially_filled: is_monitoring = true
+    }
+
+    state filled {
+        [*] --> complete
+        complete: amount_filled = amount_in
+        complete: is_monitoring = false
+    }
+
+    state cancelled {
+        [*] --> refunded
+        refunded: refund_issued = true
+        refunded: is_monitoring = false
+    }
+
+    state expired {
+        [*] --> ttl_exceeded
+        ttl_exceeded: refund_issued = true
+        ttl_exceeded: is_monitoring = false
+    }

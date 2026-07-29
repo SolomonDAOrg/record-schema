@@ -1,0 +1,856 @@
+{
+  "schema": "record-schema-render-pack",
+  "schema_version": 1,
+  "pack_id": "relocation-governance-render-v1",
+  "description": "Render pack for stitched permanent-relocation governance, evidence, adviser, and substance packets. This version uses an evidentiary dossier / border-file aesthetic, with sans-led headings, serif body text, embedded font roles, ruled metadata blocks, and a distinct palette from entity constitutional and estate continuity packets.",
+  "imports": [
+    "render/packs/base-v1.json"
+  ],
+  "packet_config": {
+    "default_entity_name": "PRIVATE RELOCATION EVIDENCE RECORD",
+    "default_document_title": "PERMANENT RELOCATION EVIDENCE PACK",
+    "header_text": "PRIVATE EVIDENTIARY RECORD — INTERNAL USE ONLY",
+    "series_prefix": "^(RGOV-\\d+_)?",
+    "header_title_format": "plain",
+    "section_page_break": "always",
+    "path_to_title": {
+      "spine": "DOCUMENT SPINE",
+      "index": "INDEX",
+      "Memorandum": "MEMORANDUM",
+      "Protocol": "PROTOCOL",
+      "Plan": "PLAN",
+      "Register": "REGISTER",
+      "Checklist": "CHECKLIST",
+      "Approval": "APPROVAL PAGE",
+      "Version": "VERSION CONTROL",
+      "Appendix_A": "APPENDIX A",
+      "Appendix_B": "APPENDIX B",
+      "Appendix_C": "APPENDIX C",
+      "Appendix_D": "APPENDIX D",
+      "Appendix_E": "APPENDIX E",
+      "Appendix_F": "APPENDIX F",
+      "Appendix_G": "APPENDIX G",
+      "Appendix_H": "APPENDIX H",
+      "Appendix_I": "APPENDIX I",
+      "Appendix_J": "APPENDIX J",
+      "Appendix_K": "APPENDIX K",
+      "Appendix_L": "APPENDIX L",
+      "Departure_Evidence_Memorandum": "DEPARTURE EVIDENCE MEMORANDUM",
+      "Business_Rationale": "BUSINESS RATIONALE RECORD",
+      "Relocation_Record": "RELOCATION RECORD",
+      "Substance_Record": "SUBSTANCE RECORD",
+      "Professional_Opinion": "PROFESSIONAL OPINION",
+      "Tax_Opinion": "TAX OPINION",
+      "Legal_Opinion": "LEGAL OPINION",
+      "Adviser_Certificate": "ADVISER CERTIFICATE",
+      "Evidence_Register": "EVIDENCE REGISTER",
+      "Chronology": "CHRONOLOGY",
+      "Execution_Record": "EXECUTION RECORD"
+    },
+    "name_patterns": [
+      "spine",
+      "index",
+      "Memorandum",
+      "Protocol",
+      "Plan",
+      "Register",
+      "Checklist",
+      "Approval",
+      "Version",
+      "Appendix_[A-Z]",
+      "Departure_Evidence",
+      "Business_Rationale",
+      "Relocation_Record",
+      "Substance_Record",
+      "Professional_Opinion",
+      "Tax_Opinion",
+      "Legal_Opinion",
+      "Adviser_Certificate",
+      "Evidence_Register",
+      "Chronology",
+      "Execution_Record",
+      "Schedule_\\d+",
+      "Annex"
+    ],
+    "entity_extraction": {
+      "fields": [
+        "subject_name",
+        "principal_name",
+        "founder_name",
+        "entity_name",
+        "title"
+      ],
+      "title_pattern": "^(?:\\s*(?:Relocation|Departure|Evidence|Substance|Adviser|Opinion|Record|Memorandum)(?:[\\s_-]+(?:Pack|Packet|Record|Memorandum))?(?:[\\s_-]+for|[\\s_-]+of)?[\\s_-]+(.+?)\\s*$|\\s*(.+?)[\\s_-]+(?:Relocation|Departure|Evidence|Substance|Adviser|Opinion|Record)(?:[\\s_-]+(?:Pack|Packet|Record|Memorandum))?\\s*$)"
+    },
+    "cover_config": {
+      "suppress_header": true,
+      "suppress_footer": true,
+      "suppress_page_numbering": true,
+      "reserve_header_footer_space": false,
+      "draft_watermark": {
+        "enabled": true,
+        "text": "EVIDENCE COPY",
+        "gray": 0.945,
+        "angle_deg": 34,
+        "font_size": 58
+      },
+      "cover_layout": {
+        "description": "Evidence-dossier cover: archive paper, charcoal text, olive docket rail, amber filing accents, and red confidentiality markings. Distinct from constitutional blue-formal and estate walnut-ivory render packs.",
+        "palette": {
+          "accent": "#4B5A3C",
+          "accent_dark": "#263125",
+          "title": "#20242A",
+          "muted": "#626B73",
+          "danger": "#9E2A2B",
+          "paper": "#F6F3EA",
+          "rail": "#384634",
+          "rule": "#B08D57",
+          "note_fill": "#EFE7D6",
+          "note_border": "#C8B998",
+          "badge_fill": "#20242A",
+          "badge_text": "#F6F3EA"
+        },
+        "eyebrow": {
+          "enabled": true,
+          "text": "PERMANENT RELOCATION / SUBSTANCE / EVIDENCE RECORD",
+          "align": "left",
+          "font_size": 8.75,
+          "color": "#F6F3EA",
+          "after_spacer": 20,
+          "letter_spacing": 1.35,
+          "background_color": "#20242A",
+          "border_color": "#B08D57",
+          "padding_x": 12,
+          "padding_y": 5,
+          "top_spacer": 18
+        },
+        "title_block": {
+          "top_spacer": 88,
+          "align": "left",
+          "title_font_size": 28,
+          "subtitle_font_size": 10.5,
+          "entity_font_size": 16,
+          "include_conjunction_line": false,
+          "after_title_spacer": 8,
+          "after_subtitle_spacer": 10,
+          "after_entity_spacer": 20,
+          "title_color": "#20242A",
+          "subtitle_color": "#626B73",
+          "entity_color": "#4B5A3C",
+          "conjunction_color": "#626B73"
+        },
+        "rule": {
+          "enabled": true,
+          "start_frac": 0.0,
+          "end_frac": 0.56,
+          "line_width": 1.35,
+          "color": "#B08D57",
+          "after_spacer": 20
+        },
+        "metadata_block": {
+          "layout": "columns",
+          "align": "left",
+          "label_align": "left",
+          "column_gap": 16,
+          "font_size": 9.25,
+          "line_spacer": 5.5,
+          "label_value_separator": ": ",
+          "separator": ": ",
+          "start_frac": 0.0,
+          "end_frac": 0.78,
+          "fields": [
+            {
+              "key": "document_id",
+              "label": "Record ID"
+            },
+            {
+              "key": "status",
+              "label": "Status"
+            },
+            {
+              "key": "version",
+              "label": "Version"
+            },
+            {
+              "key": "effective_date",
+              "label": "Evidence Date"
+            },
+            {
+              "key": "jurisdiction",
+              "label": "Jurisdiction"
+            },
+            {
+              "key": "confidentiality",
+              "label": "Handling"
+            }
+          ],
+          "label_color": "#626B73",
+          "value_color": "#20242A",
+          "confidentiality_color": "#9E2A2B",
+          "background_color": "#EFE7D6",
+          "border_color": "#C8B998",
+          "padding": 10
+        },
+        "page_background": {
+          "color": "#F6F3EA"
+        },
+        "page_frame": {
+          "enabled": true,
+          "inset": 16,
+          "line_width": 0.7,
+          "color": "#C8B998"
+        },
+        "side_rail": {
+          "enabled": true,
+          "side": "left",
+          "width": 8,
+          "color": "#384634"
+        },
+        "content_margins": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "font_roles": {
+        "title": "cover_title",
+        "subtitle": "cover_subtitle",
+        "entity": "cover_entity",
+        "eyebrow": "cover_eyebrow",
+        "metadata_label": "cover_meta_label",
+        "metadata_value": "cover_meta_value"
+      }
+    },
+    "packet_variants": {
+      "default": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "working_draft": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "adviser_extract": {
+        "include_cover": true,
+        "include_toc": false
+      },
+      "notice": {
+        "include_cover": false,
+        "include_toc": false,
+        "signing_page": false
+      },
+      "evidence_copy": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "professional_opinion_extract": {
+        "include_cover": true,
+        "include_toc": false
+      },
+      "filing_record": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "confidential_appendix_only": {
+        "include_cover": false,
+        "include_toc": false,
+        "signing_page": false
+      }
+    }
+  },
+  "document_policies": {
+    "defaults": {
+      "output_encoding": "utf-8",
+      "output_newlines": "lf",
+      "horizontal_rule_behavior": "page-break"
+    },
+    "targets": {
+      "pdf": {
+        "format": "pdf",
+        "page_size": "letter",
+        "orientation": "portrait",
+        "margins": {
+          "top": 70,
+          "bottom": 72,
+          "left": 76,
+          "right": 70,
+          "unit": "pt"
+        },
+        "fonts": {
+          "regular": "Lora-Regular",
+          "bold": "Lora-Bold",
+          "italic": "Lora-Italic",
+          "bold_italic": "Lora-BoldItalic",
+          "monospace": "IBMPlexMono-Regular"
+        },
+        "base_font_size": 10.05,
+        "title_font_size": 16.25,
+        "heading_scales": {
+          "h1": 1.5,
+          "h2": 1.26,
+          "h3": 1.13,
+          "h4": 1.04
+        },
+        "line_spacing": 1.46,
+        "paragraph_spacing_factor": 0.49,
+        "list_indent_per_level": 19,
+        "code_block_indent": 34,
+        "horizontal_rule": {
+          "behavior": "page-break"
+        },
+        "inline_formatting": {
+          "enabled": true,
+          "underline_offset_factor": 0.15,
+          "underline_thickness_small": 0.5,
+          "underline_thickness_large": 0.75,
+          "underline_size_threshold": 12
+        },
+        "toc": {
+          "title_font_size": 14.25,
+          "level_styles": {
+            "1": {
+              "font_size_scale": 1.02,
+              "bold": true,
+              "indent": 0,
+              "spacing_after": 1.0,
+              "spacing_before": 1.15
+            },
+            "2": {
+              "font_size_scale": 0.9,
+              "bold": false,
+              "indent": 21,
+              "spacing_after": 1.0
+            },
+            "3": {
+              "font_size_scale": 0.82,
+              "bold": false,
+              "indent": 42,
+              "spacing_after": 0.95
+            },
+            "4": {
+              "font_size_scale": 0.76,
+              "bold": false,
+              "indent": 63,
+              "spacing_after": 0.95
+            }
+          }
+        },
+        "cover_page": {
+          "title_position": "upper-third",
+          "title_spacing": 24,
+          "company_name_font_size": 19,
+          "subtitle_font_size": 11
+        },
+        "table": {
+          "font_size_scale": 0.9,
+          "min_font_size": 6,
+          "max_font_size": 9.75,
+          "auto_shrink": true,
+          "cell_padding": {
+            "x": 4,
+            "y": 3
+          },
+          "border_width": 0.45,
+          "border_color": "#C8B998",
+          "header": {
+            "background_color": "#E6DDC9",
+            "text_color": "#20242A",
+            "cell_padding": {
+              "x": 4,
+              "y": 3
+            }
+          },
+          "zebra": {
+            "enabled": true,
+            "odd_background": "#FFFFFF",
+            "even_background": "#F8F5ED"
+          },
+          "line_height": 1.17,
+          "bleed_in": 0.2,
+          "bleed_if_columns_gt": 8,
+          "min_page_edge_inset_in": 0.25
+        },
+        "notice": {
+          "padding": 10,
+          "border_width": 0.85,
+          "border_color": "#9E2A2B",
+          "background_color": "#F4E7DF",
+          "title_color": "#9E2A2B"
+        },
+        "embedded_fonts": {
+          "enabled": true,
+          "resolve_relative_to": "pack",
+          "roles": {
+            "cover_title": "IBMPlexSansCondensed-SemiBold",
+            "cover_subtitle": "IBMPlexSans-Regular",
+            "cover_entity": "IBMPlexSans-SemiBold",
+            "cover_eyebrow": "IBMPlexSansCondensed-SemiBold",
+            "cover_meta_label": "IBMPlexSans-Regular",
+            "cover_meta_value": "IBMPlexSans-SemiBold",
+            "body": "Lora-Regular",
+            "body_regular": "Lora-Regular",
+            "body_bold": "Lora-Bold",
+            "body_italic": "Lora-Italic",
+            "body_bold_italic": "Lora-BoldItalic",
+            "heading_display": "IBMPlexSans-SemiBold",
+            "heading_display_regular": "IBMPlexSans-Regular",
+            "heading_display_bold": "IBMPlexSans-SemiBold",
+            "heading_display_italic": "IBMPlexSans-Italic",
+            "heading_display_bold_italic": "IBMPlexSans-SemiBoldItalic",
+            "toc_title": "IBMPlexSansCondensed-SemiBold",
+            "toc_title_bold": "IBMPlexSansCondensed-SemiBold",
+            "toc_entry": "IBMPlexSans-Regular",
+            "toc_entry_bold": "IBMPlexSans-SemiBold",
+            "table_heading": "IBMPlexSans-SemiBold",
+            "table_heading_bold": "IBMPlexSans-SemiBold",
+            "table_body": "Lora-Regular",
+            "table_body_regular": "Lora-Regular",
+            "table_body_bold": "Lora-Bold",
+            "table_caption": "IBMPlexSans-SemiBold",
+            "table_caption_bold": "IBMPlexSans-SemiBold",
+            "definition_term": "IBMPlexSans-SemiBold",
+            "definition_term_bold": "IBMPlexSans-SemiBold",
+            "notice_title": "IBMPlexSans-SemiBold",
+            "notice_title_bold": "IBMPlexSans-SemiBold",
+            "signature_title": "IBMPlexSans-SemiBold",
+            "signature_title_bold": "IBMPlexSans-SemiBold",
+            "signature_label": "IBMPlexSans-Regular",
+            "signature_label_regular": "IBMPlexSans-Regular",
+            "signature_value": "Lora-Regular",
+            "signature_value_regular": "Lora-Regular",
+            "code": "IBMPlexMono-Regular",
+            "code_monospace": "IBMPlexMono-Regular"
+          },
+          "families": {
+            "Lora": {
+              "faces": {
+                "regular": {
+                  "postscript_name": "Lora-Regular",
+                  "google_font": {
+                    "family": "Lora",
+                    "weight": 400,
+                    "style": "normal"
+                  },
+                  "fallback": "Times-Roman"
+                },
+                "bold": {
+                  "postscript_name": "Lora-Bold",
+                  "google_font": {
+                    "family": "Lora",
+                    "weight": 700,
+                    "style": "normal"
+                  },
+                  "fallback": "Times-Bold"
+                },
+                "italic": {
+                  "postscript_name": "Lora-Italic",
+                  "google_font": {
+                    "family": "Lora",
+                    "weight": 400,
+                    "style": "italic"
+                  },
+                  "fallback": "Times-Italic"
+                },
+                "bold_italic": {
+                  "postscript_name": "Lora-BoldItalic",
+                  "google_font": {
+                    "family": "Lora",
+                    "weight": 700,
+                    "style": "italic"
+                  },
+                  "fallback": "Times-BoldItalic"
+                }
+              }
+            },
+            "IBMPlexSans": {
+              "faces": {
+                "regular": {
+                  "postscript_name": "IBMPlexSans-Regular",
+                  "google_font": {
+                    "family": "IBM Plex Sans",
+                    "weight": 400,
+                    "style": "normal"
+                  },
+                  "fallback": "Helvetica"
+                },
+                "semibold": {
+                  "postscript_name": "IBMPlexSans-SemiBold",
+                  "google_font": {
+                    "family": "IBM Plex Sans",
+                    "weight": 600,
+                    "style": "normal"
+                  },
+                  "fallback": "Helvetica-Bold"
+                },
+                "italic": {
+                  "postscript_name": "IBMPlexSans-Italic",
+                  "google_font": {
+                    "family": "IBM Plex Sans",
+                    "weight": 400,
+                    "style": "italic"
+                  },
+                  "fallback": "Helvetica-Oblique"
+                },
+                "semibold_italic": {
+                  "postscript_name": "IBMPlexSans-SemiBoldItalic",
+                  "google_font": {
+                    "family": "IBM Plex Sans",
+                    "weight": 600,
+                    "style": "italic"
+                  },
+                  "fallback": "Helvetica-BoldOblique"
+                }
+              }
+            },
+            "IBMPlexSansCondensed": {
+              "faces": {
+                "regular": {
+                  "postscript_name": "IBMPlexSansCondensed-Regular",
+                  "google_font": {
+                    "family": "IBM Plex Sans Condensed",
+                    "weight": 400,
+                    "style": "normal"
+                  },
+                  "fallback": "Helvetica"
+                },
+                "semibold": {
+                  "postscript_name": "IBMPlexSansCondensed-SemiBold",
+                  "google_font": {
+                    "family": "IBM Plex Sans Condensed",
+                    "weight": 600,
+                    "style": "normal"
+                  },
+                  "fallback": "Helvetica-Bold"
+                }
+              }
+            },
+            "IBMPlexMono": {
+              "faces": {
+                "regular": {
+                  "postscript_name": "IBMPlexMono-Regular",
+                  "google_font": {
+                    "family": "IBM Plex Mono",
+                    "weight": 400,
+                    "style": "normal"
+                  },
+                  "fallback": "Courier"
+                },
+                "semibold": {
+                  "postscript_name": "IBMPlexMono-SemiBold",
+                  "google_font": {
+                    "family": "IBM Plex Mono",
+                    "weight": 600,
+                    "style": "normal"
+                  },
+                  "fallback": "Courier-Bold"
+                }
+              }
+            }
+          },
+          "fallbacks": {
+            "regular": "Times-Roman",
+            "bold": "Times-Bold",
+            "italic": "Times-Italic",
+            "boldItalic": "Times-BoldItalic",
+            "monospace": "Courier"
+          }
+        },
+        "font_role_defaults": {
+          "body": "body",
+          "heading_1": "heading_display",
+          "heading_2": "heading_display",
+          "heading_3": "heading_display",
+          "heading_4": "heading_display",
+          "heading_5": "heading_display",
+          "heading_6": "heading_display",
+          "toc_title": "toc_title",
+          "toc_entry": "toc_entry",
+          "table_header": "table_heading",
+          "table_body": "table_body",
+          "table_caption": "table_caption",
+          "definition_term": "definition_term",
+          "notice_title": "notice_title",
+          "signature_title": "signature_title",
+          "signature_label": "signature_label",
+          "signature_value": "signature_value",
+          "code": "code"
+        }
+      }
+    },
+    "render_profiles": {
+      "relocation-governance-standard-v1": {
+        "description": "Standard permanent relocation evidence PDF rendering with dossier typography",
+        "target": "pdf",
+        "overrides": {
+          "break_mode": "always"
+        }
+      },
+      "relocation-governance-packet-v1": {
+        "description": "Full stitched permanent relocation evidence packet with cover, TOC, and section breaks",
+        "target": "pdf",
+        "extends": "relocation-governance-standard-v1",
+        "overrides": {
+          "base_font_size": 10.05,
+          "line_spacing": 1.46,
+          "horizontal_rule": {
+            "behavior": "page-break"
+          },
+          "leading_section": {
+            "mode": "centered-title-block",
+            "max_nodes": 8,
+            "stop_at_metadata": true,
+            "stop_at_horizontal_rule": true
+          }
+        }
+      },
+      "relocation-governance-memorandum-v1": {
+        "description": "Evidence memorandum rendering with visible amber dossier rules",
+        "target": "pdf",
+        "extends": "relocation-governance-standard-v1",
+        "overrides": {
+          "horizontal_rule": {
+            "behavior": "rule",
+            "width_factor": 1,
+            "thickness": 0.85,
+            "color": "#B08D57",
+            "spacing_before": 10,
+            "spacing_after": 14
+          },
+          "leading_section": {
+            "mode": "centered-title-block",
+            "max_nodes": 8,
+            "stop_at_metadata": true,
+            "stop_at_horizontal_rule": true
+          }
+        }
+      },
+      "relocation-governance-adviser-annex-v1": {
+        "description": "Professional adviser opinion, appendix, schedule, and evidence-register rendering",
+        "target": "pdf",
+        "extends": "relocation-governance-standard-v1",
+        "overrides": {
+          "break_mode": "part-only",
+          "table": {
+            "font_size_scale": 0.88
+          }
+        }
+      },
+      "relocation-governance-evidence-register-v1": {
+        "description": "Chronology and evidence-register rendering with compact table treatment",
+        "target": "pdf",
+        "extends": "relocation-governance-standard-v1",
+        "overrides": {
+          "break_mode": "part-only",
+          "table": {
+            "font_size_scale": 0.86,
+            "line_height": 1.12
+          }
+        }
+      }
+    },
+    "rulesets": [
+      {
+        "id": "relocation-governance-packet-docs-v1",
+        "selectors": {
+          "doc_types": [
+            "IND",
+            "DOC",
+            "MEM",
+            "SOP",
+            "POL",
+            "SUPP",
+            "DEP",
+            "BUS",
+            "SUB",
+            "JUR"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "relocation-governance-packet-v1"
+        }
+      },
+      {
+        "id": "relocation-governance-memoranda-v1",
+        "selectors": {
+          "doc_types": [
+            "MEM",
+            "DEP",
+            "BUS",
+            "SUB",
+            "JUR"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Memorandum*",
+            "**/*Departure_Evidence*",
+            "**/*Business_Rationale*",
+            "**/*Substance_Record*",
+            "**/*Relocation_Record*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "relocation-governance-memorandum-v1"
+        }
+      },
+      {
+        "id": "relocation-governance-evidence-register-v1",
+        "selectors": {
+          "doc_types": [
+            "REG",
+            "LOG",
+            "CHR"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Register*",
+            "**/*Evidence_Register*",
+            "**/*Chronology*",
+            "**/*Log*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "relocation-governance-evidence-register-v1"
+        }
+      },
+      {
+        "id": "relocation-governance-annex-opinion-docs-v1",
+        "selectors": {
+          "doc_types": [
+            "ANN",
+            "SCH",
+            "OPN",
+            "ADV",
+            "TAX",
+            "LEG"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Annex*",
+            "**/*Appendix*",
+            "**/*Schedule*",
+            "**/*Opinion*",
+            "**/*Adviser*",
+            "**/*Certificate*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "relocation-governance-adviser-annex-v1"
+        }
+      }
+    ],
+    "spacing_policy": {
+      "pair_rules": [
+        {
+          "prev": "heading",
+          "curr": "paragraph",
+          "before_em": 0.42
+        },
+        {
+          "prev": "paragraph",
+          "curr": "heading",
+          "before_em": 1.18
+        },
+        {
+          "prev": "heading",
+          "curr": "heading",
+          "before_em": 0.58
+        },
+        {
+          "prev": "list",
+          "curr": "heading",
+          "before_em": 1.12
+        },
+        {
+          "prev": "paragraph",
+          "curr": "paragraph",
+          "before_em": 0.58
+        },
+        {
+          "prev": "paragraph",
+          "curr": "list",
+          "before_em": 0.38
+        },
+        {
+          "prev": "list",
+          "curr": "paragraph",
+          "before_em": 0.58
+        },
+        {
+          "prev": "table",
+          "curr": "paragraph",
+          "before_em": 0.66
+        },
+        {
+          "prev": "blockquote",
+          "curr": "paragraph",
+          "before_em": 0.66
+        }
+      ],
+      "defaults": {
+        "heading": {
+          "before_em": 0.95,
+          "after_em": 0.32
+        },
+        "paragraph": {
+          "before_em": 0.38,
+          "after_em": 0.38
+        },
+        "list": {
+          "before_em": 0.36,
+          "after_em": 0.36
+        },
+        "code-block": {
+          "before_em": 0.6,
+          "after_em": 0.6
+        },
+        "table": {
+          "before_em": 0.62,
+          "after_em": 0.62
+        },
+        "blockquote": {
+          "before_em": 0.64,
+          "after_em": 0.64
+        }
+      }
+    }
+  },
+  "packName": "relocation-governance-evidence-render-v1",
+  "documentTypeOrder": [
+    "IND",
+    "DOC",
+    "MEM",
+    "DEP",
+    "BUS",
+    "SUB",
+    "JUR",
+    "REG",
+    "LOG",
+    "CHR",
+    "OPN",
+    "ADV",
+    "TAX",
+    "LEG",
+    "ANN",
+    "SCH",
+    "SUPP"
+  ],
+  "renderNotes": [
+    "This pack is intentionally styled as a private evidentiary dossier, not a constitutional instrument, estate record, or template agreement.",
+    "Professional opinions and adviser certificates should route through adviser-annex profiles; commercially sensitive group governance detail should remain outside this pack unless expressly referenced by an index stub.",
+    "Chronologies, evidence registers, and supporting logs use compact table treatment so the record remains usable as a later audit or adviser-support packet."
+  ]
+}

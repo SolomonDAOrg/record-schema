@@ -1,0 +1,78 @@
+schema: storage-account
+schema_version: 1
+record_id: STO-00001
+
+description: |
+  High-level account schema for order accounts.
+  References layout for binary details.
+
+account:
+  name: OrderAccount
+  layout_ref: STO-00001_LAY-order.v1.yaml
+  program: SolomonAMM
+  seeds:
+    - literal: "order"
+    - field: pool
+    - field: id
+
+  rent_exempt_minimum: 2039280  # lamports for 190 bytes
+
+  lifecycle:
+    creation:
+      instruction: CreateOrder
+      payer: owner
+      space: 190
+
+    closure:
+      instruction: CloseOrder
+      conditions:
+        - state in [filled, cancelled, expired]
+      refund_to: owner
+
+  indexes:
+    - name: by_owner
+      fields: [owner, state]
+      description: Query orders by owner and state
+
+    - name: by_pool
+      fields: [pool, state, side]
+      description: Query orders by pool for matching
+
+    - name: by_expiry
+      fields: [expiry_slot]
+      description: Query for expirable orders
+
+  constraints:
+    - name: single_owner
+      description: Each order has exactly one owner
+      enforced_by: program
+
+    - name: immutable_after_terminal
+      description: Terminal state orders cannot be modified
+      enforced_by: program
+
+serialization:
+  format: borsh
+  derive: [BorshSerialize, BorshDeserialize]
+
+  rust_type: |
+    #[account]
+    #[derive(Default)]
+    pub struct OrderAccount {
+        pub id: u64,
+        pub owner: Pubkey,
+        pub pool: Pubkey,
+        pub state: u8,
+        pub side: u8,
+        pub trigger_price: u128,
+        pub amount_in: u64,
+        pub amount_filled: u64,
+        pub amount_out: u64,
+        pub min_amount_out: u64,
+        pub created_slot: u64,
+        pub expiry_slot: u64,
+        pub last_updated_slot: u64,
+        pub fill_count: u16,
+        pub flags: u16,
+        pub _padding: [u8; 32],
+    }

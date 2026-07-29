@@ -1,0 +1,565 @@
+{
+  "schema": "record-schema-render-pack",
+  "schema_version": 1,
+  "pack_id": "faq-guidance-v1",
+  "description": "Informal FAQ and guidance render pack for explanatory, internal, and non-binding document packets. Uses a soft-blue internal note cover treatment with an inset border and lighter visual hierarchy.",
+  "imports": [
+    "render/packs/base-v1.json"
+  ],
+  "packet_config": {
+    "default_entity_name": "ENTITY",
+    "default_document_title": "INTERNAL GUIDANCE PACK",
+    "header_text": "CONFIDENTIAL - INTERNAL GUIDANCE",
+    "series_prefix": "^([A-Z]{2,5}-\\d+_)?",
+    "header_title_format": "plain",
+    "path_to_title": {
+      "FAQ": "FAQ",
+      "DOC": "GUIDANCE",
+      "Guidance": "GUIDANCE",
+      "Guide": "GUIDANCE",
+      "Handbook": "HANDBOOK",
+      "Playbook": "PLAYBOOK",
+      "Manual": "MANUAL",
+      "Index": "INDEX"
+    },
+    "name_patterns": [
+      "FAQ",
+      "Guidance",
+      "Guide",
+      "Handbook",
+      "Playbook",
+      "Manual",
+      "Memo",
+      "index"
+    ],
+    "entity_extraction": {
+      "fields": [
+        "entity_name",
+        "title"
+      ]
+    },
+    "cover_config": {
+      "suppress_header": true,
+      "suppress_footer": true,
+      "suppress_page_numbering": true,
+      "reserve_header_footer_space": false,
+      "draft_watermark": {
+        "enabled": false
+      },
+      "cover_layout": {
+        "description": "Informal deep-blue internal-guidance cover. Full-bleed blue page background, white typography, and a light inner frame for a softer internal-document feel.",
+        "palette": {
+          "accent": "#ECF4FF",
+          "title": "#FBFDFF",
+          "muted": "#E4EEF9",
+          "danger": "#FBFDFF",
+          "paper": "#0F345C",
+          "note_fill": "#1A4576",
+          "note_border": "#DCEBFB",
+          "badge_text": "#F7FBFF",
+          "badge_fill": "#1B4779",
+          "badge_rule": "#DCEBFB"
+        },
+        "eyebrow": {
+          "enabled": true,
+          "text": "INTERNAL GUIDANCE / FAQ",
+          "align": "left",
+          "font_size": 10,
+          "color": "#F7FBFF",
+          "after_spacer": 10,
+          "letter_spacing": 0.8,
+          "background_color": "#1A4576",
+          "border_color": "#E4EFFB",
+          "padding_x": 10,
+          "padding_y": 6,
+          "top_spacer": 10,
+          "after_spacer": 16
+        },
+        "title_block": {
+          "top_spacer": 0,
+          "align": "left",
+          "title_font_size": 28,
+          "subtitle_font_size": 12.5,
+          "entity_font_size": 12.5,
+          "include_conjunction_line": false,
+          "after_title_spacer": 7,
+          "after_subtitle_spacer": 10,
+          "after_entity_spacer": 12,
+          "title_color": "#FBFDFF",
+          "subtitle_color": "#E6EFF9",
+          "entity_color": "#F1F7FF"
+        },
+        "rule": {
+          "enabled": true,
+          "start_frac": 0.0,
+          "end_frac": 0.36,
+          "line_width": 1.6,
+          "color": "#DCEBFB",
+          "after_spacer": 14
+        },
+        "metadata_block": {
+          "layout": "columns",
+          "align": "left",
+          "label_align": "left",
+          "column_gap": 16,
+          "font_size": 9.5,
+          "line_spacer": 7,
+          "start_frac": 0.0,
+          "end_frac": 0.36,
+          "separator": ": ",
+          "fields": [
+            {
+              "key": "document_id",
+              "label": "Doc"
+            },
+            {
+              "key": "version",
+              "label": "Version"
+            },
+            {
+              "key": "effective_date",
+              "label": "Date"
+            },
+            {
+              "key": "status",
+              "label": "Status"
+            }
+          ],
+          "label_color": "#D8E7F7",
+          "value_color": "#FFFFFF",
+          "background_color": "#1A4576",
+          "border_color": "#E4EFFB",
+          "padding": 0
+        },
+        "footer_note": {
+          "enabled": true,
+          "align": "left",
+          "font_size": 9,
+          "color": "#E2EDF8",
+          "top_spacer": 18,
+          "text": "Internal guidance only. Working notes, practical norms, and no reliance."
+        },
+        "page_background": {
+          "color": "#0F345C"
+        }
+      }
+    },
+    "signing_page": {
+      "enabled": false
+    },
+    "packet_variants": {
+      "default": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "brief": {
+        "include_cover": true,
+        "include_toc": false
+      },
+      "notice": {
+        "include_cover": false,
+        "include_toc": false,
+        "signing_page": false
+      }
+    }
+  },
+  "document_policies": {
+    "defaults": {
+      "output_encoding": "utf-8",
+      "output_newlines": "lf",
+      "horizontal_rule_behavior": "rule"
+    },
+    "targets": {
+      "pdf": {
+        "format": "pdf",
+        "page_size": "letter",
+        "orientation": "portrait",
+        "margins": {
+          "top": 72,
+          "bottom": 72,
+          "left": 72,
+          "right": 72,
+          "unit": "pt"
+        },
+        "fonts": {
+          "regular": "Helvetica",
+          "bold": "Helvetica-Bold",
+          "italic": "Helvetica-Oblique",
+          "bold_italic": "Helvetica-BoldOblique",
+          "monospace": "Courier"
+        },
+        "base_font_size": 10,
+        "title_font_size": 18,
+        "heading_scales": {
+          "h1": 1.55,
+          "h2": 1.32,
+          "h3": 1.18,
+          "h4": 1.08
+        },
+        "line_spacing": 1.45,
+        "paragraph_spacing_factor": 0.55,
+        "list_indent_per_level": 20,
+        "code_block_indent": 36,
+        "horizontal_rule": {
+          "behavior": "rule",
+          "width_factor": 1,
+          "thickness": 0.75,
+          "color": "#9CA3AF",
+          "spacing_before": 10,
+          "spacing_after": 14
+        },
+        "inline_formatting": {
+          "enabled": true,
+          "underline_offset_factor": 0.15,
+          "underline_thickness_small": 0.5,
+          "underline_thickness_large": 0.75,
+          "underline_size_threshold": 12
+        },
+        "toc": {
+          "title_font_size": 15,
+          "level_styles": {
+            "1": {
+              "font_size_scale": 1.08,
+              "bold": true,
+              "indent": 0,
+              "spacing_after": 1.1,
+              "spacing_before": 1.1
+            },
+            "2": {
+              "font_size_scale": 0.94,
+              "bold": true,
+              "indent": 20,
+              "spacing_after": 1.1
+            },
+            "3": {
+              "font_size_scale": 0.86,
+              "bold": false,
+              "indent": 40,
+              "spacing_after": 1.0
+            },
+            "4": {
+              "font_size_scale": 0.8,
+              "bold": false,
+              "indent": 60,
+              "spacing_after": 1.0
+            }
+          }
+        },
+        "cover_page": {
+          "title_position": "upper-third",
+          "title_spacing": 30,
+          "company_name_font_size": 24,
+          "subtitle_font_size": 14
+        },
+        "table": {
+          "font_size_scale": 0.95,
+          "min_font_size": 6,
+          "max_font_size": 10,
+          "auto_shrink": true,
+          "cell_padding": {
+            "x": 4,
+            "y": 3
+          },
+          "border_width": 0.5,
+          "border_color": "#D1D5DB",
+          "header": {
+            "background_color": "#F3F4F6",
+            "text_color": "#111827",
+            "cell_padding": {
+              "x": 4,
+              "y": 3
+            }
+          },
+          "zebra": {
+            "enabled": true,
+            "odd_background": "#FFFFFF",
+            "even_background": "#F9FAFB"
+          },
+          "line_height": 1.2,
+          "bleed_in": 0.2,
+          "bleed_if_columns_gt": 8,
+          "min_page_edge_inset_in": 0.25
+        },
+        "notice": {
+          "padding": 10,
+          "border_width": 1,
+          "border_color": "#6B7280",
+          "background_color": "#F9FAFB",
+          "title_color": "#111827"
+        }
+      }
+    },
+    "render_profiles": {
+      "faq-guidance-standard-v1": {
+        "description": "Standard FAQ and guidance PDF rendering",
+        "target": "pdf",
+        "overrides": {
+          "break_mode": "part-only"
+        }
+      },
+      "faq-guidance-packet-v1": {
+        "description": "FAQ and guidance packet with dedicated cover layout and TOC",
+        "target": "pdf",
+        "extends": "faq-guidance-standard-v1",
+        "overrides": {
+          "base_font_size": 10,
+          "line_spacing": 1.45,
+          "margins": {
+            "top": 72,
+            "bottom": 72,
+            "left": 72,
+            "right": 72,
+            "unit": "pt"
+          },
+          "horizontal_rule": {
+            "behavior": "rule",
+            "width_factor": 1,
+            "thickness": 0.75,
+            "color": "#9CA3AF",
+            "spacing_before": 10,
+            "spacing_after": 14
+          },
+          "cover_config": {
+            "suppress_header": true,
+            "suppress_footer": true,
+            "suppress_page_numbering": true,
+            "reserve_header_footer_space": false,
+            "draft_watermark": {
+              "enabled": false
+            },
+            "cover_layout": {
+              "description": "Informal blue-panel internal-guidance cover. Soft blue field, inset inner border, white typography, and reduced legal-instrument hierarchy.",
+              "palette": {
+                "accent": "#E8F0FA",
+                "title": "#F8FBFF",
+                "muted": "#E3EDF8",
+                "danger": "#F8FBFF",
+                "paper": "#7F9ABD"
+              },
+              "eyebrow": {
+                "enabled": true,
+                "text": "INTERNAL GUIDANCE / FAQ",
+                "align": "left",
+                "font_size": 10,
+                "color": "#F6FAFF",
+                "after_spacer": 16
+              },
+              "title_block": {
+                "align": "left",
+                "title_font_size": 27,
+                "subtitle_font_size": 12.5,
+                "entity_font_size": 13,
+                "include_conjunction_line": false,
+                "after_title_spacer": 8,
+                "after_subtitle_spacer": 12,
+                "after_entity_spacer": 16,
+                "title_color": "#F8FBFF",
+                "subtitle_color": "#E7EFF9",
+                "entity_color": "#F2F7FD"
+              },
+              "rule": {
+                "enabled": true,
+                "start_frac": 0,
+                "end_frac": 0.36,
+                "line_width": 1.2,
+                "color": "#E6EFFA",
+                "after_spacer": 18
+              },
+              "metadata_block": {
+                "layout": "columns",
+                "align": "left",
+                "label_align": "left",
+                "column_gap": 16,
+                "font_size": 9.5,
+                "line_spacer": 7,
+                "separator": ": ",
+                "start_frac": 0,
+                "end_frac": 0.36,
+                "fields": [
+                  {
+                    "key": "document_id",
+                    "label": "Doc"
+                  },
+                  {
+                    "key": "version",
+                    "label": "Version"
+                  },
+                  {
+                    "key": "effective_date",
+                    "label": "Date"
+                  },
+                  {
+                    "key": "status",
+                    "label": "Status"
+                  }
+                ],
+                "label_color": "#D9E7F7",
+                "value_color": "#FFFFFF"
+              },
+              "footer_note": {
+                "enabled": true,
+                "align": "left",
+                "font_size": 9,
+                "color": "#E3EDF8",
+                "top_spacer": 24,
+                "text": "Internal guidance only. Working notes, practical norms, and no reliance."
+              }
+            }
+          }
+        }
+      },
+      "faq-guidance-compact-v1": {
+        "description": "Compact FAQ rendering for dense handbooks and quick-reference notes",
+        "target": "pdf",
+        "extends": "faq-guidance-standard-v1",
+        "overrides": {
+          "base_font_size": 9.5,
+          "line_spacing": 1.35
+        }
+      }
+    },
+    "rulesets": [
+      {
+        "id": "faq-guidance-packet-v1",
+        "selectors": {
+          "doc_types": [
+            "PACKET",
+            "PKT"
+          ],
+          "extensions": [
+            "pdf"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "faq-guidance-packet-v1"
+        }
+      },
+      {
+        "id": "faq-doc-v1",
+        "selectors": {
+          "doc_types": [
+            "FAQ",
+            "DOC",
+            "GUIDE",
+            "NOTE",
+            "HBK",
+            "MAN"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "faq-guidance-standard-v1"
+        }
+      },
+      {
+        "id": "faq-index-v1",
+        "selectors": {
+          "doc_types": [
+            "IND"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "faq-guidance-standard-v1"
+        }
+      },
+      {
+        "id": "faq-memo-v1",
+        "selectors": {
+          "doc_types": [
+            "MEM"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "faq-guidance-compact-v1"
+        }
+      }
+    ],
+    "spacing_policy": {
+      "pair_rules": [
+        {
+          "prev": "heading",
+          "curr": "paragraph",
+          "before_em": 0.45
+        },
+        {
+          "prev": "paragraph",
+          "curr": "heading",
+          "before_em": 1.2
+        },
+        {
+          "prev": "heading",
+          "curr": "heading",
+          "before_em": 0.6
+        },
+        {
+          "prev": "list",
+          "curr": "heading",
+          "before_em": 1.2
+        },
+        {
+          "prev": "paragraph",
+          "curr": "paragraph",
+          "before_em": 0.65
+        },
+        {
+          "prev": "paragraph",
+          "curr": "list",
+          "before_em": 0.4
+        },
+        {
+          "prev": "list",
+          "curr": "paragraph",
+          "before_em": 0.65
+        },
+        {
+          "prev": "table",
+          "curr": "paragraph",
+          "before_em": 0.75
+        }
+      ],
+      "defaults": {
+        "heading": {
+          "before_em": 1.0,
+          "after_em": 0.35
+        },
+        "paragraph": {
+          "before_em": 0.45,
+          "after_em": 0.45
+        },
+        "list": {
+          "before_em": 0.4,
+          "after_em": 0.4
+        },
+        "code-block": {
+          "before_em": 0.7,
+          "after_em": 0.7
+        },
+        "blockquote": {
+          "before_em": 0.7,
+          "after_em": 0.7
+        },
+        "table": {
+          "before_em": 0.7,
+          "after_em": 0.7
+        },
+        "section": {
+          "before_em": 0.9,
+          "after_em": 0.45
+        }
+      }
+    },
+    "precedence_notes": "Rules are evaluated in order. First match applies. FAQ and guidance packets use a dedicated cover layout style and preserve horizontal rules as visible separators rather than page breaks."
+  }
+}

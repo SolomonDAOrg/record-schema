@@ -139,7 +139,19 @@
                     },
                     {
                         "element": "version_line",
-                        "pattern": "^Version \\d+\\.\\d+ - Effective [A-Z][a-z]+ \\d{4}$",
+                        "pattern": "^Version \\d+\\.\\d+ (?:-|–) Effective (?:\\d{2} )?[A-Z][a-z]+ \\d{4}$",
+                        "required": true
+                    },
+                    {
+                        "element": "field",
+                        "name": "Version",
+                        "pattern": "^Version: .+$",
+                        "required": true
+                    },
+                    {
+                        "element": "field",
+                        "name": "Checksum-SHA256",
+                        "pattern": "^Checksum-SHA256: [a-f0-9]{64}$",
                         "required": true
                     },
                     {
@@ -226,6 +238,18 @@
                             ["(i)", "(ii)", "(iii)"],
                             ["(A)", "(B)", "(C)"]
                         ]
+                    },
+                    "checksum_surface": {
+                        "identifier": "license-body-v1",
+                        "encoding": "UTF-8",
+                        "remove_one_leading_bom": true,
+                        "normalize_line_endings_to": "LF",
+                        "start": "immediately after the first exact 80-character = separator line",
+                        "include_blank_lines_after_start": true,
+                        "end": "through and including the exact 80-character = separator following END OF LICENSE",
+                        "append_final_lf_count": 1,
+                        "normalize_other_whitespace": false,
+                        "preserve_all_legal_text": true
                     }
                 }
             },
@@ -279,11 +303,14 @@
                 "field_format": "^([A-Z][A-Za-z0-9]*(?:-[A-Z][A-Za-z0-9]*)*): (.+)$",
                 "standard_fields": [
                     "SPDX-LicenseIdentifier",
+                    "SPDX-License-Identifier",
                     "Document-Type",
                     "Title",
                     "Version",
                     "Effective-Date",
                     "Canonical-URL",
+                    "Checksum-SHA256",
+                    "Checksum-Surface",
                     "Record-ID",
                     "Adopted-Date",
                     "Created-At"
@@ -292,30 +319,129 @@
         },
         "style_profiles": {
             "informative-default-v1": {
+                "description": "Default for informational documents: loose prose, no structural requirements.",
                 "heading_numbering": "optional",
                 "subsection_numbering": "optional",
-                "list_style": "hyphen_only",
+                "clause_style": "atx_heading",
+                "list_markers": {
+                    "top_level": "hyphen",
+                    "sub_item_nesting": [
+                        { "level": 1, "style": "hyphen" },
+                        { "level": 2, "style": "hyphen" }
+                    ],
+                    "sub_item_placement": "block",
+                    "indent_spaces_per_level": 2
+                },
+                "section_dividers": {
+                    "between_major_sections": "none",
+                    "between_subsections": "none"
+                },
+                "bold_policy": {
+                    "use": "sparingly",
+                    "note": "Bold allowed for emphasis; no density enforcement."
+                },
                 "emphasis_policy": "allow",
                 "inline_formatting": "preserve"
             },
             "informative-memo-v1": {
+                "description": "Informational memo: prose-first, light structure, headers optional.",
                 "heading_numbering": "optional",
                 "subsection_numbering": "optional",
-                "list_style": "hyphen_only",
+                "clause_style": "atx_heading",
+                "list_markers": {
+                    "top_level": "hyphen",
+                    "sub_item_nesting": [
+                        { "level": 1, "style": "hyphen" },
+                        { "level": 2, "style": "hyphen" }
+                    ],
+                    "sub_item_placement": "block",
+                    "indent_spaces_per_level": 2
+                },
+                "section_dividers": {
+                    "between_major_sections": "none",
+                    "between_subsections": "none"
+                },
+                "bold_policy": {
+                    "use": "sparingly",
+                    "note": "Bold allowed for emphasis; no density enforcement."
+                },
                 "emphasis_policy": "allow",
                 "inline_formatting": "preserve"
             },
             "legal-instrument-v1": {
+                "description": "Normative legal instruments (CHA, RES, POL, SOP): numbered sections, structured clauses.",
                 "heading_numbering": "required",
                 "subsection_numbering": "required",
-                "list_style": "hyphen_only",
+                "clause_style": "atx_heading",
+                "list_markers": {
+                    "top_level": "hyphen",
+                    "sub_item_nesting": [
+                        { "level": 1, "style": "paren_alpha_lower" },
+                        { "level": 2, "style": "paren_roman_lower" },
+                        { "level": 3, "style": "paren_alpha_upper" }
+                    ],
+                    "sub_item_placement": "block",
+                    "indent_spaces_per_level": 4
+                },
+                "section_dividers": {
+                    "between_major_sections": "none",
+                    "between_subsections": "none"
+                },
+                "bold_policy": {
+                    "use": "term_definition_only",
+                    "note": "Bold reserved for the first introduction of a defined term. Avoid elsewhere."
+                },
+                "emphasis_policy": "discourage_in_normative",
+                "inline_formatting": "preserve"
+            },
+            "legal-master-agreement-v1": {
+                "description": "Commercial master agreements (MA, SCH, ANN, FRM, TPL): inline-bold heading style, dense clause prose.",
+                "heading_numbering": "required",
+                "subsection_numbering": "required",
+                "clause_style": "inline_bold_heading",
+                "list_markers": {
+                    "top_level": "hyphen",
+                    "sub_item_nesting": [
+                        { "level": 1, "style": "paren_alpha_lower" },
+                        { "level": 2, "style": "paren_roman_lower" },
+                        { "level": 3, "style": "paren_alpha_upper" }
+                    ],
+                    "sub_item_placement": "block",
+                    "indent_spaces_per_level": 4
+                },
+                "section_dividers": {
+                    "between_major_sections": "none",
+                    "between_subsections": "none"
+                },
+                "bold_policy": {
+                    "use": "term_definition_only",
+                    "note": "Bold is structural in inline-bold-heading style (clause titles). Outside of clause headings, bold is reserved for the first introduction of a defined term only."
+                },
                 "emphasis_policy": "discourage_in_normative",
                 "inline_formatting": "preserve"
             },
             "license-v1": {
+                "description": "License documents: plaintext-oriented, major sections with dash-rule separators.",
                 "heading_numbering": "required",
                 "subsection_numbering": "optional",
-                "list_style": "any",
+                "clause_style": "inline_bold_heading",
+                "list_markers": {
+                    "top_level": "hyphen",
+                    "sub_item_nesting": [
+                        { "level": 1, "style": "paren_alpha_lower" },
+                        { "level": 2, "style": "paren_roman_lower" }
+                    ],
+                    "sub_item_placement": "block",
+                    "indent_spaces_per_level": 4
+                },
+                "section_dividers": {
+                    "between_major_sections": "rule_dash",
+                    "between_subsections": "none"
+                },
+                "bold_policy": {
+                    "use": "term_definition_only",
+                    "note": "Bold reserved for defined terms on first introduction."
+                },
                 "emphasis_policy": "allow",
                 "section_format": "major_number_dot_double_space_uppercase",
                 "inter_section_separator": "rule_dash",
@@ -354,7 +480,7 @@
                     },
                     "ellipsis": "..."
                 },
-                "allowed_non_ascii": ["§"],
+                "allowed_non_ascii": ["\u00a7"],
                 "emoji_policy": "forbid"
             },
             "baseline": {
@@ -366,7 +492,24 @@
         "line_width_profiles": {
             "markdown-prose": {
                 "max": 80,
-                "applies_to": ["*_DOC-*.md", "*_MEM-*.md", "*_LOG-*.md"]
+                "soft_wrap_preferred": true,
+                "applies_to": ["*_DOC-*.md", "*_LOG-*.md"]
+            },
+            "legal-filing": {
+                "max": 100,
+                "soft_wrap_preferred": true,
+                "applies_to": ["*_CHA-*.md",  "*_MEM-*.md", "*_RES-*.md"]
+            },
+            "legal-agreement": {
+                "max": 120,
+                "soft_wrap_preferred": true,
+                "applies_to": [
+                    "*_MA-*.md",
+                    "*_SCH-*.md",
+                    "*_ANN-*.md",
+                    "*_FRM-*.md",
+                    "*_TPL-*.md"
+                ]
             },
             "yaml": {
                 "max": 120,
@@ -375,13 +518,8 @@
             "json": {
                 "max": 120,
                 "applies_to": ["*.json"]
-            },
-            "legal-filing": {
-                "max": 100,
-                "soft_wrap_preferred": true,
-                "applies_to": ["*_CHA-*.md", "*_RES-*.md"]
             }
         },
-        "precedence_notes": "Defaults < extension/doc_type rules < path rules. For multiple matches, merge in order; later matches override field-by-field."
+        "precedence_notes": "Defaults < line_width_profiles (glob) < rulesets (doc_type/ext/path). For multiple matches, merge in order; later overrides field-by-field."
     }
 }

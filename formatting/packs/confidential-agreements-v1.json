@@ -1,0 +1,125 @@
+{
+  "schema": "record-schema-formatting-pack",
+  "schema_version": 1,
+  "pack_id": "confidential-agreements-formatting-v1",
+  "description": "Formatting pack for internal confidential agreements in the CON series. Applies plain legal-instrument structure and avoids guidance-style prose formatting.",
+  "imports": [
+    "formatting/packs/base-v1.json"
+  ],
+  "document_policies": {
+    "rulesets": [
+      {
+        "id": "confidential-master-agreement-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": ["MA"],
+          "extensions": ["md"]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "base58",
+              "base64",
+              "legal_citations"
+            ]
+          },
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "legal-master-agreement-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Effective-Date"
+          ],
+          "metadata_optional_fields": [
+            "Version",
+            "Confidentiality",
+            "Created-At",
+            "SPDX-LicenseIdentifier"
+          ]
+        }
+      },
+      {
+        "id": "confidential-schedules-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": ["SCH", "ANN", "FRM"],
+          "extensions": ["md"]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "base58",
+              "base64",
+              "legal_citations"
+            ]
+          },
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "legal-master-agreement-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title"
+          ],
+          "metadata_optional_fields": [
+            "Version",
+            "Effective-Date",
+            "Confidentiality",
+            "Created-At"
+          ]
+        }
+      },
+      {
+        "id": "confidential-index-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": ["IND"],
+          "extensions": ["md"]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls"
+            ]
+          },
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "legal-instrument-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Created-At"
+          ],
+          "metadata_optional_fields": [
+            "Version",
+            "Effective-Date",
+            "Confidentiality"
+          ]
+        }
+      }
+    ],
+    "precedence_notes": "Defaults < line_width_profiles (glob) < rulesets. Confidential agreement packs use legal-instrument formatting and must not inherit FAQ or guidance prose conventions."
+  }
+}

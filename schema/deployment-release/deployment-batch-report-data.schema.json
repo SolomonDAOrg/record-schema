@@ -1,0 +1,316 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solomondao.org/record-schema/deployment-release/deployment-batch-report-data.schema.json",
+  "title": "Deployment Batch Evidence Dossier Data",
+  "type": "object",
+  "required": [
+    "schema",
+    "schema_version",
+    "batch_id",
+    "record_id",
+    "generated_at_utc",
+    "report_policy",
+    "source_artifact_count",
+    "omitted_optional_artifact_count",
+    "full_detail_artifact_count",
+    "summary_artifact_count",
+    "hash_only_artifact_count",
+    "transaction_count",
+    "action_count",
+    "receipt_count",
+    "artifacts",
+    "transactions",
+    "actions",
+    "receipts",
+    "omitted_optional_artifacts"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "deployment-release-batch-report-data"
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "batch_id": {
+      "type": "string",
+      "pattern": "^DEP-\\d{5}$"
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^DEP-\\d{5}$"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "report_policy": {
+      "type": "object",
+      "required": [
+        "full_detail_max_bytes",
+        "summary_max_bytes",
+        "text_preview_max_bytes",
+        "full_detail_max_scalar_fields",
+        "summary_max_scalar_fields",
+        "full_detail_max_objects",
+        "summary_max_objects",
+        "full_detail_max_arrays",
+        "summary_max_arrays",
+        "full_detail_max_scalar_string_length",
+        "maximum_json_depth",
+        "disclosure_policy",
+        "sensitive_field_defense_in_depth",
+        "transaction_action_policy"
+      ],
+      "properties": {
+        "full_detail_max_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "summary_max_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "text_preview_max_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "full_detail_max_scalar_fields": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "summary_max_scalar_fields": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "full_detail_max_objects": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "summary_max_objects": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "full_detail_max_arrays": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "summary_max_arrays": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "full_detail_max_scalar_string_length": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "maximum_json_depth": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "disclosure_policy": {
+          "type": "string",
+          "const": "typed-artifact-allowlist"
+        },
+        "sensitive_field_defense_in_depth": {
+          "type": "string",
+          "const": "reject"
+        },
+        "transaction_action_policy": {
+          "type": "string",
+          "const": "typed-schema-adapters-only"
+        }
+      },
+      "additionalProperties": false
+    },
+    "source_artifact_count": { "type": "integer", "minimum": 0 },
+    "omitted_optional_artifact_count": { "type": "integer", "minimum": 0 },
+    "full_detail_artifact_count": { "type": "integer", "minimum": 0 },
+    "summary_artifact_count": { "type": "integer", "minimum": 0 },
+    "hash_only_artifact_count": { "type": "integer", "minimum": 0 },
+    "transaction_count": { "type": "integer", "minimum": 0 },
+    "action_count": { "type": "integer", "minimum": 0 },
+    "receipt_count": { "type": "integer", "minimum": 0 },
+    "artifacts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/artifact" }
+    },
+    "transactions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/transaction" }
+    },
+    "actions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/action" }
+    },
+    "receipts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/receipt" }
+    },
+    "omitted_optional_artifacts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/omittedArtifact" }
+    }
+  },
+  "$defs": {
+    "nullableString": {
+      "anyOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "keyValue": {
+      "type": "object",
+      "required": ["path", "type", "value"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "minLength": 1 },
+        "value": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "artifact": {
+      "type": "object",
+      "required": [
+        "archive_path",
+        "source_path",
+        "artifact_type",
+        "stage",
+        "media_type",
+        "report_detail",
+        "sha256",
+        "size_bytes",
+        "content_kind",
+        "schema_name",
+        "schema_version",
+        "timestamp",
+        "scalar_field_count",
+        "object_count",
+        "array_count",
+        "transaction_count",
+        "action_count",
+        "outcomes",
+        "reporting_note"
+      ],
+      "properties": {
+        "archive_path": { "type": "string", "minLength": 1 },
+        "source_path": { "type": "string", "minLength": 1 },
+        "artifact_type": { "type": "string", "minLength": 1 },
+        "stage": { "type": "string", "minLength": 1 },
+        "media_type": { "type": "string", "minLength": 1 },
+        "report_detail": { "type": "string", "enum": ["full", "summary", "hash_only"] },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "size_bytes": { "type": "integer", "minimum": 0 },
+        "content_kind": { "type": "string", "enum": ["json", "checksum", "text", "binary"] },
+        "schema_name": { "$ref": "#/$defs/nullableString" },
+        "schema_version": { "$ref": "#/$defs/nullableString" },
+        "timestamp": { "$ref": "#/$defs/nullableString" },
+        "scalar_field_count": { "type": "integer", "minimum": 0 },
+        "object_count": { "type": "integer", "minimum": 0 },
+        "array_count": { "type": "integer", "minimum": 0 },
+        "transaction_count": { "type": "integer", "minimum": 0 },
+        "action_count": { "type": "integer", "minimum": 0 },
+        "outcomes": { "type": "array", "items": { "$ref": "#/$defs/keyValue" } },
+        "reporting_note": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "transaction": {
+      "type": "object",
+      "required": [
+        "artifact_path",
+        "json_path",
+        "label",
+        "signature",
+        "slot",
+        "block_time",
+        "status",
+        "program_id",
+        "details"
+      ],
+      "properties": {
+        "artifact_path": { "type": "string", "minLength": 1 },
+        "json_path": { "type": "string", "minLength": 1 },
+        "label": { "type": "string", "minLength": 1 },
+        "signature": { "type": "string", "minLength": 1 },
+        "slot": { "$ref": "#/$defs/nullableString" },
+        "block_time": { "$ref": "#/$defs/nullableString" },
+        "status": { "$ref": "#/$defs/nullableString" },
+        "program_id": { "$ref": "#/$defs/nullableString" },
+        "details": { "type": "array", "items": { "$ref": "#/$defs/keyValue" } }
+      },
+      "additionalProperties": false
+    },
+    "action": {
+      "type": "object",
+      "required": [
+        "artifact_path",
+        "json_path",
+        "label",
+        "kind",
+        "status",
+        "target",
+        "authority",
+        "change_id",
+        "details"
+      ],
+      "properties": {
+        "artifact_path": { "type": "string", "minLength": 1 },
+        "json_path": { "type": "string", "minLength": 1 },
+        "label": { "type": "string", "minLength": 1 },
+        "kind": { "$ref": "#/$defs/nullableString" },
+        "status": { "$ref": "#/$defs/nullableString" },
+        "target": { "$ref": "#/$defs/nullableString" },
+        "authority": { "$ref": "#/$defs/nullableString" },
+        "change_id": { "$ref": "#/$defs/nullableString" },
+        "details": { "type": "array", "items": { "$ref": "#/$defs/keyValue" } }
+      },
+      "additionalProperties": false
+    },
+    "receipt": {
+      "type": "object",
+      "required": [
+        "artifact_path",
+        "artifact_type",
+        "stage",
+        "schema_name",
+        "schema_version",
+        "timestamp",
+        "outcomes",
+        "sha256"
+      ],
+      "properties": {
+        "artifact_path": { "type": "string", "minLength": 1 },
+        "artifact_type": { "type": "string", "minLength": 1 },
+        "stage": { "type": "string", "minLength": 1 },
+        "schema_name": { "$ref": "#/$defs/nullableString" },
+        "schema_version": { "$ref": "#/$defs/nullableString" },
+        "timestamp": { "$ref": "#/$defs/nullableString" },
+        "outcomes": { "type": "array", "items": { "$ref": "#/$defs/keyValue" } },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      },
+      "additionalProperties": false
+    },
+    "omittedArtifact": {
+      "type": "object",
+      "required": [
+        "source_path",
+        "archive_path",
+        "artifact_type",
+        "stage",
+        "report_detail",
+        "reason"
+      ],
+      "properties": {
+        "source_path": { "type": "string", "minLength": 1 },
+        "archive_path": { "type": "string", "minLength": 1 },
+        "artifact_type": { "type": "string", "minLength": 1 },
+        "stage": { "type": "string", "minLength": 1 },
+        "report_detail": { "type": "string", "enum": ["full", "summary", "hash_only"] },
+        "reason": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

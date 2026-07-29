@@ -1,0 +1,63 @@
+schema: record-schema-registry-profile
+schema_version: 1
+licenseRef: LicenseRef-OPCO-INTERNAL
+profile_id: entity-constitutional-internal-v1
+name: Entity Constitutional Documents Registry Profile
+description: >
+  Internal registry for non-DAO entity constitutive and governance-adjacent
+  documents (ENT series). Source docs are Markdown; stitched packets
+  (cover/TOC/spine/annexes) are produced by render packs. Intended for
+  constitutions, bylaws, articles, charters, company agreements, memoranda,
+  adoption resolutions, and related supporting schedules for legal entities
+  that are not subject to DAO voting flows.
+
+rules:
+  root:
+    required_paths:
+      - INDEX.md
+      - README.md
+      - LICENSE
+      - DISCLAIMER.md
+    disallow_unknown_top_level: false
+
+  buckets:
+    - bucket: entities
+      path: .
+      record_constraints:
+        require_series_code: ENT
+
+        require_record_directory_regex: "^[A-Z]{2,5}-\\d{5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?$"
+        require_file_name_regex: "^[A-Z]{2,5}-\\d{5}_[A-Z]{2,5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?\\.[A-Za-z0-9]+$"
+
+        require_meta: true
+        require_primary_document: true
+        require_documents_primary_ref: true
+
+        status_phase_allow:
+          - draft
+          - reviewed
+          - approved
+          - adopted
+          - executed
+          - effective
+          - current
+          - superseded
+          - retired
+
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+
+        disallow_extensions: [pdf]
+
+        recommended_files:
+          - "{RECORD_ID}_IND-index.md"
+          - "{RECORD_ID}_DOC-spine.md"
+          - "{RECORD_ID}_ANN-schedule-a.md"
+
+  document_policies:
+    pack_paths:
+      - type: formatting
+        path: formatting/packs/template-agreements-v1.json
+      - type: render
+        path: render/packs/entity-constitutional-v1.json

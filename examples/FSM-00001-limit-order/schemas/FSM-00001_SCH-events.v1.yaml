@@ -1,0 +1,150 @@
+schema: fsm-events
+schema_version: 1
+record_id: FSM-00001
+
+description: |
+  Event definitions for limit order state machine.
+  Events trigger state transitions and carry associated data.
+
+events:
+  - name: activate
+    code: 1
+    source: crank
+    description: Activate a pending order
+    payload: {}
+    triggers_from: [pending]
+    emits: OrderActivated
+
+  - name: partial_fill
+    code: 2
+    source: crank
+    description: Partially fill an order
+    payload:
+      fill_amount:
+        type: u64
+        description: Amount to fill in this execution
+      fill_price:
+        type: u128
+        description: Execution price (Q64.64)
+    triggers_from: [open, partial]
+    emits: OrderPartiallyFilled
+
+  - name: fill
+    code: 3
+    source: crank
+    description: Completely fill an order
+    payload:
+      fill_amount:
+        type: u64
+        description: Final fill amount
+      fill_price:
+        type: u128
+        description: Execution price (Q64.64)
+    triggers_from: [open, partial]
+    emits: OrderFilled
+
+  - name: cancel
+    code: 4
+    source: user
+    description: Cancel an order
+    payload:
+      reason:
+        type: u8
+        description: Cancellation reason code
+        values:
+          0: user_initiated
+          1: admin
+          2: program_upgrade
+    triggers_from: [pending, open, partial]
+    emits: OrderCancelled
+
+  - name: expire
+    code: 5
+    source: crank
+    description: Expire an order past TTL
+    payload: {}
+    triggers_from: [open, partial]
+    emits: OrderExpired
+
+event_encoding:
+  type: u8
+  range: [1, 5]
+
+emitted_events:
+  - name: OrderActivated
+    discriminator: [0x01]
+    fields:
+      - name: order_id
+        type: u64
+      - name: owner
+        type: pubkey
+      - name: pool
+        type: pubkey
+      - name: side
+        type: u8
+      - name: trigger_price
+        type: u128
+      - name: amount_in
+        type: u64
+      - name: expiry_slot
+        type: u64
+      - name: slot
+        type: u64
+
+  - name: OrderPartiallyFilled
+    discriminator: [0x02]
+    fields:
+      - name: order_id
+        type: u64
+      - name: fill_amount
+        type: u64
+      - name: fill_price
+        type: u128
+      - name: amount_out
+        type: u64
+      - name: remaining
+        type: u64
+      - name: fill_count
+        type: u16
+      - name: slot
+        type: u64
+
+  - name: OrderFilled
+    discriminator: [0x03]
+    fields:
+      - name: order_id
+        type: u64
+      - name: total_amount_in
+        type: u64
+      - name: total_amount_out
+        type: u64
+      - name: avg_fill_price
+        type: u128
+      - name: fill_count
+        type: u16
+      - name: slot
+        type: u64
+
+  - name: OrderCancelled
+    discriminator: [0x04]
+    fields:
+      - name: order_id
+        type: u64
+      - name: refund_amount
+        type: u64
+      - name: reason
+        type: u8
+      - name: slot
+        type: u64
+
+  - name: OrderExpired
+    discriminator: [0x05]
+    fields:
+      - name: order_id
+        type: u64
+      - name: refund_amount
+        type: u64
+      - name: expiry_slot
+        type: u64
+      - name: slot
+        type: u64

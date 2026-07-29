@@ -1,0 +1,46 @@
+schema: record-schema
+schema_version: 1
+id: CPPK-00001
+series_code: CPPK
+series: 1
+title: "CPPK - Treasury Operator (Emergency Controls)"
+slug: treasury-operator-emergency
+
+status:
+  phase: interim
+  last_updated: "2026-03-01T00:00:00Z"
+  confidentiality: redacted
+
+documents:
+  primary:
+    - path: CPPK-00001_DOC-main.md
+      label: "CPPK public entry"
+
+extensions:
+  formatting:
+    profile: canonical-ascii
+  cppk:
+    public_key_ed25519_base58: "<pubkey>"
+    role: "Treasury operator (emergency mint/redeem + constrained DLMM mgmt)"
+    scope:
+      spending_caps: "<human text or structured object>"
+      destination_allowlist: ["<addr1>", "<addr2>"]
+      constraints_ref: "See on-chain program allowlists / caps"
+    proof_of_control:
+      method: "ed25519 signature over challenge"
+      challenge_message_v1: "SOME DAO LLC CPPK ATTESTATION v1: <nonce>"
+
+commitments:
+  - commitment_id: "cmt-sha256-abcdef012345"
+    kind: redacted-plus-fulltext
+    formatting_profile: canonical-ascii
+    hash_sha256_hex: "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
+    hash_sha256_base58: "11111111111111111111111111111111"
+    hash_surface: markdown-body-v1
+    disclosure: "Binds confidential counterparty particulars / scopes retained privately."
+    storage: "evidence-store://vault/CPPK-00001/fulltext"
+    created: "2026-03-01T00:00:00Z"
+    anchors:
+      - kind: solana-memo
+        network: mainnet-beta
+        ref: "<tx-signature>"

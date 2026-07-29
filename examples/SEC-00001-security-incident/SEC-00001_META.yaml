@@ -1,0 +1,63 @@
+schema: record-schema
+schema_version: 1
+
+id: SEC-00001
+series_code: SEC
+series: 1
+title: Compromised npm Dependency Investigation
+
+status:
+  phase: closed
+  confidentiality: internal
+  last_updated: "2026-01-07T00:00:00Z"
+
+tags:
+  - security
+  - npm
+  - supply-chain
+  - incident
+
+ownership:
+  lead: security-team
+  reviewers:
+    - engineering-lead
+    - compliance
+
+summary: >
+  Investigation into a compromised npm package detected by the internal
+  security scanner. Package contained obfuscated exfiltration code targeting
+  environment variables and private keys.
+
+timeline:
+  detected: "2026-01-05T14:32:00Z"
+  contained: "2026-01-05T15:10:00Z"
+  resolved: "2026-01-06T18:00:00Z"
+  closed: "2026-01-07T00:00:00Z"
+
+severity:
+  initial: critical
+  final: high
+  impact: potential-exposure
+
+documents:
+  primary:
+    ref: SEC-00001_REP-investigation.md
+  log:
+    ref: SEC-00001_LOG-notes.md
+  annexes:
+    - ref: SEC-00001_IOC-indicators.json
+      description: Indicators of compromise (hashes, addresses, domains)
+    - ref: SEC-00001_EVD-scanner-output.txt
+      description: Raw scanner output at time of detection
+    - ref: SEC-00001_ANN-A-remediation.md
+      description: Remediation steps and verification
+
+extensions:
+  formatting:
+    profile: canonical-ascii
+  security:
+    cvss_score: 7.5
+    attack_vector: supply-chain
+    affected_systems:
+      - ci-pipeline
+      - development-workstations

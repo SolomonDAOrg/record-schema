@@ -1,0 +1,36 @@
+schema: record-schema
+schema_version: 1
+
+id: NDA-00001
+series_code: NDA
+series: 1
+title: Non-Disclosure Agreement - <Counterparty>
+slug: counterparty-nda
+
+status:
+  phase: draft
+  last_updated: "2026-01-01T00:00:00Z"
+
+tags: []
+owners: []
+
+links:
+  supersedes: []
+  superseded_by: []
+  related: []
+  external: []
+
+documents:
+  primary: NDA-00001_DOC-main.md
+  log: NDA-00001_LOG-notes.md
+  annexes: []
+
+timeline:
+  opened_at: "2026-01-01T00:00:00Z"
+  closed_at: null
+
+extensions:
+  formatting:
+    profile: canonical-ascii
+  language:
+    locale: en-US

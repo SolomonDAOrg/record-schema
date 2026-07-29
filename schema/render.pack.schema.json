@@ -101,6 +101,9 @@
         }
       },
       "additionalProperties": true
+    },
+    "packet_config": {
+      "$ref": "#/$defs/packetConfig"
     }
   },
   "additionalProperties": true,
@@ -762,6 +765,15 @@
         },
         "table_style": {
           "$ref": "#/$defs/tableRenderConfig"
+        },
+        "fonts": {
+          "$ref": "#/$defs/pdfFontsConfig"
+        },
+        "embedded_fonts": {
+          "$ref": "#/$defs/pdfEmbeddedFontsConfig"
+        },
+        "font_role_defaults": {
+          "$ref": "#/$defs/pdfFontRoleDefaults"
         }
       },
       "additionalProperties": true
@@ -795,6 +807,205 @@
           }
         }
       ]
+    },
+    "pdfFontsConfig": {
+      "type": "object",
+      "description": "Named PDF font resources for the renderer. These can be built-in PDF fonts or PostScript names of embedded faces.",
+      "properties": {
+        "regular": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bold": {
+          "type": "string",
+          "minLength": 1
+        },
+        "italic": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bold_italic": {
+          "type": "string",
+          "minLength": 1
+        },
+        "monospace": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "pdfEmbeddedFontFace": {
+      "type": "object",
+      "required": [
+        "path",
+        "format"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "ttf",
+            "otf",
+            "woff2"
+          ]
+        },
+        "postscript_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "embed": {
+          "type": "boolean"
+        },
+        "family": {
+          "type": "string"
+        },
+        "style": {
+          "type": "string"
+        },
+        "weight": {
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "pdfEmbeddedFontFamily": {
+      "type": "object",
+      "properties": {
+        "display_name": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "faces": {
+          "type": "object",
+          "properties": {
+            "regular": {
+              "$ref": "#/$defs/pdfEmbeddedFontFace"
+            },
+            "bold": {
+              "$ref": "#/$defs/pdfEmbeddedFontFace"
+            },
+            "italic": {
+              "$ref": "#/$defs/pdfEmbeddedFontFace"
+            },
+            "bold_italic": {
+              "$ref": "#/$defs/pdfEmbeddedFontFace"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "pdfEmbeddedFontsConfig": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "resolve_relative_to": {
+          "type": "string",
+          "enum": [
+            "pack",
+            "repo-root",
+            "cwd"
+          ]
+        },
+        "base_dir": {
+          "type": "string"
+        },
+        "register_before_layout": {
+          "type": "boolean"
+        },
+        "encoding": {
+          "type": "string",
+          "enum": [
+            "WinAnsiEncoding",
+            "Identity-H"
+          ]
+        },
+        "families": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/pdfEmbeddedFontFamily"
+          }
+        },
+        "roles": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "fallbacks": {
+          "$ref": "#/$defs/pdfFontsConfig"
+        },
+        "subsetting": {
+          "type": "object",
+          "properties": {
+            "strategy": {
+              "type": "string",
+              "enum": [
+                "full-file",
+                "glyph-subset",
+                "none"
+              ]
+            },
+            "allow_unicode": {
+              "type": "boolean"
+            },
+            "notes": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "pdfFontRoleDefaults": {
+      "type": "object",
+      "description": "Maps semantic document roles such as body, heading_1, heading_2, heading_3, heading_4, heading_5, heading_6, toc_title, toc_entry, toc_level_1, table_header, table_body, table_caption, definition_term, notice_title, signature_title, signature_label, signature_value, and code to entries in embedded_fonts.roles. Styled lookups also try suffixed variants such as _regular, _bold, _italic, _bold_italic, and _monospace.",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "coverRenderConfig": {
+      "type": "object",
+      "properties": {
+        "font_roles": {
+          "type": "object",
+          "description": "Maps cover-specific semantic roles such as title, subtitle, entity, metadata_label, metadata_value, eyebrow, and footer_note to entries in embedded_fonts.roles.",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "packetConfig": {
+      "type": "object",
+      "properties": {
+        "cover_config": {
+          "$ref": "#/$defs/coverRenderConfig"
+        }
+      },
+      "additionalProperties": true
     }
   }
 }

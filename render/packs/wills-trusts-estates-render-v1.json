@@ -1,0 +1,812 @@
+{
+  "schema": "record-schema-render-pack",
+  "schema_version": 1,
+  "pack_id": "wills-trusts-estates-render-v1",
+  "description": "Render pack for formal wills, trusts, estate-planning, departure evidence, and continuity packets. Designed to render as a private personal-continuity record set rather than an entity constitutional packet.",
+  "imports": [
+    "render/packs/base-v1.json"
+  ],
+  "packet_config": {
+    "default_entity_name": "PRIVATE ESTATE AND CONTINUITY RECORD",
+    "default_document_title": "WILLS, TRUSTS AND ESTATES CONTINUITY PACKET",
+    "header_text": "PRIVATE ESTATE AND CONTINUITY DRAFT",
+    "series_prefix": "^(WTE-\\d+_)?",
+    "header_title_format": "plain",
+    "section_page_break": "always",
+    "path_to_title": {
+      "Last_Will_and_Testament": "LAST WILL AND TESTAMENT",
+      "Codicil": "CODICIL",
+      "Trust_Deed": "TRUST DEED",
+      "Letter_of_Wishes": "LETTER OF WISHES",
+      "Execution_Memorandum": "EXECUTION MEMORANDUM",
+      "Estate_Summary": "ESTATE SUMMARY",
+      "Index": "INDEX",
+      "Advance_Care_Directive": "ADVANCE CARE DIRECTIVE",
+      "Advance_Directive": "ADVANCE DIRECTIVE",
+      "Power_of_Attorney": "POWER OF ATTORNEY",
+      "Enduring_Power_of_Attorney": "ENDURING POWER OF ATTORNEY",
+      "Departure_Evidence_Memorandum": "DEPARTURE EVIDENCE MEMORANDUM",
+      "Continuity_Memorandum": "CONTINUITY MEMORANDUM",
+      "Emergency_Access_Memorandum": "EMERGENCY ACCESS MEMORANDUM",
+      "Jurisdictional_Record": "JURISDICTIONAL RECORD",
+      "Business_Continuity_Schedule": "BUSINESS CONTINUITY SCHEDULE",
+      "Private_Agreement_Register": "PRIVATE AGREEMENT REGISTER",
+      "Asset_Inventory": "ASSET INVENTORY",
+      "Custody_and_Access": "CUSTODY AND ACCESS",
+      "Professional_Adviser_Register": "PROFESSIONAL ADVISER REGISTER"
+    },
+    "name_patterns": [
+      "Last_Will_and_Testament",
+      "Will",
+      "Trust",
+      "Codicil",
+      "Letter_of_Wishes",
+      "Execution_Memorandum",
+      "Estate_Summary",
+      "Index",
+      "Advance_Care_Directive",
+      "Advance_Directive",
+      "Power_of_Attorney",
+      "Enduring_Power_of_Attorney",
+      "Departure_Evidence",
+      "Continuity",
+      "Emergency_Access",
+      "Jurisdictional_Record",
+      "Business_Continuity",
+      "Private_Agreement_Register",
+      "Asset_Inventory",
+      "Custody_and_Access",
+      "Professional_Adviser_Register",
+      "Schedule_\\d+",
+      "Annex"
+    ],
+    "entity_extraction": {
+      "fields": [
+        "estate_name",
+        "testator_name",
+        "grantor_name",
+        "principal_name",
+        "entity_name",
+        "title"
+      ],
+      "title_pattern": "^(?:\\s*(?:Last[\\s_-]+Will(?:[\\s_-]+and[\\s_-]+Testament)?|Will|Codicil|Trust(?:[\\s_-]+Deed)?|Letter[\\s_-]+of[\\s_-]+Wishes|Power[\\s_-]+of[\\s_-]+Attorney|Advance[\\s_-]+(?:Care[\\s_-]+)?Directive|Continuity[\\s_-]+Memorandum|Departure[\\s_-]+Evidence[\\s_-]+Memorandum)(?:[\\s_-]+of|[\\s_-]+for)?[\\s_-]+(.+?)\\s*$|\\s*(.+?)[\\s_-]+(?:Estate[\\s_-]+Packet|Continuity[\\s_-]+Packet|Last[\\s_-]+Will(?:[\\s_-]+and[\\s_-]+Testament)?|Trust(?:[\\s_-]+Deed)?)\\s*$)"
+    },
+    "cover_config": {
+      "suppress_header": true,
+      "suppress_footer": true,
+      "suppress_page_numbering": true,
+      "reserve_header_footer_space": false,
+      "draft_watermark": {
+        "enabled": true,
+        "text": "PRIVATE DRAFT",
+        "gray": 0.935,
+        "angle_deg": 35,
+        "font_size": 64
+      },
+      "cover_layout": {
+        "description": "Personal estate and continuity cover using warm ivory paper, walnut ink, oxblood accents, and bookish probate-style typography. The visual language is intentionally separate from entity constitutional packets.",
+        "palette": {
+          "accent": "#5A2E22",
+          "title": "#211915",
+          "muted": "#6F6258",
+          "danger": "#7B1E1E",
+          "paper": "#FBF7EF",
+          "note_fill": "#F4EADF",
+          "note_border": "#D9C8B5",
+          "badge_text": "#FBF7EF",
+          "badge_fill": "#5A2E22",
+          "badge_rule": "#C9B292",
+          "rule": "#9C7A56"
+        },
+        "eyebrow": {
+          "enabled": true,
+          "text": "PRIVATE ESTATE / CONTINUITY / EXECUTION RECORD",
+          "align": "center",
+          "font_size": 9.5,
+          "color": "#FBF7EF",
+          "after_spacer": 18,
+          "letter_spacing": 1.25,
+          "background_color": "#5A2E22",
+          "border_color": "#C9B292",
+          "padding_x": 14,
+          "padding_y": 6,
+          "top_spacer": 20
+        },
+        "title_block": {
+          "top_spacer": 82,
+          "align": "center",
+          "title_font_size": 26,
+          "subtitle_font_size": 11,
+          "entity_font_size": 17.5,
+          "include_conjunction_line": false,
+          "after_title_spacer": 8,
+          "after_subtitle_spacer": 12,
+          "after_entity_spacer": 18,
+          "title_color": "#211915",
+          "subtitle_color": "#6F6258",
+          "entity_color": "#5A2E22"
+        },
+        "rule": {
+          "enabled": true,
+          "start_frac": 0.18,
+          "end_frac": 0.82,
+          "line_width": 0.65,
+          "color": "#9C7A56",
+          "after_spacer": 20
+        },
+        "metadata_block": {
+          "layout": "columns",
+          "align": "left",
+          "label_align": "left",
+          "column_gap": 14,
+          "font_size": 9.75,
+          "line_spacer": 6,
+          "label_value_separator": ": ",
+          "separator": ": ",
+          "start_frac": 0.16,
+          "end_frac": 0.84,
+          "fields": [
+            {
+              "key": "document_id",
+              "label": "Document ID"
+            },
+            {
+              "key": "version",
+              "label": "Version"
+            },
+            {
+              "key": "status",
+              "label": "Status"
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective Date"
+            },
+            {
+              "key": "jurisdiction",
+              "label": "Jurisdiction"
+            },
+            {
+              "key": "confidentiality",
+              "label": "Confidentiality"
+            }
+          ],
+          "label_color": "#6F6258",
+          "value_color": "#211915",
+          "background_color": "#F4EADF",
+          "border_color": "#D9C8B5",
+          "padding": 11
+        },
+        "page_background": {
+          "color": "#FBF7EF"
+        },
+        "page_frame": {
+          "enabled": true,
+          "inset": 18,
+          "line_width": 0.8,
+          "color": "#D9C8B5"
+        },
+        "content_margins": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "font_roles": {
+        "title": "cover_title",
+        "subtitle": "cover_subtitle",
+        "entity": "cover_name",
+        "eyebrow": "cover_eyebrow",
+        "metadata_label": "cover_meta_label",
+        "metadata_value": "cover_meta_value"
+      }
+    },
+    "packet_variants": {
+      "default": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "will_execution": {
+        "include_cover": true,
+        "include_toc": false
+      },
+      "internal_note": {
+        "include_cover": false,
+        "include_toc": false,
+        "signing_page": false
+      },
+      "continuity_packet": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "execution_copy": {
+        "include_cover": true,
+        "include_toc": false
+      },
+      "filing_evidence_copy": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "confidential_annex_only": {
+        "include_cover": false,
+        "include_toc": false,
+        "signing_page": false
+      }
+    }
+  },
+  "document_policies": {
+    "defaults": {
+      "output_encoding": "utf-8",
+      "output_newlines": "lf",
+      "horizontal_rule_behavior": "page-break"
+    },
+    "targets": {
+      "pdf": {
+        "format": "pdf",
+        "page_size": "letter",
+        "orientation": "portrait",
+        "margins": {
+          "top": 72,
+          "bottom": 72,
+          "left": 72,
+          "right": 72,
+          "unit": "pt"
+        },
+        "fonts": {
+          "regular": "SourceSerif4-Regular",
+          "bold": "SourceSerif4-Bold",
+          "italic": "SourceSerif4-Italic",
+          "bold_italic": "SourceSerif4-BoldItalic",
+          "monospace": "Courier"
+        },
+        "base_font_size": 10.15,
+        "title_font_size": 17,
+        "heading_scales": {
+          "h1": 1.68,
+          "h2": 1.43,
+          "h3": 1.22,
+          "h4": 1.08
+        },
+        "line_spacing": 1.48,
+        "paragraph_spacing_factor": 0.54,
+        "list_indent_per_level": 20,
+        "code_block_indent": 36,
+        "horizontal_rule": {
+          "behavior": "page-break"
+        },
+        "inline_formatting": {
+          "enabled": true,
+          "underline_offset_factor": 0.15,
+          "underline_thickness_small": 0.5,
+          "underline_thickness_large": 0.75,
+          "underline_size_threshold": 12
+        },
+        "toc": {
+          "title_font_size": 15.5,
+          "level_styles": {
+            "1": {
+              "font_size_scale": 1.05,
+              "bold": true,
+              "indent": 0,
+              "spacing_after": 1.15,
+              "spacing_before": 1.2
+            },
+            "2": {
+              "font_size_scale": 0.92,
+              "bold": true,
+              "indent": 24,
+              "spacing_after": 1.2
+            }
+          }
+        },
+        "table": {
+          "font_size_scale": 0.95,
+          "min_font_size": 6,
+          "max_font_size": 10,
+          "auto_shrink": true,
+          "cell_padding": {
+            "x": 4,
+            "y": 3
+          },
+          "border_width": 0.5,
+          "border_color": "#D9C8B5",
+          "header": {
+            "background_color": "#F4EADF",
+            "text_color": "#211915",
+            "cell_padding": {
+              "x": 4,
+              "y": 3
+            }
+          },
+          "zebra": {
+            "enabled": true,
+            "odd_background": "#FFFFFF",
+            "even_background": "#FBF7EF"
+          },
+          "line_height": 1.2,
+          "bleed_in": 0.2,
+          "bleed_if_columns_gt": 8,
+          "min_page_edge_inset_in": 0.25
+        },
+        "notice": {
+          "padding": 10,
+          "border_width": 0.8,
+          "border_color": "#7B1E1E",
+          "background_color": "#FBF2EA",
+          "title_color": "#7B1E1E"
+        },
+        "cover_page": {
+          "title_position": "upper-third",
+          "title_spacing": 28,
+          "company_name_font_size": 22,
+          "subtitle_font_size": 12
+        },
+        "embedded_fonts": {
+          "enabled": true,
+          "resolve_relative_to": "pack",
+          "roles": {
+            "cover_title": "Marcellus-Regular",
+            "cover_subtitle": "Spectral-Regular",
+            "cover_name": "Spectral-SemiBold",
+            "cover_eyebrow": "SourceSerif4-SemiBold",
+            "cover_meta_label": "SourceSerif4-Regular",
+            "cover_meta_value": "SourceSerif4-SemiBold",
+            "body": "SourceSerif4-Regular",
+            "body_regular": "SourceSerif4-Regular",
+            "body_bold": "SourceSerif4-Bold",
+            "body_italic": "SourceSerif4-Italic",
+            "body_bold_italic": "SourceSerif4-BoldItalic",
+            "heading_display": "Spectral-Regular",
+            "heading_display_regular": "Spectral-Regular",
+            "heading_display_bold": "Spectral-SemiBold",
+            "heading_display_italic": "Spectral-Italic",
+            "heading_display_bold_italic": "Spectral-BoldItalic",
+            "toc_title": "Marcellus-Regular",
+            "toc_title_bold": "Spectral-SemiBold",
+            "toc_entry": "Spectral-Regular",
+            "toc_entry_bold": "Spectral-SemiBold",
+            "table_heading": "SourceSerif4-Bold",
+            "table_heading_bold": "SourceSerif4-Bold",
+            "table_body": "SourceSerif4-Regular",
+            "table_body_regular": "SourceSerif4-Regular",
+            "table_body_bold": "SourceSerif4-Bold",
+            "table_caption": "Spectral-SemiBold",
+            "table_caption_bold": "Spectral-SemiBold",
+            "definition_term": "Spectral-SemiBold",
+            "definition_term_bold": "Spectral-SemiBold",
+            "notice_title": "Spectral-SemiBold",
+            "notice_title_bold": "Spectral-SemiBold",
+            "signature_title": "Spectral-SemiBold",
+            "signature_title_bold": "Spectral-SemiBold",
+            "signature_label": "SourceSerif4-Regular",
+            "signature_label_regular": "SourceSerif4-Regular",
+            "signature_value": "SourceSerif4-Regular",
+            "signature_value_regular": "SourceSerif4-Regular",
+            "code": "Courier",
+            "code_monospace": "Courier"
+          },
+          "families": {
+            "SourceSerif4": {
+              "faces": {
+                "regular": {
+                  "postscript_name": "SourceSerif4-Regular",
+                  "google_font": {
+                    "family": "Source Serif 4",
+                    "weight": 400,
+                    "style": "normal"
+                  },
+                  "fallback": "Times-Roman"
+                },
+                "semibold": {
+                  "postscript_name": "SourceSerif4-SemiBold",
+                  "google_font": {
+                    "family": "Source Serif 4",
+                    "weight": 600,
+                    "style": "normal"
+                  },
+                  "fallback": "Times-Bold"
+                },
+                "bold": {
+                  "postscript_name": "SourceSerif4-Bold",
+                  "google_font": {
+                    "family": "Source Serif 4",
+                    "weight": 700,
+                    "style": "normal"
+                  },
+                  "fallback": "Times-Bold"
+                },
+                "italic": {
+                  "postscript_name": "SourceSerif4-Italic",
+                  "google_font": {
+                    "family": "Source Serif 4",
+                    "weight": 400,
+                    "style": "italic"
+                  },
+                  "fallback": "Times-Italic"
+                },
+                "bold_italic": {
+                  "postscript_name": "SourceSerif4-BoldItalic",
+                  "google_font": {
+                    "family": "Source Serif 4",
+                    "weight": 700,
+                    "style": "italic"
+                  },
+                  "fallback": "Times-BoldItalic"
+                }
+              }
+            },
+            "Spectral": {
+              "faces": {
+                "regular": {
+                  "postscript_name": "Spectral-Regular",
+                  "google_font": {
+                    "family": "Spectral",
+                    "weight": 400,
+                    "style": "normal"
+                  },
+                  "fallback": "SourceSerif4-Regular"
+                },
+                "semibold": {
+                  "postscript_name": "Spectral-SemiBold",
+                  "google_font": {
+                    "family": "Spectral",
+                    "weight": 600,
+                    "style": "normal"
+                  },
+                  "fallback": "SourceSerif4-Bold"
+                },
+                "italic": {
+                  "postscript_name": "Spectral-Italic",
+                  "google_font": {
+                    "family": "Spectral",
+                    "weight": 400,
+                    "style": "italic"
+                  },
+                  "fallback": "SourceSerif4-Italic"
+                },
+                "bold_italic": {
+                  "postscript_name": "Spectral-BoldItalic",
+                  "google_font": {
+                    "family": "Spectral",
+                    "weight": 700,
+                    "style": "italic"
+                  },
+                  "fallback": "Times-BoldItalic"
+                }
+              }
+            },
+            "Marcellus": {
+              "faces": {
+                "regular": {
+                  "postscript_name": "Marcellus-Regular",
+                  "google_font": {
+                    "family": "Marcellus",
+                    "weight": 400,
+                    "style": "normal"
+                  },
+                  "fallback": "Spectral-Regular"
+                }
+              }
+            }
+          },
+          "fallbacks": {
+            "regular": "Times-Roman",
+            "bold": "Times-Bold",
+            "italic": "Times-Italic",
+            "boldItalic": "Times-BoldItalic",
+            "monospace": "Courier"
+          }
+        },
+        "font_role_defaults": {
+          "body": "body",
+          "heading_1": "heading_display",
+          "heading_2": "heading_display",
+          "heading_3": "heading_display",
+          "heading_4": "heading_display",
+          "heading_5": "heading_display",
+          "heading_6": "heading_display",
+          "toc_title": "toc_title",
+          "toc_entry": "toc_entry",
+          "table_header": "table_heading",
+          "table_body": "table_body",
+          "table_caption": "table_caption",
+          "definition_term": "definition_term",
+          "notice_title": "notice_title",
+          "signature_title": "signature_title",
+          "signature_label": "signature_label",
+          "signature_value": "signature_value",
+          "code": "code"
+        }
+      }
+    },
+    "render_profiles": {
+      "estate-standard-v1": {
+        "description": "Standard wills, trusts and estates PDF rendering",
+        "target": "pdf",
+        "overrides": {
+          "break_mode": "always"
+        }
+      },
+      "estate-packet-v1": {
+        "description": "Estate and continuity packet with cover page, TOC, and stitched sections",
+        "target": "pdf",
+        "extends": "estate-standard-v1",
+        "overrides": {
+          "base_font_size": 10.15,
+          "line_spacing": 1.48,
+          "horizontal_rule": {
+            "behavior": "page-break"
+          },
+          "leading_section": {
+            "mode": "centered-title-block",
+            "max_nodes": 8,
+            "stop_at_metadata": true,
+            "stop_at_horizontal_rule": true
+          }
+        }
+      },
+      "estate-execution-v1": {
+        "description": "Execution-oriented wills and estate instruments without packet cover mechanics",
+        "target": "pdf",
+        "extends": "estate-standard-v1",
+        "overrides": {
+          "base_font_size": 10.35,
+          "line_spacing": 1.52,
+          "break_mode": "always"
+        }
+      },
+      "estate-continuity-v1": {
+        "description": "Continuity, departure evidence, adviser, jurisdictional, and emergency-access memoranda",
+        "target": "pdf",
+        "extends": "estate-standard-v1",
+        "overrides": {
+          "base_font_size": 10.15,
+          "line_spacing": 1.48,
+          "horizontal_rule": {
+            "behavior": "rule",
+            "width_factor": 1,
+            "thickness": 0.8,
+            "color": "#9C7A56",
+            "spacing_before": 10,
+            "spacing_after": 14
+          },
+          "leading_section": {
+            "mode": "centered-title-block",
+            "max_nodes": 8,
+            "stop_at_metadata": true,
+            "stop_at_horizontal_rule": true
+          }
+        }
+      },
+      "estate-annex-v1": {
+        "description": "Schedules, annexes, inventories, and private registers",
+        "target": "pdf",
+        "extends": "estate-standard-v1",
+        "overrides": {
+          "break_mode": "part-only"
+        }
+      }
+    },
+    "rulesets": [
+      {
+        "id": "estate-packet-v1",
+        "selectors": {
+          "doc_types": [
+            "PACKET",
+            "PKT"
+          ],
+          "extensions": [
+            "pdf"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "estate-packet-v1"
+        }
+      },
+      {
+        "id": "estate-primary-instrument-v1",
+        "selectors": {
+          "doc_types": [
+            "WIL",
+            "TRU",
+            "COD",
+            "POA",
+            "ADV"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Will*",
+            "**/*Testament*",
+            "**/*Trust*",
+            "**/*Codicil*",
+            "**/*Power_of_Attorney*",
+            "**/*Advance_Directive*",
+            "**/*Advance_Care_Directive*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "estate-execution-v1"
+        }
+      },
+      {
+        "id": "estate-continuity-memorandum-v1",
+        "selectors": {
+          "doc_types": [
+            "MEM",
+            "DEP",
+            "CON",
+            "EME",
+            "JUR",
+            "LOW"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Memorandum*",
+            "**/*Departure_Evidence*",
+            "**/*Continuity*",
+            "**/*Emergency_Access*",
+            "**/*Jurisdictional_Record*",
+            "**/*Letter_of_Wishes*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "estate-continuity-v1"
+        }
+      },
+      {
+        "id": "estate-annex-register-v1",
+        "selectors": {
+          "doc_types": [
+            "ANN",
+            "SCH",
+            "AGR",
+            "INV",
+            "REG"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Annex*",
+            "**/*Schedule*",
+            "**/*Register*",
+            "**/*Inventory*",
+            "**/*Agreement*",
+            "**/*Business_Continuity*",
+            "**/*Private_Agreement_Register*",
+            "**/*Asset_Inventory*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "estate-annex-v1"
+        }
+      },
+      {
+        "id": "estate-index-v1",
+        "selectors": {
+          "doc_types": [
+            "IND",
+            "DOC"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "estate-standard-v1"
+        }
+      }
+    ],
+    "spacing_policy": {
+      "pair_rules": [
+        {
+          "prev": "heading",
+          "curr": "paragraph",
+          "before_em": 0.46
+        },
+        {
+          "prev": "paragraph",
+          "curr": "heading",
+          "before_em": 1.22
+        },
+        {
+          "prev": "heading",
+          "curr": "heading",
+          "before_em": 0.62
+        },
+        {
+          "prev": "list",
+          "curr": "heading",
+          "before_em": 1.15
+        },
+        {
+          "prev": "paragraph",
+          "curr": "paragraph",
+          "before_em": 0.66
+        },
+        {
+          "prev": "paragraph",
+          "curr": "list",
+          "before_em": 0.42
+        },
+        {
+          "prev": "list",
+          "curr": "paragraph",
+          "before_em": 0.66
+        },
+        {
+          "prev": "table",
+          "curr": "paragraph",
+          "before_em": 0.74
+        },
+        {
+          "prev": "blockquote",
+          "curr": "paragraph",
+          "before_em": 0.7
+        }
+      ],
+      "defaults": {
+        "heading": {
+          "before_em": 1.0,
+          "after_em": 0.34
+        },
+        "paragraph": {
+          "before_em": 0.44,
+          "after_em": 0.44
+        },
+        "list": {
+          "before_em": 0.4,
+          "after_em": 0.4
+        },
+        "code-block": {
+          "before_em": 0.65,
+          "after_em": 0.65
+        },
+        "table": {
+          "before_em": 0.7,
+          "after_em": 0.7
+        },
+        "blockquote": {
+          "before_em": 0.7,
+          "after_em": 0.7
+        }
+      }
+    }
+  },
+  "packName": "wills-trusts-estates-continuity-render-v1",
+  "documentTypeOrder": [
+    "IND",
+    "DOC",
+    "WIL",
+    "COD",
+    "TRU",
+    "POA",
+    "ADV",
+    "LOW",
+    "MEM",
+    "DEP",
+    "CON",
+    "EME",
+    "JUR",
+    "AGR",
+    "INV",
+    "REG",
+    "ANN",
+    "SCH"
+  ],
+  "renderNotes": [
+    "CONFIDENTIAL annexes may be excluded from public or evidentiary filing copies while the index records their existence and controlled storage location.",
+    "Execution copies should keep instrument text and signing mechanics in the source Markdown; this render pack only supplies packet-level styling and routing.",
+    "Continuity memoranda, jurisdictional records, adviser registers, inventories, and emergency-access materials route through estate-continuity or annex profiles rather than entity-constitutional profiles."
+  ]
+}

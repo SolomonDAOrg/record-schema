@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solomondao.org/record-schema/deployment-release/deployment-batch-attestation.schema.json",
+  "title": "Deployment Batch Deployer Attestation",
+  "type": "object",
+  "required": [
+    "schema",
+    "schema_version",
+    "batch_id",
+    "record_id",
+    "batch_kind",
+    "network",
+    "program_id",
+    "manifest_sha256",
+    "artifact_root_sha256",
+    "final_execution_evidence_sha256",
+    "previous_batch_manifest_sha256",
+    "previous_batch_attestation_sha256",
+    "cryptographic_summary_path",
+    "cryptographic_summary_sha256",
+    "report_pdf_path",
+    "report_pdf_sha256",
+    "signer_role",
+    "signer_public_key",
+    "signature_algorithm",
+    "signature_domain",
+    "signed_at_utc",
+    "signature"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "deployment-release-batch-attestation"
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "batch_id": {
+      "type": "string",
+      "pattern": "^DEP-\\d{5}$"
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^DEP-\\d{5}$"
+    },
+    "batch_kind": {
+      "type": "string",
+      "enum": [
+        "initial_deployment",
+        "program_upgrade"
+      ]
+    },
+    "network": {
+      "type": "string",
+      "minLength": 1
+    },
+    "program_id": {
+      "type": "string",
+      "pattern": "^[1-9A-HJ-NP-Za-km-z]{32,44}$"
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "artifact_root_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "previous_batch_manifest_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "previous_batch_attestation_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "signer_role": {
+      "type": "string",
+      "enum": [
+        "initial_deployer",
+        "upgrade_deployer"
+      ]
+    },
+    "signer_public_key": {
+      "type": "string",
+      "pattern": "^[1-9A-HJ-NP-Za-km-z]{32,44}$"
+    },
+    "signature_algorithm": {
+      "type": "string",
+      "const": "ed25519"
+    },
+    "signature_domain": {
+      "type": "string",
+      "const": "chancery:deployment-release-batch"
+    },
+    "signed_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "signature": {
+      "type": "string",
+      "pattern": "^[1-9A-HJ-NP-Za-km-z]{80,90}$"
+    },
+    "final_execution_evidence_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "cryptographic_summary_path": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$"
+    },
+    "cryptographic_summary_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "report_pdf_path": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$"
+    },
+    "report_pdf_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

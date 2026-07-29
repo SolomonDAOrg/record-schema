@@ -100,6 +100,7 @@
   },
   "properties": {
     "SPDX-LicenseIdentifier": { "$ref": "#/$defs/spdxLikeOrSpdxLikes" },
+    "SPDX-License-Identifier": { "$ref": "#/$defs/spdxLikeOrSpdxLikes" },
     "Document-Type": {
       "$ref": "#/$defs/stringOrStrings",
       "description": "Category such as LICENSE, RESOLUTION, SOP, MEMO, etc."
@@ -138,6 +139,14 @@
     "Checksum": {
       "$ref": "#/$defs/stringOrStrings",
       "description": "Free-form checksum field if multiple algorithms are used."
+    },
+    "Checksum-SHA256": {
+      "$ref": "#/$defs/sha256HexOrSha256Hexes",
+      "description": "Lowercase hexadecimal SHA-256 checksum for a declared checksum surface."
+    },
+    "Checksum-Surface": {
+      "$ref": "#/$defs/stringOrStrings",
+      "description": "Named checksum surface, such as license-body-v1 or markdown-body-v1."
     },
     "Schema": {
       "anyOf": [

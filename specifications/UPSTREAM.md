@@ -61,9 +61,17 @@ Each upstream entry SHOULD include:
 - `name` (string, required): human name
 - `repo` (string, recommended): URL or local path
 - `revision` (string, recommended): git tag or commit sha
-- `license` (string, recommended): license identifier/name
+- `license` (string, recommended): license title/name
+- `licenseRef` (string, required when `licenseFile` is present): existing SPDX identifier or `LicenseRef-*`
+- `licenseCanonicalUrl` (string, required when `licenseFile` is present): extensionless canonical license URL
+- `licenseChecksumSha256` (string, required when `licenseFile` is present): lowercase `license-body-v1` SHA-256
+- `licenseChecksumSurface` (string, required when `licenseFile` is present): `license-body-v1`
+- `licenseFile` (string, optional): repository-relative license copy
 
 Tooling MAY treat missing `repo`/`revision` as incomplete provenance and emit warnings.
+When any license identity field is declared, the complete identity fields are required.
+Tooling SHOULD verify them against any local `licenseFile` and the canonical
+`SolomonDAOrg/licenses` registry.
 
 ---
 
@@ -89,9 +97,17 @@ Each provides entry MUST include:
   - `profile` (publishes one or more profiles)
   - `registry` (publishes a registry catalog)
   - `tooling` (publishes tooling/packs without being primarily a registry)
-- `license` (string, recommended): license identifier/name
-- `licenseFile` (string, recommended): license file reference
+- `license` (string, recommended): license title/name
+- `licenseRef` (string, required when `licenseFile` is present): existing SPDX identifier or `LicenseRef-*`
+- `licenseCanonicalUrl` (string, required when `licenseFile` is present): extensionless canonical license URL
+- `licenseChecksumSha256` (string, required when `licenseFile` is present): lowercase `license-body-v1` SHA-256
+- `licenseChecksumSurface` (string, required when `licenseFile` is present): `license-body-v1`
+- `licenseFile` (string, recommended): repository-relative license copy
 - `attributionFile` (string, recommended): attribution file reference
+
+When any license identity field is present, tooling SHOULD require and verify the other
+identity fields. The schema version remains `1`; these fields formalize the existing
+schema rather than create a new deployed schema generation.
 
 Tooling MAY ignore unknown kinds.
 
@@ -135,11 +151,21 @@ record_schema:
       repo: "https://github.com/SolomonDAOrg/record-schema"
       revision: "v1.0.0"
       license: "SOLOMON DAO LLC SCHEMA REGISTRY REPOSITORY LICENSE (PERMISSIVE)"
+      licenseRef: "LicenseRef-SOLOMON-DAO-SCHEMA-REGISTRY"
+      licenseCanonicalUrl: "https://github.com/SolomonDAOrg/licenses/blob/main/LICENSES/LicenseRef-SOLOMON-DAO-SCHEMA-REGISTRY"
+      licenseChecksumSha256: "e822c97b1ef2c14df6c7c761c9c0b3e506e6f9f9fc101d22fbf7d91c6d7cf9f6"
+      licenseChecksumSurface: "license-body-v1"
 
   provides:
     - id: "dao-proposals"
       name: "DAO proposals registry"
       kind: "registry"
+      license: "SOLOMON DAO LLC PUBLIC GOVERNANCE REPOSITORY LICENSE"
+      licenseRef: "LicenseRef-SOLOMON-DAO-PUBLIC-GOVERNANCE"
+      licenseCanonicalUrl: "https://github.com/SolomonDAOrg/licenses/blob/main/LICENSES/LicenseRef-SOLOMON-DAO-PUBLIC-GOVERNANCE"
+      licenseChecksumSha256: "32788e0799bdcef4299cda43374cd0c02f6e1227110e81e787375868da037848"
+      licenseChecksumSurface: "license-body-v1"
+      licenseFile: "./LICENSE"
 
   profile_hint: "dao-proposals"
   registry_path: "registry/dao-proposals.yaml"

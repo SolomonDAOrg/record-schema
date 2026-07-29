@@ -192,7 +192,7 @@ rules:
       - overlays/dao_proposals.record.meta.schema.json
 ```
 
-Overlay schema (recommended location: top-level overlays/)s SHOULD constrain only the extension subtree(s) they care about, and SHOULD NOT set
+Overlay schemas (recommended location: top-level `overlays/`) SHOULD constrain only the extension subtree(s) they care about, and SHOULD NOT set
 `additionalProperties: false` at the root or `extensions` root (to preserve the base rule that extra keys are allowed).
 
 ### 5.6 Document ordering, indices, and packets (recommended)
@@ -257,7 +257,7 @@ Primacy model (informative):
 Profiles MAY enforce stricter rules (e.g., requiring `authority.class` on `CHA` or requiring `documents.pack`
 for filing records).
 
-### 5.5 Markdown documents: standard header + optional footer (recommended)
+### 5.8 Markdown documents: standard header + optional footer (recommended)
 
 Many record types use Markdown (`.md`) for primary documents, SOPs, policies, logs, and registries. To keep Markdown records consistent (and to enable stable, profile-defined hash surfaces), Markdown documents SHOULD use the following envelope.
 
@@ -292,15 +292,28 @@ Notes:
 - Header fields SHOULD appear in the order shown. Additional fields MAY be added after `Related` using the same `**Label:** value` form.
 - Delimiter lines MUST be exactly `---` on their own line.
 
-#### 5.5.1 Hash surfaces (optional)
+#### 5.8.1 Hash surfaces (optional)
 
 If you need cryptographic commitments that should survive header/footer edits, tooling MAY hash only the body portion of an enveloped Markdown document.
 
 Recommended surface identifier:
 
-- `markdown-body-v1`: the document body bytes, defined as content after the first envelope delimiter line (`---`) and before the earliest of: (a) the footer delimiter line (`---`) if present, (b) the start marker line `-----BEGIN DOCUMENT METADATA-----` if present, or (c) end-of-file. The document metadata block (between `-----BEGIN DOCUMENT METADATA-----` and `-----END DOCUMENT METADATA-----`) MUST be excluded. Hashing is performed after applying the declared `formatting_profile`.
+- `markdown-body-v1`: the document body bytes, defined as content after the first envelope delimiter line (`---`) and before the earliest of: (a) the footer delimiter line (`---`) if present, (b) the start marker line `-----BEGIN DOCUMENT METADATA-----` if present, or (c) end-of-file. The document metadata block (between `-----BEGIN DOCUMENT METADATA-----` and `-----END DOCUMENT METADATA-----`) MUST be excluded. Hashing is performed after applying the declared formatting profile (for example, `extensions.formatting.profile`).
 
 If recorded, store the chosen surface identifier in `commitments[].hash_surface`.
+
+#### 5.8.2 LICENSE checksum surface
+
+Verifiable custom `LICENSE` files use `license-body-v1` as defined normatively in
+`FORMATTING.md` §10.7. The surface begins immediately after the first exact
+80-character `=` separator and extends through the exact closing separator after
+`END OF LICENSE`. It preserves every blank line and all legal-body content in that
+range after UTF-8 BOM removal and line-ending normalization only.
+
+The license title, established pre-separator header, top version/checksum
+repetitions, and trailing metadata remain present but are outside the surface.
+Canonical identity consists of the existing SPDX `LicenseRef`, version,
+`license-body-v1` SHA-256 digest, and canonical URL.
 
 Optional anchoring references:
 
@@ -453,3 +466,30 @@ under the Decentralized Autonomous Organizations Act of 2022 as amended.
 
 This specification is licensed under the **SOLOMON DAO LLC SCHEMA REGISTRY LICENSE (PERMISSIVE)**.
 See [LICENSE](./LICENSE) (terms) and [ATTRIBUTION](./ATTRIBUTION.md) (required notice).
+
+## 13. Typed structured documents (normative profile hook)
+
+A registry profile MAY bind JSON or YAML document types to JSON Schemas using
+`rules.structured_document_schemas`. A conforming validator MUST parse every matching
+record document and validate it against the declared schema. A binding marked
+`required: true` requires at least one matching document in every record covered by
+the profile. `min_count` and `max_count` MAY impose exact multiplicity; machine-authoritative
+singletons SHOULD use `required: true` with `max_count: 1`.
+
+```yaml
+rules:
+  structured_document_schemas:
+    - doc_type: MAN
+      schema_path: schema/deployment-release/deployment-batch-manifest.schema.json
+      extensions: [json]
+      required: true
+      max_count: 1
+```
+
+Schema paths MUST be repository-relative and MUST resolve to regular, non-symlink files contained by the registry repository root. A validator MUST reject missing schema materials, path traversal, repository escape through symlinked ancestors, and a `min_count` greater than `max_count`. This hook is intended
+for machine-authoritative plans, manifests, attestations, verification receipts, evidence-dossier data, and similar
+structured artefacts whose field semantics must be enforced rather than inferred from a file
+name alone.
+
+For deployment records, the `EVD` singleton SHOULD contain the normalized evidence-dossier data used to build the human report. The schema SHOULD preserve source paths, retained paths, SHA-256 values, report-disclosure policy, transaction signatures and context, action/change records, receipt outcomes, and omitted optional artifacts. The EVD document is derived from retained bytes and MUST itself be retained inside the manifest root.
+

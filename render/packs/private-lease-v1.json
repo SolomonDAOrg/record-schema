@@ -1,0 +1,605 @@
+{
+  "schema": "record-schema-render-pack",
+  "schema_version": 1,
+  "pack_id": "private-lease-render-v1",
+  "description": "Render pack for private residential lease execution packets with a formal custom-font cover, restrained legal typography, and embedded font roles for clean stitched execution sets.",
+  "imports": [
+    "render/packs/base-v1.json"
+  ],
+  "packet_config": {
+    "default_entity_name": "PRIVATE RESIDENTIAL LEASE",
+    "default_document_title": "LEASE PACKET",
+    "header_text": "",
+    "series_prefix": "^(LEA-\\d+_)?",
+    "header_title_format": "plain",
+    "section_page_break": "always",
+    "path_to_title": {
+      "Lease_Agreement": "LEASE AGREEMENT",
+      "Residential_Lease_Agreement": "RESIDENTIAL LEASE AGREEMENT",
+      "Residential_Space_Lease_Agreement": "RESIDENTIAL SPACE LEASE AGREEMENT",
+      "Index": "INDEX"
+    },
+    "name_patterns": [
+      "Lease_Agreement",
+      "Residential_Lease_Agreement",
+      "Residential_Space_Lease_Agreement",
+      "Agreement",
+      "index"
+    ],
+    "entity_extraction": {
+      "fields": [
+        "entity_name",
+        "title"
+      ]
+    },
+    "cover_config": {
+      "suppress_header": true,
+      "suppress_footer": true,
+      "suppress_page_numbering": true,
+      "reserve_header_footer_space": false,
+      "draft_watermark": {
+        "enabled": false,
+        "text": "",
+        "gray": 0.9,
+        "angle_deg": 35,
+        "font_size": 84
+      },
+      "cover_layout": {
+        "description": "Formal private-lease cover. Restrained off-white paper, deep blue-black ink treatment, fine inset frame, custom embedded display/body font roles, and a packet-first execution set layout.",
+        "palette": {
+          "accent": "#1F3A5F",
+          "title": "#112033",
+          "muted": "#5B6876",
+          "danger": "#8B1E1E",
+          "paper": "#FBFAF7",
+          "note_fill": "#EFF3F7",
+          "note_border": "#CBD5E1",
+          "badge_text": "#F8FAFC",
+          "badge_fill": "#1F3A5F",
+          "badge_rule": "#D7DEE7"
+        },
+        "eyebrow": {
+          "enabled": true,
+          "text": "PRIVATE LEASE / EXECUTION PACKET",
+          "align": "center",
+          "font_size": 10.25,
+          "color": "#F8FAFC",
+          "after_spacer": 16,
+          "letter_spacing": 1.2,
+          "background_color": "#1F3A5F",
+          "border_color": "#D7DEE7",
+          "padding_x": 12,
+          "padding_y": 6,
+          "top_spacer": 18
+        },
+        "title_block": {
+          "top_spacer": 88,
+          "align": "center",
+          "title_font_size": 28,
+          "subtitle_font_size": 12.5,
+          "entity_font_size": 17,
+          "include_conjunction_line": false,
+          "after_title_spacer": 8,
+          "after_subtitle_spacer": 11,
+          "after_entity_spacer": 16,
+          "title_color": "#112033",
+          "subtitle_color": "#4E5D6C",
+          "entity_color": "#1F3A5F"
+        },
+        "rule": {
+          "enabled": true,
+          "start_frac": 0.21,
+          "end_frac": 0.79,
+          "line_width": 0.8,
+          "color": "#9AA7B3",
+          "after_spacer": 18
+        },
+        "metadata_block": {
+          "layout": "columns",
+          "align": "left",
+          "label_align": "left",
+          "column_gap": 12,
+          "font_size": 10,
+          "line_spacer": 6,
+          "label_value_separator": ": ",
+          "separator": ": ",
+          "start_frac": 0.18,
+          "end_frac": 0.82,
+          "fields": [
+            {
+              "key": "document_id",
+              "label": "Document ID"
+            },
+            {
+              "key": "version",
+              "label": "Version"
+            },
+            {
+              "key": "status",
+              "label": "Status"
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective Date"
+            },
+            {
+              "key": "confidentiality",
+              "label": "Confidentiality"
+            }
+          ],
+          "label_color": "#5B6876",
+          "value_color": "#112033",
+          "background_color": "#EFF3F7",
+          "border_color": "#CBD5E1",
+          "padding": 10
+        },
+        "footer_note": {
+          "enabled": false,
+          "align": "center",
+          "font_size": 9.25,
+          "color": "#667588",
+          "top_spacer": 22,
+          "text": "Execution copy for a private present lease of defined space. Use only with true particulars and matching address records."
+        },
+        "page_background": {
+          "color": "#FBFAF7"
+        },
+        "page_frame": {
+          "enabled": true,
+          "inset": 18,
+          "line_width": 0.9,
+          "color": "#C8D1DC"
+        },
+        "content_margins": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "font_roles": {
+        "eyebrow": "cover_eyebrow",
+        "title": "cover_title",
+        "subtitle": "cover_subtitle",
+        "entity": "cover_entity",
+        "metadata_label": "cover_meta_label",
+        "metadata_value": "cover_meta_value",
+        "footer_note": "cover_footer"
+      }
+    },
+    "packet_variants": {
+      "default": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "short_lease": {
+        "include_cover": true,
+        "include_toc": false
+      },
+      "notice": {
+        "include_cover": false,
+        "include_toc": false,
+        "signing_page": false
+      }
+    }
+  },
+  "document_policies": {
+    "defaults": {
+      "output_encoding": "utf-8",
+      "output_newlines": "lf",
+      "horizontal_rule_behavior": "page-break"
+    },
+    "targets": {
+      "pdf": {
+        "format": "pdf",
+        "page_size": "letter",
+        "orientation": "portrait",
+        "margins": {
+          "top": 72,
+          "bottom": 72,
+          "left": 72,
+          "right": 72,
+          "unit": "pt"
+        },
+        "fonts": {
+          "regular": "LeaseBody-Regular",
+          "bold": "LeaseBody-Bold",
+          "italic": "LeaseBody-Italic",
+          "bold_italic": "LeaseBody-BoldItalic",
+          "monospace": "Courier"
+        },
+        "base_font_size": 10,
+        "title_font_size": 18,
+        "heading_scales": {
+          "h1": 1.7,
+          "h2": 1.45,
+          "h3": 1.25,
+          "h4": 1.1
+        },
+        "line_spacing": 1.48,
+        "paragraph_spacing_factor": 0.52,
+        "list_indent_per_level": 20,
+        "code_block_indent": 36,
+        "horizontal_rule": {
+          "behavior": "page-break"
+        },
+        "inline_formatting": {
+          "enabled": true,
+          "underline_offset_factor": 0.15,
+          "underline_thickness_small": 0.5,
+          "underline_thickness_large": 0.75,
+          "underline_size_threshold": 12
+        },
+        "toc": {
+          "title_font_size": 15.5,
+          "level_styles": {
+            "1": {
+              "font_size_scale": 1.05,
+              "bold": true,
+              "indent": 0,
+              "spacing_after": 1.15,
+              "spacing_before": 1.2
+            },
+            "2": {
+              "font_size_scale": 0.92,
+              "bold": true,
+              "indent": 24,
+              "spacing_after": 1.2
+            }
+          }
+        },
+        "table": {
+          "font_size_scale": 0.95,
+          "min_font_size": 6,
+          "max_font_size": 10,
+          "auto_shrink": true,
+          "cell_padding": {
+            "x": 4,
+            "y": 3
+          },
+          "border_width": 0.5,
+          "border_color": "#CDD5DF",
+          "header": {
+            "background_color": "#EEF2F6",
+            "text_color": "#112033",
+            "cell_padding": {
+              "x": 4,
+              "y": 3
+            }
+          },
+          "zebra": {
+            "enabled": true,
+            "odd_background": "#FFFFFF",
+            "even_background": "#F8FAFC"
+          },
+          "line_height": 1.2,
+          "bleed_in": 0.2,
+          "bleed_if_columns_gt": 8,
+          "min_page_edge_inset_in": 0.25
+        },
+        "embedded_fonts": {
+          "enabled": true,
+          "resolve_relative_to": "pack",
+          "register_before_layout": true,
+          "encoding": "WinAnsiEncoding",
+          "roles": {
+            "cover_title": "LeaseDisplay-Regular",
+            "cover_eyebrow": "LeaseDisplay-Bold",
+            "cover_subtitle": "LeaseBody-Italic",
+            "cover_entity": "LeaseAccent-Bold",
+            "cover_meta_label": "LeaseAccent-Regular",
+            "cover_meta_value": "LeaseBody-Regular",
+            "cover_footer": "LeaseBody-Italic",
+            "body": "LeaseBody-Regular",
+            "body_regular": "LeaseBody-Regular",
+            "body_bold": "LeaseBody-Bold",
+            "body_italic": "LeaseBody-Italic",
+            "body_bold_italic": "LeaseBody-BoldItalic",
+            "heading_display": "LeaseAccent-Bold",
+            "heading_display_regular": "LeaseAccent-Regular",
+            "heading_display_bold": "LeaseAccent-Bold",
+            "heading_display_italic": "LeaseAccent-Italic",
+            "heading_display_bold_italic": "LeaseAccent-BoldItalic",
+            "toc_title": "LeaseDisplay-Regular",
+            "toc_title_bold": "LeaseDisplay-Bold",
+            "toc_entry": "LeaseAccent-Regular",
+            "toc_entry_bold": "LeaseAccent-Bold",
+            "table_heading": "LeaseAccent-Bold",
+            "table_heading_bold": "LeaseAccent-Bold",
+            "table_body": "LeaseBody-Regular",
+            "table_body_regular": "LeaseBody-Regular",
+            "table_body_bold": "LeaseBody-Bold",
+            "table_caption": "LeaseAccent-Bold",
+            "table_caption_bold": "LeaseAccent-Bold",
+            "definition_term": "LeaseAccent-Bold",
+            "definition_term_bold": "LeaseAccent-Bold",
+            "notice_title": "LeaseAccent-Bold",
+            "notice_title_bold": "LeaseAccent-Bold",
+            "signature_title": "LeaseAccent-Bold",
+            "signature_title_bold": "LeaseAccent-Bold",
+            "signature_label": "LeaseBody-Regular",
+            "signature_label_regular": "LeaseBody-Regular",
+            "signature_value": "LeaseBody-Regular",
+            "signature_value_regular": "LeaseBody-Regular",
+            "code": "Courier",
+            "code_monospace": "Courier"
+          },
+          "families": {
+            "LibreBaskerville": {
+              "faces": {
+                "regular": {
+                  "postscript_name": "LeaseBody-Regular",
+                  "google_font": {
+                    "family": "Libre Baskerville",
+                    "weight": 400,
+                    "style": "normal"
+                  },
+                  "fallback": "Times-Roman"
+                },
+                "bold": {
+                  "postscript_name": "LeaseBody-Bold",
+                  "google_font": {
+                    "family": "Libre Baskerville",
+                    "weight": 700,
+                    "style": "normal"
+                  },
+                  "fallback": "Times-Bold"
+                },
+                "italic": {
+                  "postscript_name": "LeaseBody-Italic",
+                  "google_font": {
+                    "family": "Libre Baskerville",
+                    "weight": 400,
+                    "style": "italic"
+                  },
+                  "fallback": "Times-Italic"
+                },
+                "bold_italic": {
+                  "postscript_name": "LeaseBody-BoldItalic",
+                  "google_font": {
+                    "family": "Libre Baskerville",
+                    "weight": 700,
+                    "style": "italic"
+                  },
+                  "fallback": "Times-BoldItalic"
+                }
+              }
+            },
+            "CormorantGaramond": {
+              "faces": {
+                "regular": {
+                  "postscript_name": "LeaseAccent-Regular",
+                  "google_font": {
+                    "family": "Cormorant Garamond",
+                    "weight": 500,
+                    "style": "normal"
+                  },
+                  "fallback": "LeaseBody-Regular"
+                },
+                "bold": {
+                  "postscript_name": "LeaseAccent-Bold",
+                  "google_font": {
+                    "family": "Cormorant Garamond",
+                    "weight": 700,
+                    "style": "normal"
+                  },
+                  "fallback": "LeaseBody-Bold"
+                },
+                "italic": {
+                  "postscript_name": "LeaseAccent-Italic",
+                  "google_font": {
+                    "family": "Cormorant Garamond",
+                    "weight": 500,
+                    "style": "italic"
+                  },
+                  "fallback": "LeaseBody-Italic"
+                },
+                "bold_italic": {
+                  "postscript_name": "LeaseAccent-BoldItalic",
+                  "google_font": {
+                    "family": "Cormorant Garamond",
+                    "weight": 700,
+                    "style": "italic"
+                  },
+                  "fallback": "Times-BoldItalic"
+                }
+              }
+            },
+            "Cinzel": {
+              "faces": {
+                "regular": {
+                  "postscript_name": "LeaseDisplay-Regular",
+                  "google_font": {
+                    "family": "Cinzel",
+                    "weight": 500,
+                    "style": "normal"
+                  },
+                  "fallback": "LeaseAccent-Regular"
+                },
+                "bold": {
+                  "postscript_name": "LeaseDisplay-Bold",
+                  "google_font": {
+                    "family": "Cinzel",
+                    "weight": 700,
+                    "style": "normal"
+                  },
+                  "fallback": "LeaseAccent-Bold"
+                }
+              }
+            }
+          },
+          "fallbacks": {
+            "regular": "Times-Roman",
+            "bold": "Times-Bold",
+            "italic": "Times-Italic",
+            "boldItalic": "Times-BoldItalic",
+            "monospace": "Courier"
+          }
+        },
+        "font_role_defaults": {
+          "body": "body",
+          "heading_1": "heading_display",
+          "heading_2": "heading_display",
+          "heading_3": "heading_display",
+          "heading_4": "heading_display",
+          "heading_5": "heading_display",
+          "heading_6": "heading_display",
+          "toc_title": "toc_title",
+          "toc_entry": "toc_entry",
+          "table_header": "table_heading",
+          "table_body": "table_body",
+          "table_caption": "table_caption",
+          "definition_term": "definition_term",
+          "notice_title": "notice_title",
+          "signature_title": "signature_title",
+          "signature_label": "signature_label",
+          "signature_value": "signature_value",
+          "code": "code"
+        }
+      }
+    },
+    "render_profiles": {
+      "lease-standard-v1": {
+        "description": "Standard private lease PDF rendering with embedded body and heading font roles",
+        "target": "pdf",
+        "overrides": {
+          "break_mode": "always"
+        }
+      },
+      "lease-packet-v1": {
+        "description": "Private lease packet with formal custom-font cover and TOC",
+        "target": "pdf",
+        "extends": "lease-standard-v1",
+        "overrides": {
+          "base_font_size": 10,
+          "line_spacing": 1.48,
+          "horizontal_rule": {
+            "behavior": "page-break"
+          },
+          "leading_section": {
+            "mode": "centered-title-block",
+            "max_nodes": 8,
+            "stop_at_metadata": true,
+            "stop_at_horizontal_rule": true
+          }
+        }
+      }
+    },
+    "rulesets": [
+      {
+        "id": "lease-packet-v1",
+        "selectors": {
+          "doc_types": [
+            "PACKET",
+            "PKT"
+          ],
+          "extensions": [
+            "pdf"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "lease-packet-v1"
+        }
+      },
+      {
+        "id": "lease-agreement-v1",
+        "selectors": {
+          "doc_types": [
+            "SA",
+            "LEASE",
+            "AGR"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "lease-standard-v1"
+        }
+      },
+      {
+        "id": "lease-index-v1",
+        "selectors": {
+          "doc_types": [
+            "IND"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "lease-standard-v1"
+        }
+      }
+    ],
+    "spacing_policy": {
+      "pair_rules": [
+        {
+          "prev": "heading",
+          "curr": "paragraph",
+          "before_em": 0.42
+        },
+        {
+          "prev": "paragraph",
+          "curr": "heading",
+          "before_em": 1.18
+        },
+        {
+          "prev": "heading",
+          "curr": "heading",
+          "before_em": 0.56
+        },
+        {
+          "prev": "list",
+          "curr": "heading",
+          "before_em": 1.1
+        },
+        {
+          "prev": "paragraph",
+          "curr": "paragraph",
+          "before_em": 0.62
+        },
+        {
+          "prev": "paragraph",
+          "curr": "list",
+          "before_em": 0.38
+        },
+        {
+          "prev": "list",
+          "curr": "paragraph",
+          "before_em": 0.62
+        },
+        {
+          "prev": "table",
+          "curr": "paragraph",
+          "before_em": 0.72
+        }
+      ],
+      "defaults": {
+        "heading": {
+          "before_em": 0.95,
+          "after_em": 0.32
+        },
+        "paragraph": {
+          "before_em": 0.42,
+          "after_em": 0.42
+        },
+        "list": {
+          "before_em": 0.38,
+          "after_em": 0.38
+        },
+        "code-block": {
+          "before_em": 0.65,
+          "after_em": 0.65
+        },
+        "table": {
+          "before_em": 0.68,
+          "after_em": 0.68
+        }
+      }
+    }
+  }
+}

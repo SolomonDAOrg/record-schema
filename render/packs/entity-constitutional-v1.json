@@ -1,0 +1,834 @@
+{
+  "schema": "record-schema-render-pack",
+  "schema_version": 1,
+  "pack_id": "entity-constitutional-render-v1",
+  "description": "Render pack for stitched non-DAO entity constitutive packets. Source docs are Markdown; output is a compiled PDF packet. Cover styling is packet-first rather than single-instrument-first, intended for stitched constitutional sets (spine, memorandum, articles, schedules, index, and annexes).",
+  "imports": [
+    "render/packs/base-v1.json"
+  ],
+  "packet_config": {
+    "default_entity_name": "PRIVATE ENTITY",
+    "default_document_title": "CONSTITUTIONAL PACKET",
+    "header_text": "",
+    "series_prefix": "^(ENT-\\d+_)?",
+    "header_title_format": "plain",
+    "section_page_break": "always",
+    "path_to_title": {
+      "Constitution": "CONSTITUTION",
+      "Bylaws": "BYLAWS",
+      "Articles": "ARTICLES",
+      "Articles_of_Association": "ARTICLES OF ASSOCIATION",
+      "Charter": "CHARTER",
+      "Founding_Charter": "FOUNDING CHARTER",
+      "Company_Agreement": "COMPANY AGREEMENT",
+      "Operating_Agreement": "OPERATING AGREEMENT",
+      "Memorandum": "MEMORANDUM",
+      "Resolution": "RESOLUTION",
+      "Document_Register": "DOCUMENT REGISTER",
+      "Index": "INDEX"
+    },
+    "name_patterns": [
+      "Constitution",
+      "Bylaws",
+      "Articles",
+      "Articles_of_Association",
+      "Charter",
+      "Founding_Charter",
+      "Company_Agreement",
+      "Operating_Agreement",
+      "Memorandum",
+      "Resolution",
+      "Schedule_\\d+",
+      "Annex",
+      "Document_Register",
+      "index"
+    ],
+    "entity_extraction": {
+      "fields": [
+        "entity_name",
+        "title"
+      ],
+      "title_pattern": "^(?:\\s*(?:Constitution|Bylaws|Charter|Memorandum|Articles(?:[\\s_-]+of[\\s_-]+Association)?|Company[\\s_-]+Agreement|Operating[\\s_-]+Agreement)(?:[\\s_-]+of)?[\\s_-]+(.+?)\\s*$|\\s*(.+?)[\\s_-]+(?:Constitution|Bylaws|Charter|Memorandum|Articles(?:[\\s_-]+of[\\s_-]+Association)?|Company[\\s_-]+Agreement|Operating[\\s_-]+Agreement)\\s*$)"
+    },
+    "cover_config": {
+      "suppress_header": true,
+      "suppress_footer": true,
+      "suppress_page_numbering": true,
+      "reserve_header_footer_space": false,
+      "draft_watermark": {
+        "enabled": false,
+        "text": "",
+        "gray": 0.94,
+        "angle_deg": 35,
+        "font_size": 48
+      },
+      "cover_layout": {
+        "palette": {
+          "accent": "#163A63",
+          "title": "#13293D",
+          "muted": "#5B6B7A",
+          "danger": "#8A1C1C",
+          "paper": "#FCFCFA"
+        },
+        "title_block": {
+          "top_spacer": 128,
+          "align": "center",
+          "title_font_size": 24,
+          "subtitle_font_size": 11.5,
+          "entity_font_size": 21.5,
+          "after_spacer": 34,
+          "include_conjunction_line": false,
+          "title_color": "#13293D",
+          "entity_color": "#163A63",
+          "conjunction_color": "#5B6B7A"
+        },
+        "rule": {
+          "enabled": true,
+          "start_frac": 0.19,
+          "end_frac": 0.81,
+          "line_width": 0.5,
+          "color": "#5B6B7A",
+          "after_spacer": 24
+        },
+        "metadata_block": {
+          "layout": "columns",
+          "align": "left",
+          "label_align": "left",
+          "column_gap": 12,
+          "font_size": 10,
+          "line_spacer": 6,
+          "label_value_separator": ": ",
+          "separator": ": ",
+          "fields": [
+            {
+              "key": "document_id",
+              "label": "Document ID"
+            },
+            {
+              "key": "version",
+              "label": "Version"
+            },
+            {
+              "key": "status",
+              "label": "Status"
+            },
+            {
+              "key": "effective_date",
+              "label": "Effective Date"
+            }
+          ],
+          "label_color": "#5B6B7A",
+          "value_color": "#13293D"
+        },
+        "description": "Formal packet cover for stitched constitutional sets. Uses restrained legal typography and treats the cover as a compiled packet rather than a single instrument.",
+        "page_background": {
+          "color": "#FCFCFA"
+        }
+      },
+      "font_roles": {
+        "title": "cover_title",
+        "subtitle": "cover_body",
+        "entity": "cover_entity",
+        "metadata_label": "cover_meta_label",
+        "metadata_value": "cover_meta_value"
+      }
+    },
+    "signing_page": {
+      "enabled": false
+    },
+    "packet_variants": {
+      "default": {
+        "include_cover": true,
+        "include_toc": true
+      },
+      "short_constitution": {
+        "include_cover": true,
+        "include_toc": false
+      },
+      "notice": {
+        "include_cover": false,
+        "include_toc": false,
+        "signing_page": false
+      }
+    }
+  },
+  "document_policies": {
+    "defaults": {
+      "output_encoding": "utf-8",
+      "output_newlines": "lf",
+      "horizontal_rule_behavior": "page-break"
+    },
+    "targets": {
+      "pdf": {
+        "format": "pdf",
+        "page_size": "letter",
+        "orientation": "portrait",
+        "margins": {
+          "top": 72,
+          "bottom": 72,
+          "left": 72,
+          "right": 72,
+          "unit": "pt"
+        },
+        "fonts": {
+          "regular": "LibreBaskerville-Regular",
+          "bold": "LibreBaskerville-Bold",
+          "italic": "LibreBaskerville-Italic",
+          "bold_italic": "Times-BoldItalic",
+          "monospace": "Courier"
+        },
+        "base_font_size": 10,
+        "title_font_size": 16,
+        "heading_scales": {
+            "h1": 1.8,
+            "h2": 1.6,
+            "h3": 1.45,
+            "h4": 1.2
+        },
+        "line_spacing": 1.5,
+        "paragraph_spacing_factor": 0.5,
+        "list_indent_per_level": 20,
+        "code_block_indent": 36,
+        "horizontal_rule": {
+          "behavior": "page-break"
+        },
+        "inline_formatting": {
+          "enabled": true,
+          "underline_offset_factor": 0.15,
+          "underline_thickness_small": 0.5,
+          "underline_thickness_large": 0.75,
+          "underline_size_threshold": 12
+        },
+        "toc": {
+          "title_font_size": 15,
+          "level_styles": {
+            "1": {
+              "font_size_scale": 1.1,
+              "bold": true,
+              "indent": 0,
+              "spacing_after": 1.15,
+              "spacing_before": 1.2
+            },
+            "2": {
+              "font_size_scale": 0.92,
+              "bold": true,
+              "indent": 24,
+              "spacing_after": 1.2
+            },
+            "3": {
+              "font_size_scale": 0.85,
+              "bold": false,
+              "indent": 48,
+              "spacing_after": 1.1
+            },
+            "4": {
+              "font_size_scale": 0.8,
+              "bold": false,
+              "indent": 72,
+              "spacing_after": 1
+            }
+          }
+        },
+        "cover_page": {
+          "title_position": "upper-third",
+          "title_spacing": 30,
+          "company_name_font_size": 24,
+          "subtitle_font_size": 14
+        },
+        "table": {
+          "font_size_scale": 0.95,
+          "min_font_size": 6,
+          "max_font_size": 10,
+          "auto_shrink": true,
+          "cell_padding": {
+            "x": 4,
+            "y": 3
+          },
+          "border_width": 0.5,
+          "border_color": "#D0D7DE",
+          "header": {
+            "background_color": "#EAF2F7",
+            "text_color": "#102A43",
+            "cell_padding": {
+              "x": 4,
+              "y": 3
+            }
+          },
+          "zebra": {
+            "enabled": true,
+            "odd_background": "#FFFFFF",
+            "even_background": "#F8FBFD"
+          },
+          "line_height": 1.2,
+          "bleed_in": 0.2,
+          "bleed_if_columns_gt": 8,
+          "min_page_edge_inset_in": 0.25
+        },
+        "notice": {
+          "padding": 10,
+          "border_width": 1,
+          "border_color": "#0F3D5E",
+          "background_color": "#F4F8FB",
+          "title_color": "#0F3D5E"
+        },
+        "embedded_fonts": {
+          "enabled": true,
+          "resolve_relative_to": "pack",
+          "roles": {
+            "cover_title": "Cinzel-Regular",
+            "cover_body": "CormorantGaramond-Regular",
+            "cover_entity": "CormorantGaramond-Bold",
+            "cover_meta_label": "CormorantGaramond-Regular",
+            "cover_meta_value": "CormorantGaramond-Regular",
+            "body": "LibreBaskerville-Regular",
+            "body_regular": "LibreBaskerville-Regular",
+            "body_bold": "LibreBaskerville-Bold",
+            "body_italic": "LibreBaskerville-Italic",
+            "body_bold_italic": "Times-BoldItalic",
+            "heading_display": "CormorantGaramond-Regular",
+            "heading_display_regular": "CormorantGaramond-Regular",
+            "heading_display_bold": "CormorantGaramond-Bold",
+            "heading_display_italic": "CormorantGaramond-Italic",
+            "heading_display_bold_italic": "CormorantGaramond-BoldItalic",
+            "toc_title": "Cinzel-Regular",
+            "toc_title_bold": "Cinzel-Bold",
+            "toc_entry": "CormorantGaramond-Regular",
+            "toc_entry_bold": "CormorantGaramond-Bold",
+            "table_heading": "CormorantGaramond-Bold",
+            "table_heading_bold": "CormorantGaramond-Bold",
+            "table_body": "LibreBaskerville-Regular",
+            "table_body_regular": "LibreBaskerville-Regular",
+            "table_body_bold": "LibreBaskerville-Bold",
+            "table_caption": "CormorantGaramond-Bold",
+            "table_caption_bold": "CormorantGaramond-Bold",
+            "definition_term": "CormorantGaramond-Bold",
+            "definition_term_bold": "CormorantGaramond-Bold",
+            "notice_title": "CormorantGaramond-Bold",
+            "notice_title_bold": "CormorantGaramond-Bold",
+            "signature_title": "CormorantGaramond-Bold",
+            "signature_title_bold": "CormorantGaramond-Bold",
+            "signature_label": "LibreBaskerville-Regular",
+            "signature_label_regular": "LibreBaskerville-Regular",
+            "signature_value": "LibreBaskerville-Regular",
+            "signature_value_regular": "LibreBaskerville-Regular",
+            "code": "Courier",
+            "code_monospace": "Courier"
+          },
+          "families": {
+            "LibreBaskerville": {
+              "faces": {
+                "regular": {
+                  "postscript_name": "LibreBaskerville-Regular",
+                  "google_font": {
+                    "family": "Libre Baskerville",
+                    "weight": 400,
+                    "style": "normal"
+                  },
+                  "fallback": "Times-Roman"
+                },
+                "bold": {
+                  "postscript_name": "LibreBaskerville-Bold",
+                  "google_font": {
+                    "family": "Libre Baskerville",
+                    "weight": 700,
+                    "style": "normal"
+                  },
+                  "fallback": "Times-Bold"
+                },
+                "italic": {
+                  "postscript_name": "LibreBaskerville-Italic",
+                  "google_font": {
+                    "family": "Libre Baskerville",
+                    "weight": 400,
+                    "style": "italic"
+                  },
+                  "fallback": "Times-Italic"
+                }
+              }
+            },
+            "CormorantGaramond": {
+              "faces": {
+                "regular": {
+                  "postscript_name": "CormorantGaramond-Regular",
+                  "google_font": {
+                    "family": "Cormorant Garamond",
+                    "weight": 500,
+                    "style": "normal"
+                  },
+                  "fallback": "LibreBaskerville-Regular"
+                },
+                "bold": {
+                  "postscript_name": "CormorantGaramond-Bold",
+                  "google_font": {
+                    "family": "Cormorant Garamond",
+                    "weight": 700,
+                    "style": "normal"
+                  },
+                  "fallback": "LibreBaskerville-Bold"
+                },
+                "italic": {
+                  "postscript_name": "CormorantGaramond-Italic",
+                  "google_font": {
+                    "family": "Cormorant Garamond",
+                    "weight": 500,
+                    "style": "italic"
+                  },
+                  "fallback": "LibreBaskerville-Italic"
+                },
+                "bold_italic": {
+                  "postscript_name": "CormorantGaramond-BoldItalic",
+                  "google_font": {
+                    "family": "Cormorant Garamond",
+                    "weight": 700,
+                    "style": "italic"
+                  },
+                  "fallback": "Times-BoldItalic"
+                }
+              }
+            },
+            "EBGaramond": {
+              "faces": {
+                "regular": {
+                  "postscript_name": "EBGaramond-Regular",
+                  "google_font": {
+                    "family": "EB Garamond",
+                    "weight": 400,
+                    "style": "normal"
+                  },
+                  "fallback": "Times-Bold"
+                }
+              }
+            },
+            "Cinzel": {
+              "faces": {
+                "regular": {
+                  "postscript_name": "Cinzel-Regular",
+                  "google_font": {
+                    "family": "Cinzel",
+                    "weight": 400,
+                    "style": "normal"
+                  },
+                  "fallback": "EBGaramond-Regular"
+                },
+                "bold": {
+                  "postscript_name": "Cinzel-Bold",
+                  "google_font": {
+                    "family": "Cinzel",
+                    "weight": 700,
+                    "style": "normal"
+                  },
+                  "fallback": "EBGaramond-Regular"
+                }
+              }
+            }
+          },
+          "fallbacks": {
+            "regular": "Times-Roman",
+            "bold": "Times-Bold",
+            "italic": "Times-Italic",
+            "boldItalic": "Times-BoldItalic",
+            "monospace": "Courier"
+          }
+        },
+        "font_role_defaults": {
+          "body": "body",
+          "heading_1": "heading_display",
+          "heading_2": "heading_display",
+          "heading_3": "heading_display",
+          "heading_4": "heading_display",
+          "heading_5": "heading_display",
+          "heading_6": "heading_display",
+          "toc_title": "toc_title",
+          "toc_entry": "toc_entry",
+          "table_header": "table_heading",
+          "table_body": "table_body",
+          "table_caption": "table_caption",
+          "definition_term": "definition_term",
+          "notice_title": "notice_title",
+          "signature_title": "signature_title",
+          "signature_label": "signature_label",
+          "signature_value": "signature_value",
+          "code": "code"
+        }
+      }
+    },
+    "render_profiles": {
+      "entity-legal-standard-v1": {
+        "description": "Standard entity legal document PDF rendering",
+        "target": "pdf",
+        "overrides": {
+          "break_mode": "always"
+        }
+      },
+      "entity-filing-packet-v1": {
+        "description": "Entity constitutive packet with cover page and TOC",
+        "target": "pdf",
+        "extends": "entity-legal-standard-v1",
+        "overrides": {
+          "base_font_size": 10,
+          "line_spacing": 1.5,
+          "margins": {
+            "top": 72,
+            "bottom": 72,
+            "left": 72,
+            "right": 72,
+            "unit": "pt"
+          },
+          "horizontal_rule": {
+            "behavior": "page-break"
+          },
+          "leading_section": {
+            "mode": "centered-title-block",
+            "max_nodes": 8,
+            "stop_at_metadata": true,
+            "stop_at_horizontal_rule": true
+          }
+        }
+      },
+      "entity-constitution-v1": {
+        "description": "Constitution rendering profile",
+        "target": "pdf",
+        "extends": "entity-filing-packet-v1"
+      },
+      "entity-bylaws-v1": {
+        "description": "Bylaws rendering profile",
+        "target": "pdf",
+        "extends": "entity-filing-packet-v1"
+      },
+      "entity-articles-v1": {
+        "description": "Articles rendering profile",
+        "target": "pdf",
+        "extends": "entity-filing-packet-v1"
+      },
+      "entity-charter-v1": {
+        "description": "Charter rendering profile",
+        "target": "pdf",
+        "extends": "entity-filing-packet-v1"
+      },
+      "entity-agreement-v1": {
+        "description": "Company or operating agreement rendering profile",
+        "target": "pdf",
+        "extends": "entity-filing-packet-v1"
+      },
+      "entity-memorandum-v1": {
+        "description": "Memorandum rendering profile",
+        "target": "pdf",
+        "extends": "entity-legal-standard-v1",
+        "overrides": {
+          "horizontal_rule": {
+            "behavior": "rule",
+            "width_factor": 1,
+            "thickness": 1,
+            "color": "#0F3D5E",
+            "spacing_before": 10,
+            "spacing_after": 14
+          },
+          "leading_section": {
+            "mode": "centered-title-block",
+            "max_nodes": 8,
+            "stop_at_metadata": true,
+            "stop_at_horizontal_rule": true
+          }
+        }
+      },
+      "entity-legal-part-only-v1": {
+        "description": "Entity legal doc rendering with Part-only section breaks",
+        "target": "pdf",
+        "extends": "entity-legal-standard-v1",
+        "overrides": {
+          "break_mode": "part-only"
+        }
+      }
+    },
+    "rulesets": [
+      {
+        "id": "entity-packet-v1",
+        "selectors": {
+          "doc_types": [
+            "PACKET",
+            "PKT"
+          ],
+          "extensions": [
+            "pdf"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-filing-packet-v1"
+        }
+      },
+      {
+        "id": "entity-constitution-v1",
+        "selectors": {
+          "doc_types": [
+            "CON"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Constitution*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-constitution-v1"
+        }
+      },
+      {
+        "id": "entity-bylaws-v1",
+        "selectors": {
+          "doc_types": [
+            "BYL"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Bylaws*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-bylaws-v1"
+        }
+      },
+      {
+        "id": "entity-articles-v1",
+        "selectors": {
+          "doc_types": [
+            "ART",
+            "AOA"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Articles*",
+            "**/*Articles_of_Association*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-articles-v1"
+        }
+      },
+      {
+        "id": "entity-charter-v1",
+        "selectors": {
+          "doc_types": [
+            "CHA"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Charter*",
+            "**/*Founding_Charter*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-charter-v1"
+        }
+      },
+      {
+        "id": "entity-agreement-v1",
+        "selectors": {
+          "doc_types": [
+            "AGR",
+            "OA"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*Agreement*",
+            "**/*Company_Agreement*",
+            "**/*Operating_Agreement*"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-agreement-v1"
+        }
+      },
+      {
+        "id": "entity-memorandum-v1",
+        "selectors": {
+          "doc_types": [
+            "MEM"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-memorandum-v1"
+        }
+      },
+      {
+        "id": "entity-resolution-v1",
+        "selectors": {
+          "doc_types": [
+            "RES"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-legal-standard-v1"
+        }
+      },
+      {
+        "id": "entity-annex-v1",
+        "selectors": {
+          "doc_types": [
+            "ANN",
+            "SCH",
+            "FRM"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-legal-part-only-v1"
+        }
+      },
+      {
+        "id": "entity-spine-v1",
+        "selectors": {
+          "doc_types": [
+            "DOC"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-legal-standard-v1"
+        }
+      },
+      {
+        "id": "entity-index-v1",
+        "selectors": {
+          "doc_types": [
+            "IND"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-legal-standard-v1"
+        }
+      },
+      {
+        "id": "entity-register-v1",
+        "selectors": {
+          "doc_types": [
+            "REG"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "render": {
+          "target": "pdf",
+          "render_profile_id": "entity-legal-part-only-v1"
+        }
+      }
+    ],
+    "spacing_policy": {
+      "pair_rules": [
+        {
+          "prev": "heading",
+          "curr": "paragraph",
+          "before_em": 0.5
+        },
+        {
+          "prev": "paragraph",
+          "curr": "heading",
+          "before_em": 1.5
+        },
+        {
+          "prev": "heading",
+          "curr": "heading",
+          "before_em": 0.75
+        },
+        {
+          "prev": "list",
+          "curr": "heading",
+          "before_em": 1.5
+        },
+        {
+          "prev": "paragraph",
+          "curr": "paragraph",
+          "before_em": 0.75
+        },
+        {
+          "prev": "paragraph",
+          "curr": "list",
+          "before_em": 0.5
+        },
+        {
+          "prev": "list",
+          "curr": "paragraph",
+          "before_em": 0.75
+        },
+        {
+          "prev": "article",
+          "curr": "paragraph",
+          "before_em": 0.75
+        },
+        {
+          "prev": "section",
+          "curr": "paragraph",
+          "before_em": 0.5
+        }
+      ],
+      "defaults": {
+        "heading": {
+          "before_em": 1.2,
+          "after_em": 0.4
+        },
+        "paragraph": {
+          "before_em": 0.5,
+          "after_em": 0.5
+        },
+        "list": {
+          "before_em": 0.5,
+          "after_em": 0.5
+        },
+        "code-block": {
+          "before_em": 0.75,
+          "after_em": 0.75
+        },
+        "blockquote": {
+          "before_em": 0.75,
+          "after_em": 0.75
+        },
+        "table": {
+          "before_em": 0.75,
+          "after_em": 0.75
+        },
+        "article": {
+          "before_em": 1.5,
+          "after_em": 0.5
+        },
+        "section": {
+          "before_em": 1,
+          "after_em": 0.5
+        }
+      }
+    },
+    "precedence_notes": "Rules evaluated in order. First match applies. Profiles extend base targets. This pack is intended for non-DAO constitutive documents and deliberately omits governance vote pinning semantics."
+  }
+}

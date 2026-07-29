@@ -1,0 +1,31 @@
+schema: record-schema
+schema_version: 1
+
+id: PHS-00001
+series: PHS
+title: Phishing Incident Title
+slug: phishing-incident
+
+status:
+  phase: draft
+  last_updated: 2025-01-01T00:00:00Z
+
+tags: []
+owners: []
+
+links:
+  supersedes: []
+  superseded_by: []
+  related: []
+  external: []
+
+documents:
+  primary: PHS-00001_DOC-main.md
+  log: PHS-00001_LOG-notes.md
+  annexes: []
+
+timeline:
+  opened_at: 2025-01-01T00:00:00Z
+  closed_at: null
+
+extensions: {}

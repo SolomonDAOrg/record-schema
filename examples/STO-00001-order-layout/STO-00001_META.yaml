@@ -1,0 +1,58 @@
+schema: record-schema
+schema_version: 1
+
+id: STO-00001
+series_code: STO
+series: 1
+title: Order Account Layout
+
+status:
+  phase: draft
+  confidentiality: internal
+  last_updated: "2026-01-07T00:00:00Z"
+
+tags:
+  - storage
+  - layout
+  - solana
+  - borsh
+
+ownership:
+  author: protocol-engineering
+  reviewers:
+    - security
+
+summary: |
+  Binary storage layout specification for limit order accounts on Solana.
+  Defines field offsets, sizes, alignment, and serialization format.
+
+documents:
+  primary:
+    ref: STO-00001_DOC-main.md
+  log:
+    ref: STO-00001_LOG-notes.md
+
+structure:
+  layouts:
+    description: Binary layout definitions
+    files:
+      - STO-00001_LAY-order.v1.yaml
+      - STO-00001_LAY-action-tape.v1.yaml
+  schemas:
+    description: High-level schema definitions
+    files:
+      - STO-00001_SCH-account.v1.yaml
+  definitions:
+    description: TypeScript type definitions
+    files:
+      - STO-00001_DEF-types.v1.ts
+      - STO-00001_DEF-codec.v1.ts
+
+extensions:
+  formatting:
+    profile: canonical-ascii
+  storage:
+    version: 1
+    serialization: borsh
+    byte_order: little_endian
+    alignment: 1

@@ -1,0 +1,91 @@
+schema: record-schema-registry-profile
+schema_version: 1
+licenseRef: CONFIDENTIAL
+profile_id: confidential-agreements-registry-internal-v1
+name: Internal Confidential Agreements Registry Profile
+description: >
+  Internal registry for confidential agreement packs in the CON series,
+  including NDAs, confidentiality undertakings, joinders, side letters,
+  and related bilateral or multilateral legal instruments. Source documents
+  are Markdown; rendered packets are plain, legal, and fully confidential.
+
+rules:
+  root:
+    required_paths:
+      - registry/active
+      - registry/draft
+      - registry/archived
+      - registry/anchors
+    disallow_unknown_top_level: false
+
+  buckets:
+    - bucket: active
+      path: registry/active
+      record_constraints:
+        require_series_code: CON
+        require_meta: true
+        require_primary_document: true
+        require_documents_primary_ref: true
+        status_phase_allow: [approved, adopted, effective, current, executed]
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_extensions: [pdf]
+        recommended_files:
+          - "{RECORD_ID}_IND-index.md"
+
+    - bucket: draft
+      path: registry/draft
+      record_constraints:
+        require_series_code: CON
+        require_meta: true
+        require_primary_document: true
+        require_documents_primary_ref: true
+        status_phase_allow: [interim, draft, proposed, reviewed, submitted, pending]
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_extensions: [pdf]
+        recommended_files:
+          - "{RECORD_ID}_IND-index.md"
+
+    - bucket: archived
+      path: registry/archived
+      record_constraints:
+        require_series_code: CON
+        require_meta: true
+        require_primary_document: true
+        require_documents_primary_ref: true
+        status_phase_allow: [superseded, retired, rescinded, archived, terminated, expired]
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_extensions: [pdf]
+
+    - bucket: anchors
+      path: registry/anchors
+      record_constraints:
+        require_series_code: CON
+        status_confidentiality_allow: [hash-only, confidential, redacted, restricted]
+        require_commitments: true
+        require_commitment_kind_allow:
+          [
+            confidential-fulltext,
+            redacted-plus-fulltext,
+            hash-only-replacement,
+            executed-counterpart-original,
+            wet-ink-original,
+            notarized-original
+          ]
+        require_commitment_hash_or_content_id: true
+        require_markdown_envelope_for_extensions: [md]
+        markdown_envelope_id: record-markdown-envelope-v1
+        markdown_hash_surface_default: markdown-body-v1
+        disallow_extensions: [pdf]
+
+  document_policies:
+    pack_paths:
+      - type: formatting
+        path: formatting/packs/confidential-agreements-v1.json
+      - type: render
+        path: render/packs/confidential-agreements-v1.json

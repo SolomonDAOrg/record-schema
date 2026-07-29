@@ -1,0 +1,58 @@
+schema: record-schema
+schema_version: 1
+
+id: FSM-00001
+series_code: FSM
+series: 1
+title: Limit Order State Machine
+
+status:
+  phase: draft
+  confidentiality: internal
+  last_updated: "2026-01-07T00:00:00Z"
+
+tags:
+  - state-machine
+  - limit-orders
+  - amm
+
+ownership:
+  author: protocol-engineering
+  reviewers:
+    - security
+
+summary: |
+  Finite state machine specification for limit orders. Defines states,
+  transitions, guards, actions, and event emissions for order lifecycle.
+
+documents:
+  primary:
+    ref: FSM-00001_DOC-main.md
+  log:
+    ref: FSM-00001_LOG-notes.md
+
+structure:
+  schemas:
+    description: State and transition schema definitions
+    files:
+      - FSM-00001_SCH-states.v1.yaml
+      - FSM-00001_SCH-transitions.v1.yaml
+      - FSM-00001_SCH-events.v1.yaml
+  definitions:
+    description: TypeScript type definitions
+    files:
+      - FSM-00001_DEF-types.v1.ts
+      - FSM-00001_DEF-machine.v1.ts
+  diagrams:
+    description: State machine diagrams
+    files:
+      - FSM-00001_DIA-state-chart.mermaid
+
+extensions:
+  formatting:
+    profile: canonical-ascii
+  fsm:
+    version: 1
+    initial_state: pending
+    states: [pending, open, partial, filled, cancelled, expired]
+    terminal_states: [filled, cancelled, expired]

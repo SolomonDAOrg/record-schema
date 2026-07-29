@@ -1,0 +1,49 @@
+schema: record-schema-registry-profile
+schema_version: 1
+licenseRef: CONFIDENTIAL
+profile_id: private-lease-registry-internal-oxblood-deed
+name: Private Lease Registry Profile (Oxblood deed)
+description: Internal registry profile for private lease packets and related personal
+  agreement records in the LEA series. Uses the oxblood deed render variant for cover
+  and PDF styling.
+rules:
+  root:
+    required_paths:
+    - INDEX.md
+    - README.md
+    - DISCLAIMER.md
+    disallow_unknown_top_level: false
+  buckets:
+  - bucket: leases
+    path: .
+    record_constraints:
+      require_series_code: LEA
+      require_record_directory_regex: ^[A-Z]{2,5}-\d{5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?$
+      require_file_name_regex: ^[A-Z]{2,5}-\d{5}_[A-Z]{2,5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?\.[A-Za-z0-9]+$
+      require_meta: true
+      require_primary_document: true
+      require_documents_primary_ref: true
+      status_phase_allow:
+      - draft
+      - reviewed
+      - approved
+      - current
+      - superseded
+      - retired
+      require_markdown_envelope_for_extensions:
+      - md
+      markdown_envelope_id: record-markdown-envelope-v1
+      markdown_hash_surface_default: markdown-body-v1
+      disallow_extensions:
+      - pdf
+      recommended_files:
+      - '{RECORD_ID}_META.yaml'
+      - '{RECORD_ID}_IND-index.md'
+      - '{RECORD_ID}_SA-current-residential-space-lease-agreement.md'
+      - '{RECORD_ID}_ANN-supporting-evidence-register.md'
+  document_policies:
+    pack_paths:
+    - type: formatting
+      path: formatting/packs/private-lease-formatting-v1.json
+    - type: render
+      path: render/packs/private-lease-v1-oxblood-deed.json

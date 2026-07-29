@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "iocs": {
+    "domains": [],
+    "urls": [],
+    "emails": [],
+    "ips": [],
+    "hashes": [],
+    "addresses": []
+  }
+}

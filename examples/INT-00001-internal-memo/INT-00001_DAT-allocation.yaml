@@ -1,0 +1,61 @@
+schema: resource-allocation
+schema_version: 1
+record_id: INT-00001
+quarter: Q1-2026
+
+teams:
+  - name: Platform
+    headcount: 6
+    allocation:
+      infrastructure: 60
+      security: 20
+      developer_experience: 20
+      feature_delivery: 0
+
+  - name: SRE
+    headcount: 3
+    allocation:
+      infrastructure: 70
+      security: 30
+      developer_experience: 0
+      feature_delivery: 0
+
+  - name: Security
+    headcount: 2
+    allocation:
+      infrastructure: 0
+      security: 100
+      developer_experience: 0
+      feature_delivery: 0
+
+  - name: DevTools
+    headcount: 2
+    allocation:
+      infrastructure: 0
+      security: 0
+      developer_experience: 100
+      feature_delivery: 0
+
+  - name: Product Engineering
+    headcount: 8
+    allocation:
+      infrastructure: 0
+      security: 0
+      developer_experience: 0
+      feature_delivery: 100
+
+  - name: Mobile
+    headcount: 3
+    allocation:
+      infrastructure: 0
+      security: 0
+      developer_experience: 0
+      feature_delivery: 100
+
+summary:
+  total_headcount: 24
+  weighted_allocation:
+    infrastructure: 35
+    security: 20
+    developer_experience: 15
+    feature_delivery: 30

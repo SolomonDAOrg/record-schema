@@ -1,0 +1,131 @@
+{
+  "schema": "record-schema-formatting-pack",
+  "schema_version": 1,
+  "pack_id": "private-lease-v1",
+  "description": "Private lease packet document policies. Imports template-agreements-v1 and applies lease-specific Markdown formatting rules for LEA series source records.",
+  "imports": [
+    "formatting/packs/template-agreements-v1.json"
+  ],
+  "document_policies": {
+    "rulesets": [
+      {
+        "id": "lease-agreement-source-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": [
+            "SA",
+            "LEASE",
+            "AGR"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*_SA-*.md",
+            "**/*_LEASE-*.md",
+            "**/*_AGR-*.md"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "legal_citations"
+            ]
+          },
+          "language_locale": "en-AU",
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "legal-master-agreement-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Effective-Date"
+          ],
+          "metadata_optional_fields": [
+            "Version",
+            "Status",
+            "Confidentiality",
+            "Governing-Law"
+          ]
+        }
+      },
+      {
+        "id": "lease-index-source-v1",
+        "severity": "warn",
+        "selectors": {
+          "doc_types": [
+            "IND"
+          ],
+          "extensions": [
+            "md"
+          ],
+          "paths_glob": [
+            "**/*_IND-*.md"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls"
+            ]
+          },
+          "language_locale": "en-AU",
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "legal-instrument-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1",
+          "require_metadata_block": true,
+          "metadata_required_fields": [
+            "Document-Type",
+            "Record-ID",
+            "Title",
+            "Created-At"
+          ]
+        }
+      },
+      {
+        "id": "lease-ancillary-source-v1",
+        "severity": "info",
+        "selectors": {
+          "doc_types": [
+            "ANN",
+            "SCH",
+            "FRM",
+            "NTC"
+          ],
+          "extensions": [
+            "md"
+          ]
+        },
+        "enforce": {
+          "line_width": {
+            "max": 80,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls"
+            ]
+          },
+          "language_locale": "en-AU",
+          "formatting_profile": "canonical-ascii",
+          "markdown_style_profile_id": "legal-master-agreement-v1",
+          "markdown_envelope_id": "record-markdown-envelope-v1",
+          "markdown_hash_surface": "markdown-body-v1",
+          "metadata_shape_id": "document-metadata-block-v1"
+        }
+      }
+    ]
+  }
+}
