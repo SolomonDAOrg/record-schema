@@ -191,7 +191,8 @@
         },
         "confidentiality": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "Printed on the report cover. Deployment evidence batches are published evidence, so this SHOULD be `Public` unless the batch is genuinely access-restricted; the label describes distribution posture and never authorizes secret content, which is name-rejected at generation regardless."
         }
       },
       "additionalProperties": false
