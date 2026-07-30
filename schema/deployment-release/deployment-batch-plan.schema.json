@@ -22,8 +22,7 @@
     "previous_batch",
     "artifact_bindings",
     "report",
-    "created_at_utc",
-    "tooling"
+    "created_at_utc"
   ],
   "properties": {
     "schema": {
