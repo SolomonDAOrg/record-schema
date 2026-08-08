@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://record-schema.solomondao.org/schema/assertion.pack.schema.json",
   "title": "Record Schema assertion pack",
-  "description": "A declarative set of cross-document checks over a record repository. Structural validation answers questions about one document; an assertion pack answers questions that only exist between two. A pack is data: it contains no code, no path into the host, and nothing a conforming implementation executes.",
+  "description": "A repository-owned declarative program for cross-document validation, deterministic reporting, and deterministic materialisation. Implementations execute only the closed vocabulary defined by this schema.",
   "type": "object",
   "required": [
     "schema",
@@ -19,41 +19,51 @@
     },
     "pack_id": {
       "type": "string",
-      "description": "Stable identifier for this pack."
+      "minLength": 1
     },
     "description": {
       "type": "string"
     },
     "imports": {
       "type": "array",
-      "description": "Other packs to merge before this one. Later declarations win by identifier, which lets a repository ship a base pack and a narrowing pack without either copying the other. Paths are relative to the importing pack, or repository-relative when they begin with a slash.",
       "items": {
-        "type": "string"
-      }
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
     },
     "default_source": {
       "type": "string",
-      "description": "Source used by a selector that names none."
+      "minLength": 1
     },
     "sources": {
       "type": "object",
-      "description": "Named document sets. Selecting by declared document type rather than by filename glob is strongly preferred: a repository that names one payload two ways will silently drop half of them from a glob, and every rule built on that source then reports clean over documents it never opened.",
       "additionalProperties": {
         "$ref": "#/$defs/source"
       }
     },
     "tables": {
       "type": "object",
-      "description": "Named key/value maps, available to expressions. A table projected from the repository cannot drift from it; a table written out here can, so the literal form is for values the repository genuinely does not declare.",
       "additionalProperties": {
         "$ref": "#/$defs/table"
       }
     },
+    "languages": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/language"
+      }
+    },
     "selectors": {
       "type": "object",
-      "description": "Named selectors, referenced by identifier from rules.",
       "additionalProperties": {
-        "$ref": "#/$defs/selector"
+        "$ref": "#/$defs/selectorDefinition"
+      }
+    },
+    "reports": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/report"
       }
     },
     "rules": {
@@ -64,6 +74,45 @@
     }
   },
   "$defs": {
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "stringOrArray": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ]
+    },
+    "path": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ]
+    },
     "source": {
       "type": "object",
       "additionalProperties": false,
@@ -79,10 +128,10 @@
             "auto",
             "yaml",
             "json",
+            "markdown",
             "text",
             "none"
-          ],
-          "default": "auto"
+          ]
         },
         "doc_types": {
           "$ref": "#/$defs/stringOrArray"
@@ -95,12 +144,404 @@
         }
       }
     },
+    "selectorDefinition": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/selector"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "$ref": "#/$defs/selector"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "selectorReference": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "$ref": "#/$defs/selector"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "$ref": "#/$defs/selector"
+              }
+            ]
+          }
+        }
+      ]
+    },
     "selector": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "extends": {
           "type": "string",
-          "description": "Named selector to inherit from. Predicates compose rather than replace."
+          "minLength": 1
+        },
+        "source": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "$ref": "#/$defs/source"
+            }
+          ]
+        },
+        "path": {
+          "$ref": "#/$defs/path"
+        },
+        "unit_where": {},
+        "where": {},
+        "each": {
+          "type": "string",
+          "minLength": 1
+        },
+        "each_where": {},
+        "scope_key": {
+          "type": "string"
+        },
+        "with_tables": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "bind": {
+          "type": "object"
+        },
+        "expand": {
+          "type": "object"
+        },
+        "extract": {
+          "$ref": "#/$defs/extract"
+        },
+        "lex": {
+          "$ref": "#/$defs/lexTransform"
+        },
+        "post_where": {},
+        "project": {
+          "type": "object"
+        }
+      }
+    },
+    "extract": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "required": [
+            "pattern"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "pattern": {
+              "type": "string"
+            },
+            "from": {},
+            "flags": {
+              "type": "string"
+            },
+            "global": {
+              "type": "boolean"
+            },
+            "group": {
+              "oneOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "groups": {
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            },
+            "project": {
+              "type": "object"
+            }
+          }
+        }
+      ]
+    },
+    "lexTransform": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "language": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/language"
+                }
+              ]
+            },
+            "from": {},
+            "kinds": {
+              "$ref": "#/$defs/stringOrArray"
+            },
+            "roles": {
+              "$ref": "#/$defs/stringOrArray"
+            },
+            "emit": {
+              "enum": [
+                "text",
+                "object"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "table": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "entries"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "entries": {
+              "type": "object"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "key"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "select": {
+              "$ref": "#/$defs/selectorReference"
+            },
+            "source": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/source"
+                }
+              ]
+            },
+            "path": {
+              "$ref": "#/$defs/path"
+            },
+            "unit_where": {},
+            "where": {},
+            "each": {
+              "type": "string"
+            },
+            "each_where": {},
+            "scope_key": {
+              "type": "string"
+            },
+            "bind": {
+              "type": "object"
+            },
+            "expand": {
+              "type": "object"
+            },
+            "extract": {
+              "$ref": "#/$defs/extract"
+            },
+            "lex": {
+              "$ref": "#/$defs/lexTransform"
+            },
+            "post_where": {},
+            "project": {
+              "type": "object"
+            },
+            "with_tables": {
+              "$ref": "#/$defs/stringArray"
+            },
+            "key": {
+              "type": "string",
+              "minLength": 1
+            },
+            "value": {},
+            "mode": {
+              "enum": [
+                "scalar",
+                "list",
+                "set",
+                "count",
+                "sum",
+                "minimum",
+                "maximum"
+              ]
+            },
+            "on_duplicate": {
+              "enum": [
+                "first",
+                "last",
+                "error"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "language": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "identifier_pattern": {
+          "type": "string"
+        },
+        "number_pattern": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "multi_operators": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "single_operators": {
+          "type": "string"
+        },
+        "punctuation": {
+          "type": "string"
+        },
+        "line_comments": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "block_comments": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "string_quotes": {
+          "type": "string"
+        },
+        "call_open": {
+          "type": "string",
+          "minLength": 1
+        },
+        "allow_empty": {
+          "type": "boolean"
+        },
+        "member_operators": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "balanced_pairs": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "forbid_adjacent": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 2
+          }
+        }
+      }
+    },
+    "projection": {
+      "type": "object",
+      "required": [
+        "key"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "select": {
+          "$ref": "#/$defs/selectorReference"
         },
         "source": {
           "oneOf": [
@@ -113,62 +554,577 @@
           ]
         },
         "path": {
-          "type": "string",
-          "description": "Selector path. Supports $, .key, ..key, ..*, .*, [*], [n], and ['key']."
+          "$ref": "#/$defs/path"
         },
-        "unit_where": {
-          "description": "Predicate over the whole document. Some conditions are properties of a document and cannot be decided from a node inside it."
-        },
-        "where": {
-          "description": "Predicate over each matched node."
-        },
+        "unit_where": {},
+        "where": {},
         "each": {
-          "type": "string",
-          "description": "Descend to children after `where` has filtered the scope. This is what lets one rule carry both a condition about a scope and a check over its members."
+          "type": "string"
         },
-        "each_where": {
-          "description": "Predicate over each child."
+        "each_where": {},
+        "scope_key": {
+          "type": "string"
+        },
+        "with_tables": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "bind": {
+          "type": "object"
+        },
+        "expand": {
+          "type": "object"
+        },
+        "extract": {
+          "$ref": "#/$defs/extract"
+        },
+        "lex": {
+          "$ref": "#/$defs/lexTransform"
+        },
+        "post_where": {},
+        "project": {
+          "type": "object"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {},
+        "on_duplicate": {
+          "enum": [
+            "first",
+            "last",
+            "error"
+          ]
         }
       }
     },
-    "table": {
-      "oneOf": [
+    "reachEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "select": {
+          "$ref": "#/$defs/selectorReference"
+        },
+        "key": {},
+        "from": {},
+        "to": {},
+        "value": {},
+        "origin": {},
+        "group": {},
+        "origin_relation": {
+          "enum": [
+            "same",
+            "different"
+          ]
+        },
+        "group_relation": {
+          "enum": [
+            "same",
+            "different"
+          ]
+        },
+        "exclude_same_origin": {
+          "type": "boolean"
+        },
+        "match": {
+          "enum": [
+            "exact",
+            "word",
+            "nearby"
+          ]
+        },
+        "boundary": {
+          "type": "string"
+        },
+        "window": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tier": {
+          "type": "string"
+        }
+      }
+    },
+    "reachPropagation": {
+      "type": "object",
+      "required": [
+        "declarations",
+        "activations"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "declarations": {
+          "$ref": "#/$defs/selectorReference"
+        },
+        "activations": {
+          "$ref": "#/$defs/selectorReference"
+        },
+        "name": {},
+        "values": {},
+        "origin": {},
+        "activation_origin": {},
+        "activation_text": {},
+        "origin_relation": {
+          "enum": [
+            "same",
+            "different"
+          ]
+        },
+        "exclude_same_origin": {
+          "type": "boolean"
+        },
+        "match": {
+          "enum": [
+            "exact",
+            "word",
+            "nearby"
+          ]
+        },
+        "boundary": {
+          "type": "string"
+        },
+        "window": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tier": {
+          "type": "string"
+        }
+      }
+    },
+    "digestCommitment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "domain": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "path_length": {
+          "enum": [
+            "u16le",
+            "u32le"
+          ]
+        },
+        "include_path": {
+          "type": "boolean"
+        },
+        "include_digest": {
+          "type": "boolean"
+        }
+      }
+    },
+    "materializer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "operation": {
+          "enum": [
+            "rewrite",
+            "yaml_inline_mapping_field",
+            "reach_baseline",
+            "digest_manifest"
+          ]
+        },
+        "file": {
+          "type": "string"
+        },
+        "mapping_key": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "value": {},
+        "sections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reachMaterializerSection"
+          }
+        },
+        "document": {
+          "type": "object"
+        },
+        "root_field": {
+          "type": "string"
+        },
+        "count_field": {
+          "type": "string"
+        },
+        "entries_field": {
+          "type": "string"
+        },
+        "path_field": {
+          "type": "string"
+        },
+        "digest_field": {
+          "type": "string"
+        },
+        "line_width": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "allOf": [
         {
-          "type": "object",
-          "required": [
-            "entries"
-          ],
-          "properties": {
-            "entries": {
-              "type": "object"
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "yaml_inline_mapping_field"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "required": [
+              "mapping_key",
+              "field",
+              "value"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "reach_baseline"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "required": [
+              "file",
+              "sections"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "digest_manifest"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "required": [
+              "file",
+              "root_field",
+              "count_field",
+              "entries_field",
+              "path_field",
+              "digest_field"
+            ]
+          }
+        }
+      ]
+    },
+    "reachMaterializerSection": {
+      "type": "object",
+      "required": [
+        "rule",
+        "field",
+        "entry"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "rule": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "entry": {
+          "type": "object"
+        },
+        "category_field": {
+          "type": "string"
+        },
+        "default_category": {},
+        "sort_by": {
+          "$ref": "#/$defs/stringOrArray"
+        }
+      }
+    },
+    "report": {
+      "type": "object",
+      "required": [
+        "sections"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "sections": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/reportSection"
+          }
+        }
+      }
+    },
+    "reportSection": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "table",
+            "reach_summary",
+            "reach_catalogue",
+            "text"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "select": {
+          "$ref": "#/$defs/selectorReference"
+        },
+        "group": {
+          "type": "string"
+        },
+        "sort": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/reportSort"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/reportSort"
+              }
+            }
+          ]
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reportColumn"
+          }
+        },
+        "computed": {
+          "type": "object"
+        },
+        "detail_prefix": {
+          "type": "string"
+        },
+        "detail_include": {},
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reportColumn"
+          }
+        },
+        "rules": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "rule": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "member": {
+          "type": "string"
+        },
+        "realised_tiers": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "show_tiers": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "lines": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "category_groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "key",
+              "categories"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "categories": {
+                "$ref": "#/$defs/stringArray"
+              }
             }
           }
+        },
+        "order": {
+          "enum": [
+            "label",
+            "source"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "table"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "select",
+              "columns"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "reach_summary"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "rules"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "reach_catalogue"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "rule"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "text"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "text"
+            ]
+          }
+        }
+      ]
+    },
+    "reportSort": {
+      "oneOf": [
+        {
+          "type": "string"
         },
         {
           "type": "object",
           "required": [
-            "key"
+            "by"
           ],
+          "additionalProperties": false,
           "properties": {
-            "select": {},
-            "source": {},
-            "path": {
+            "by": {
               "type": "string"
             },
-            "where": {},
-            "each": {
-              "type": "string"
-            },
-            "each_where": {},
-            "key": {
-              "type": "string"
-            },
-            "value": {
-              "type": "string"
+            "direction": {
+              "enum": [
+                "ascending",
+                "descending"
+              ]
             }
           }
         }
       ]
+    },
+    "reportColumn": {
+      "type": "object",
+      "required": [
+        "key"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "value": {},
+        "aggregate": {
+          "enum": [
+            "first",
+            "last",
+            "count",
+            "sum",
+            "min",
+            "max",
+            "any",
+            "all",
+            "list",
+            "unique_list",
+            "join"
+          ]
+        },
+        "count_all": {
+          "type": "boolean"
+        },
+        "unique": {
+          "type": "boolean"
+        },
+        "separator": {
+          "type": "string"
+        },
+        "order_by": {},
+        "width": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "align": {
+          "enum": [
+            "left",
+            "right"
+          ]
+        },
+        "gap_before": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "hidden": {
+          "type": "boolean"
+        },
+        "present_if": {
+          "type": "string"
+        },
+        "null": {}
+      }
     },
     "rule": {
       "type": "object",
@@ -177,6 +1133,7 @@
         "kind",
         "message"
       ],
+      "additionalProperties": false,
       "properties": {
         "id": {
           "type": "string",
@@ -194,31 +1151,143 @@
             "derive",
             "count",
             "reach",
+            "cycle",
             "decode",
-            "digest"
-          ],
-          "description": "Rule kinds are shapes of defect, not subjects. forbid: a match is the finding. require: every row satisfies a predicate. pattern: every value matches a form. unique: keys are distinct within a group. consistent: rows sharing a group agree on a value. resolve: every use resolves to a declaration. agree: two projections joined on a key relate as declared. derive: a computed value satisfies an expression. count: a group's cardinality falls within bounds. reach: every node is reached, modulo a categorised baseline. decode: declared bytes decode to the claimed fields. digest: a committed manifest matches the tree it names."
+            "digest",
+            "lex",
+            "path",
+            "format"
+          ]
         },
         "message": {
           "type": "string",
-          "description": "Rendered finding text. Required, because a rule reporting a token and no instruction tells a reader that something is wrong and not what to do about it."
+          "minLength": 1
         },
         "severity": {
           "enum": [
             "error",
             "warning",
             "advisory"
-          ],
-          "default": "error",
-          "description": "An advisory is an observation needing a human decision. It prints and never fails a run: a gate that fails on things it cannot itself adjudicate teaches people to silence it."
+          ]
+        },
+        "severity_by_mode": {
+          "type": "object",
+          "additionalProperties": {
+            "enum": [
+              "error",
+              "warning",
+              "advisory"
+            ]
+          }
+        },
+        "modes": {
+          "$ref": "#/$defs/stringOrArray"
         },
         "enabled": {
-          "type": "boolean",
-          "default": true
+          "type": "boolean"
+        },
+        "source": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/source"
+            }
+          ]
+        },
+        "select": {
+          "$ref": "#/$defs/selectorReference"
+        },
+        "scope": {
+          "$ref": "#/$defs/selectorReference"
+        },
+        "with_tables": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "bind": {
+          "type": "object"
         },
         "when": {
-          "type": "string",
-          "description": "Expression guarding whether a derive assertion applies. A row the pack cannot resolve is not a row that fails; it is a row the check has nothing to say about."
+          "type": "string"
+        },
+        "must": {},
+        "match": {
+          "type": "string"
+        },
+        "not_match": {
+          "type": "string"
+        },
+        "flags": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        },
+        "within": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "value": {},
+        "uses": {
+          "$ref": "#/$defs/selectorReference"
+        },
+        "defines": {
+          "$ref": "#/$defs/selectorReference"
+        },
+        "use_key": {
+          "type": "string"
+        },
+        "define_key": {
+          "type": "string"
+        },
+        "use_scope": {
+          "type": "string"
+        },
+        "define_scope": {
+          "type": "string"
+        },
+        "dedupe_uses": {
+          "type": "boolean"
+        },
+        "exempts": {
+          "$ref": "#/$defs/selectorReference"
+        },
+        "exempt_key": {
+          "type": "string"
+        },
+        "exempt_scope": {
+          "type": "string"
+        },
+        "exempt_when": {},
+        "use_exempt_key": {
+          "type": "string"
+        },
+        "use_exempt_scope": {
+          "type": "string"
+        },
+        "activation_defines": {
+          "$ref": "#/$defs/selectorReference"
+        },
+        "activation_key": {
+          "type": "string"
+        },
+        "activation_scope": {
+          "type": "string"
+        },
+        "use_activation_key": {
+          "type": "string"
+        },
+        "use_activation_scope": {
+          "type": "string"
+        },
+        "left": {
+          "$ref": "#/$defs/projection"
+        },
+        "right": {
+          "$ref": "#/$defs/projection"
         },
         "compare": {
           "enum": [
@@ -230,21 +1299,664 @@
             "lt",
             "gte",
             "gt"
-          ],
-          "default": "loose",
-          "description": "A join is not always an equality. A declared ceiling and the thing it bounds are joined on one key and related by an inequality."
-        }
-      }
-    },
-    "stringOrArray": {
-      "oneOf": [
-        {
+          ]
+        },
+        "require_left": {
+          "type": "boolean"
+        },
+        "require_right": {
+          "type": "boolean"
+        },
+        "assert": {
           "type": "string"
         },
-        {
+        "require_bindings": {
+          "type": "boolean"
+        },
+        "dedupe_by": {},
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "nodes": {
+          "$ref": "#/$defs/selectorReference"
+        },
+        "node_key": {
+          "type": "string"
+        },
+        "node_aliases": {
+          "type": "array",
+          "items": {}
+        },
+        "node_origin": {},
+        "node_group": {},
+        "node_context": {},
+        "edges": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/reachEdge"
+            },
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/reachEdge"
+              }
+            }
+          ]
+        },
+        "include_self": {
+          "type": "boolean"
+        },
+        "tiers": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "unreachable_tier": {
+          "type": "string"
+        },
+        "propagations": {
           "type": "array",
           "items": {
-            "type": "string"
+            "$ref": "#/$defs/reachPropagation"
+          }
+        },
+        "baseline": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/source"
+            }
+          ]
+        },
+        "baseline_entries": {
+          "type": "string"
+        },
+        "baseline_key": {
+          "type": "string"
+        },
+        "baseline_category": {
+          "type": "string"
+        },
+        "baseline_categories": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "layouts": {
+          "$ref": "#/$defs/selectorReference"
+        },
+        "vectors": {
+          "$ref": "#/$defs/selectorReference"
+        },
+        "layout_key": {
+          "type": "string"
+        },
+        "vector_layout_key": {
+          "type": "string"
+        },
+        "hex": {
+          "type": "string"
+        },
+        "claims": {
+          "type": "string"
+        },
+        "layout_fields": {
+          "type": "string"
+        },
+        "field_name": {
+          "type": "string"
+        },
+        "field_offset": {
+          "type": "string"
+        },
+        "field_width": {
+          "type": "string"
+        },
+        "field_encoding": {
+          "type": "string"
+        },
+        "field_const": {
+          "type": "string"
+        },
+        "strict_claims": {
+          "type": "boolean"
+        },
+        "manifest": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/source"
+            }
+          ]
+        },
+        "tracks": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/source"
+            }
+          ]
+        },
+        "entries": {
+          "type": "string"
+        },
+        "entry_path": {
+          "type": "string"
+        },
+        "entry_digest": {
+          "type": "string"
+        },
+        "algorithm": {
+          "enum": [
+            "sha256"
+          ]
+        },
+        "sorted": {
+          "type": "boolean"
+        },
+        "count_path": {
+          "type": "string"
+        },
+        "root_path": {
+          "type": "string"
+        },
+        "commitment": {
+          "$ref": "#/$defs/digestCommitment"
+        },
+        "language": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/language"
+            }
+          ]
+        },
+        "syntax": {
+          "type": "boolean"
+        },
+        "reference_roles": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "value_path": {
+          "type": "string"
+        },
+        "ignore": {
+          "type": "array",
+          "items": {}
+        },
+        "ignore_pattern": {
+          "type": "string"
+        },
+        "max_syntax_findings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "path_value": {},
+        "path_kind": {
+          "enum": [
+            "any",
+            "file",
+            "directory"
+          ]
+        },
+        "formatter": {
+          "enum": [
+            "yaml_flow_mapping_spacing"
+          ]
+        },
+        "operation": {
+          "type": "string"
+        },
+        "line_budget": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minimum_size": {
+          "type": "number"
+        },
+        "materialize": {
+          "$ref": "#/$defs/materializer"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "forbid"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "select"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "require"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "must"
+            ],
+            "anyOf": [
+              {
+                "required": [
+                  "scope"
+                ]
+              },
+              {
+                "required": [
+                  "select"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "pattern"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "select"
+            ],
+            "anyOf": [
+              {
+                "required": [
+                  "match"
+                ]
+              },
+              {
+                "required": [
+                  "not_match"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "unique"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "select",
+              "key"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "consistent"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "select",
+              "group",
+              "value"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "resolve"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "uses",
+              "defines"
+            ],
+            "anyOf": [
+              {
+                "required": [
+                  "use_key",
+                  "define_key"
+                ]
+              },
+              {
+                "required": [
+                  "key"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "agree"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "left",
+              "right"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "derive"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "assert"
+            ],
+            "anyOf": [
+              {
+                "required": [
+                  "scope"
+                ]
+              },
+              {
+                "required": [
+                  "select"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "count"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "anyOf": [
+              {
+                "required": [
+                  "scope"
+                ]
+              },
+              {
+                "required": [
+                  "select"
+                ]
+              }
+            ],
+            "allOf": [
+              {
+                "anyOf": [
+                  {
+                    "required": [
+                      "min"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "max"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "reach"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "nodes",
+              "edges"
+            ],
+            "anyOf": [
+              {
+                "required": [
+                  "node_key"
+                ]
+              },
+              {
+                "required": [
+                  "key"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "cycle"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "nodes",
+              "edges"
+            ],
+            "anyOf": [
+              {
+                "required": [
+                  "node_key"
+                ]
+              },
+              {
+                "required": [
+                  "key"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "decode"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "layouts",
+              "vectors",
+              "layout_key",
+              "vector_layout_key",
+              "hex",
+              "claims"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "digest"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "manifest",
+              "tracks"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "lex"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "language"
+            ],
+            "anyOf": [
+              {
+                "required": [
+                  "scope"
+                ]
+              },
+              {
+                "required": [
+                  "select"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "path"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "anyOf": [
+              {
+                "required": [
+                  "scope"
+                ]
+              },
+              {
+                "required": [
+                  "select"
+                ]
+              }
+            ],
+            "allOf": [
+              {
+                "anyOf": [
+                  {
+                    "required": [
+                      "value"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "path_value"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "format"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "source"
+            ],
+            "anyOf": [
+              {
+                "required": [
+                  "formatter"
+                ]
+              },
+              {
+                "required": [
+                  "operation"
+                ]
+              }
+            ]
           }
         }
       ]
