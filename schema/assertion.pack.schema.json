@@ -691,29 +691,6 @@
         }
       }
     },
-    "digestCommitment": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "domain": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 255
-        },
-        "path_length": {
-          "enum": [
-            "u16le",
-            "u32le"
-          ]
-        },
-        "include_path": {
-          "type": "boolean"
-        },
-        "include_digest": {
-          "type": "boolean"
-        }
-      }
-    },
     "materializer": {
       "type": "object",
       "additionalProperties": false,
@@ -722,8 +699,7 @@
           "enum": [
             "rewrite",
             "yaml_inline_mapping_field",
-            "reach_baseline",
-            "digest_manifest"
+            "reach_baseline"
           ]
         },
         "file": {
@@ -741,28 +717,6 @@
           "items": {
             "$ref": "#/$defs/reachMaterializerSection"
           }
-        },
-        "document": {
-          "type": "object"
-        },
-        "root_field": {
-          "type": "string"
-        },
-        "count_field": {
-          "type": "string"
-        },
-        "entries_field": {
-          "type": "string"
-        },
-        "path_field": {
-          "type": "string"
-        },
-        "digest_field": {
-          "type": "string"
-        },
-        "line_width": {
-          "type": "integer",
-          "minimum": 1
         }
       },
       "allOf": [
@@ -800,28 +754,6 @@
             "required": [
               "file",
               "sections"
-            ]
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "operation": {
-                "const": "digest_manifest"
-              }
-            },
-            "required": [
-              "operation"
-            ]
-          },
-          "then": {
-            "required": [
-              "file",
-              "root_field",
-              "count_field",
-              "entries_field",
-              "path_field",
-              "digest_field"
             ]
           }
         }
@@ -1153,7 +1085,6 @@
             "reach",
             "cycle",
             "decode",
-            "digest",
             "lex",
             "path",
             "format"
@@ -1422,52 +1353,6 @@
         },
         "strict_claims": {
           "type": "boolean"
-        },
-        "manifest": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/$defs/source"
-            }
-          ]
-        },
-        "tracks": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/$defs/source"
-            }
-          ]
-        },
-        "entries": {
-          "type": "string"
-        },
-        "entry_path": {
-          "type": "string"
-        },
-        "entry_digest": {
-          "type": "string"
-        },
-        "algorithm": {
-          "enum": [
-            "sha256"
-          ]
-        },
-        "sorted": {
-          "type": "boolean"
-        },
-        "count_path": {
-          "type": "string"
-        },
-        "root_path": {
-          "type": "string"
-        },
-        "commitment": {
-          "$ref": "#/$defs/digestCommitment"
         },
         "language": {
           "oneOf": [
@@ -1838,24 +1723,6 @@
               "vector_layout_key",
               "hex",
               "claims"
-            ]
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "kind": {
-                "const": "digest"
-              }
-            },
-            "required": [
-              "kind"
-            ]
-          },
-          "then": {
-            "required": [
-              "manifest",
-              "tracks"
             ]
           }
         },
