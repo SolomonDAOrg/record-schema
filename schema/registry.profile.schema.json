@@ -172,6 +172,14 @@
             },
             "additionalProperties": false
           }
+        },
+        "assertion_packs": {
+          "type": "array",
+          "description": "Repository-relative paths to assertion packs. Structural validation checks one document at a time; an assertion pack carries the checks that hold between two documents, and declaring them here is what makes them part of the repository rather than part of whichever tool happened to run.",
+          "items": {
+            "type": "string",
+            "pattern": "^[^/].*[.]rules[.]ya?ml$"
+          }
         }
       },
       "additionalProperties": true

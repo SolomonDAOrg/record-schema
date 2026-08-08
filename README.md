@@ -32,6 +32,7 @@ Human-readable specifications live in `specifications/`:
 | [UPSTREAM.md](specifications/UPSTREAM.md) | Upstream/lineage declaration (`SCHEMA_UPSTREAM.yaml`) and resolution hints |
 | [FORMATTING.md](specifications/FORMATTING.md) | Formatting and normalization rules (baseline + `canonical-ascii`) |
 | [PACK_ARCHITECTURE.md](specifications/PACK_ARCHITECTURE.md) | Formatting pack and render pack architecture |
+| [ASSERTIONS.md](specifications/ASSERTIONS.md) | Cross-document assertion packs: the checks that only exist between two documents |
 | [CHARTS.md](specifications/CHARTS.md) | Chart/diagram DSL with proper escaping and multiline labels |
 
 ## Contents

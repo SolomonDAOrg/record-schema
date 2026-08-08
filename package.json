@@ -1,21 +1,21 @@
 {
-    "name": "record-schema",
-    "private": true,
-    "files": [
-        "ATTRIBUTION.md",
-        "CONTRIBUTING.md",
-        "LICENSE",
-        "README.md",
-        "SCHEMA_UPSTREAM.yaml",
-        "examples",
-        "formatting",
-        "overlays",
-        "profiles",
-        "registry",
-        "render",
-        "schema",
-        "specifications",
-        "templates"
-    ],
-    "packageManager": "yarn@4.2.2"
+  "name": "record-schema",
+  "private": true,
+  "files": [
+    "ATTRIBUTION.md",
+    "CONTRIBUTING.md",
+    "LICENSE",
+    "README.md",
+    "SCHEMA_UPSTREAM.yaml",
+    "examples",
+    "formatting",
+    "overlays",
+    "profiles",
+    "registry",
+    "render",
+    "schema",
+    "specifications",
+    "templates"
+  ],
+  "packageManager": "yarn@4.2.2"
 }

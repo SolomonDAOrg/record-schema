@@ -110,13 +110,11 @@
         },
         "disclosure_policy": {
           "type": "string",
-          "const": "typed-artifact-allowlist",
-          "description": "Full-detail expansion in the human report is a positive allowlist of typed evidence schemas with closed adapters. This controls what acquires narrative authority in the report, not secrecy: every retained artifact ships hash-bound and byte-complete in the published batch regardless of its report detail level."
+          "const": "typed-artifact-allowlist"
         },
         "sensitive_field_defense_in_depth": {
           "type": "string",
-          "const": "reject",
-          "description": "Deployment evidence batches and their reports are PUBLISHED evidence. The generator MUST fail closed (reject the batch, never silently redact) when any evidence field NAME can only denote private key material or a raw credential - the mnemonic/private_key/secret/secret_key/seed_phrase/signing_key/keypair/private_material/passphrase/pkcs8/jwk and bearer_token/access_token/refresh_token/password families. Names that collide with public data - `seed`/`seeds` as PDA or program-derived-address derivation labels, schema vocabulary, rendering terms - MUST NOT be name-rejected; publication of public facts is the goal, and this check exists only to keep key material and credentials out of published bytes."
+          "const": "reject"
         },
         "transaction_action_policy": {
           "type": "string",

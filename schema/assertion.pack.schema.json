@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://record-schema.solomondao.org/schema/assertion.pack.schema.json",
+  "title": "Record Schema assertion pack",
+  "description": "A declarative set of cross-document checks over a record repository. Structural validation answers questions about one document; an assertion pack answers questions that only exist between two. A pack is data: it contains no code, no path into the host, and nothing a conforming implementation executes.",
+  "type": "object",
+  "required": [
+    "schema",
+    "schema_version"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "record-schema-assertion-pack"
+    },
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "pack_id": {
+      "type": "string",
+      "description": "Stable identifier for this pack."
+    },
+    "description": {
+      "type": "string"
+    },
+    "imports": {
+      "type": "array",
+      "description": "Other packs to merge before this one. Later declarations win by identifier, which lets a repository ship a base pack and a narrowing pack without either copying the other. Paths are relative to the importing pack, or repository-relative when they begin with a slash.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "default_source": {
+      "type": "string",
+      "description": "Source used by a selector that names none."
+    },
+    "sources": {
+      "type": "object",
+      "description": "Named document sets. Selecting by declared document type rather than by filename glob is strongly preferred: a repository that names one payload two ways will silently drop half of them from a glob, and every rule built on that source then reports clean over documents it never opened.",
+      "additionalProperties": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "tables": {
+      "type": "object",
+      "description": "Named key/value maps, available to expressions. A table projected from the repository cannot drift from it; a table written out here can, so the literal form is for values the repository genuinely does not declare.",
+      "additionalProperties": {
+        "$ref": "#/$defs/table"
+      }
+    },
+    "selectors": {
+      "type": "object",
+      "description": "Named selectors, referenced by identifier from rules.",
+      "additionalProperties": {
+        "$ref": "#/$defs/selector"
+      }
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/rule"
+      }
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "include": {
+          "$ref": "#/$defs/stringOrArray"
+        },
+        "exclude": {
+          "$ref": "#/$defs/stringOrArray"
+        },
+        "parse": {
+          "enum": [
+            "auto",
+            "yaml",
+            "json",
+            "text",
+            "none"
+          ],
+          "default": "auto"
+        },
+        "doc_types": {
+          "$ref": "#/$defs/stringOrArray"
+        },
+        "schema_ids": {
+          "$ref": "#/$defs/stringOrArray"
+        },
+        "series": {
+          "$ref": "#/$defs/stringOrArray"
+        }
+      }
+    },
+    "selector": {
+      "type": "object",
+      "properties": {
+        "extends": {
+          "type": "string",
+          "description": "Named selector to inherit from. Predicates compose rather than replace."
+        },
+        "source": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/source"
+            }
+          ]
+        },
+        "path": {
+          "type": "string",
+          "description": "Selector path. Supports $, .key, ..key, ..*, .*, [*], [n], and ['key']."
+        },
+        "unit_where": {
+          "description": "Predicate over the whole document. Some conditions are properties of a document and cannot be decided from a node inside it."
+        },
+        "where": {
+          "description": "Predicate over each matched node."
+        },
+        "each": {
+          "type": "string",
+          "description": "Descend to children after `where` has filtered the scope. This is what lets one rule carry both a condition about a scope and a check over its members."
+        },
+        "each_where": {
+          "description": "Predicate over each child."
+        }
+      }
+    },
+    "table": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "entries"
+          ],
+          "properties": {
+            "entries": {
+              "type": "object"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "key"
+          ],
+          "properties": {
+            "select": {},
+            "source": {},
+            "path": {
+              "type": "string"
+            },
+            "where": {},
+            "each": {
+              "type": "string"
+            },
+            "each_where": {},
+            "key": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "rule": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "message"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*(?:/[A-Z][A-Z0-9_]*)?$"
+        },
+        "kind": {
+          "enum": [
+            "forbid",
+            "require",
+            "pattern",
+            "unique",
+            "consistent",
+            "resolve",
+            "agree",
+            "derive",
+            "count",
+            "reach",
+            "decode",
+            "digest"
+          ],
+          "description": "Rule kinds are shapes of defect, not subjects. forbid: a match is the finding. require: every row satisfies a predicate. pattern: every value matches a form. unique: keys are distinct within a group. consistent: rows sharing a group agree on a value. resolve: every use resolves to a declaration. agree: two projections joined on a key relate as declared. derive: a computed value satisfies an expression. count: a group's cardinality falls within bounds. reach: every node is reached, modulo a categorised baseline. decode: declared bytes decode to the claimed fields. digest: a committed manifest matches the tree it names."
+        },
+        "message": {
+          "type": "string",
+          "description": "Rendered finding text. Required, because a rule reporting a token and no instruction tells a reader that something is wrong and not what to do about it."
+        },
+        "severity": {
+          "enum": [
+            "error",
+            "warning",
+            "advisory"
+          ],
+          "default": "error",
+          "description": "An advisory is an observation needing a human decision. It prints and never fails a run: a gate that fails on things it cannot itself adjudicate teaches people to silence it."
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": true
+        },
+        "when": {
+          "type": "string",
+          "description": "Expression guarding whether a derive assertion applies. A row the pack cannot resolve is not a row that fails; it is a row the check has nothing to say about."
+        },
+        "compare": {
+          "enum": [
+            "loose",
+            "strict",
+            "number",
+            "case_insensitive",
+            "lte",
+            "lt",
+            "gte",
+            "gt"
+          ],
+          "default": "loose",
+          "description": "A join is not always an equality. A declared ceiling and the thing it bounds are joined on one key and related by an inequality."
+        }
+      }
+    },
+    "stringOrArray": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  }
+}
