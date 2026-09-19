@@ -36,10 +36,18 @@
             "md"
           ]
         },
-        "format": {
-          "normalize_baseline": true,
-          "normalize_canonical_ascii": false,
-          "reflow_max_width": 110
+        "enforce": {
+          "formatting_profile": "baseline",
+          "line_width": {
+            "max": 110,
+            "ignore_blocks": [
+              "code",
+              "tables",
+              "urls",
+              "base58",
+              "base64"
+            ]
+          }
         }
       }
     ]

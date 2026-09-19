@@ -1,0 +1,13 @@
+{
+  "schema": "record-schema-render-pack",
+  "schema_version": 1,
+  "pack_id": "confidential-agreements-v1",
+  "description": "Confidential agreement rendering with metadata-driven identity and contractor services layout profiles.",
+  "imports": [
+    "render/packs/contractor-services-v1.json"
+  ],
+  "packet_config": {
+    "header_text": "CONFIDENTIAL"
+  },
+  "document_policies": {}
+}

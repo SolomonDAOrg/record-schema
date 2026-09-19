@@ -1,0 +1,1474 @@
+{
+    "schema": "record-schema-render-pack",
+    "schema_version": 1,
+    "pack_id": "contractor-services-v1",
+    "description": "Contractor services typography, packet covers, and optional certificate and compact document layouts. Identity and profile selection are supplied by record metadata.",
+    "document_policies": {
+        "targets": {
+            "pdf": {
+                "format": "pdf",
+                "page_size": "a4",
+                "orientation": "portrait",
+                "margins": {
+                    "top": 54,
+                    "bottom": 54,
+                    "left": 58,
+                    "right": 64,
+                    "unit": "pt"
+                },
+                "fonts": {
+                    "regular": "Lato-Regular",
+                    "bold": "Lato-Bold",
+                    "italic": "Lato-Italic",
+                    "monospace": "Courier",
+                    "bold_italic": "Lato-BoldItalic"
+                },
+                "base_font_size": 10.5,
+                "line_spacing": 1.4,
+                "heading_scales": {
+                    "h1": 1.48,
+                    "h2": 1.2,
+                    "h3": 1.08
+                },
+                "heading_styles": {
+                    "h1": {
+                        "color": "#233B50"
+                    },
+                    "h2": {
+                        "color": "#233B50"
+                    },
+                    "h3": {
+                        "color": "#52616B"
+                    }
+                },
+                "horizontal_rule": {
+                    "behavior": "rule"
+                },
+                "page_tracking": {
+                    "enabled": true,
+                    "symbology": "code128-b",
+                    "module_width": 0.6,
+                    "bar_height": 14,
+                    "quiet_zone_modules": 10,
+                    "right_inset": 12,
+                    "bottom_inset": 24,
+                    "show_text": true,
+                    "font_size": 5,
+                    "suppress_cover": true,
+                    "suppress_signing": true
+                },
+                "embedded_fonts": {
+                    "enabled": true,
+                    "resolve_relative_to": "pack",
+                    "register_before_layout": true,
+                    "encoding": "WinAnsiEncoding",
+                    "roles": {
+                        "body": "Lato-Regular",
+                        "body_regular": "Lato-Regular",
+                        "body_bold": "Lato-Bold",
+                        "body_italic": "Lato-Italic",
+                        "body_bold_italic": "Lato-BoldItalic",
+                        "heading": "Lato-Bold",
+                        "cover_title": "Lato-Regular",
+                        "cover_eyebrow": "Lato-Bold",
+                        "cover_subtitle": "Lato-Regular",
+                        "cover_entity": "Lato-Bold",
+                        "cover_meta_label": "Lato-Regular",
+                        "cover_meta_value": "Lato-Regular",
+                        "cover_footer": "Lato-Regular",
+                        "heading_regular": "Lato-Regular",
+                        "heading_bold": "Lato-Bold"
+                    },
+                    "families": {
+                        "Lato": {
+                            "faces": {
+                                "regular": {
+                                    "postscript_name": "Lato-Regular",
+                                    "google_font": {
+                                        "family": "Lato",
+                                        "weight": 400,
+                                        "style": "normal"
+                                    },
+                                    "fallback": "Helvetica"
+                                },
+                                "bold": {
+                                    "postscript_name": "Lato-Bold",
+                                    "google_font": {
+                                        "family": "Lato",
+                                        "weight": 700,
+                                        "style": "normal"
+                                    },
+                                    "fallback": "Helvetica-Bold"
+                                },
+                                "italic": {
+                                    "postscript_name": "Lato-Italic",
+                                    "google_font": {
+                                        "family": "Lato",
+                                        "weight": 400,
+                                        "style": "italic"
+                                    },
+                                    "fallback": "Helvetica-Oblique"
+                                },
+                                "bold_italic": {
+                                    "postscript_name": "Lato-BoldItalic",
+                                    "google_font": {
+                                        "family": "Lato",
+                                        "weight": 700,
+                                        "style": "italic"
+                                    },
+                                    "fallback": "Helvetica-BoldOblique"
+                                }
+                            }
+                        }
+                    },
+                    "fallbacks": {
+                        "regular": "Helvetica",
+                        "bold": "Helvetica-Bold",
+                        "italic": "Helvetica-Oblique",
+                        "monospace": "Courier",
+                        "bold_italic": "Helvetica-BoldOblique"
+                    }
+                },
+                "font_role_defaults": {
+                    "body": "body",
+                    "heading_1": "heading",
+                    "heading_2": "heading",
+                    "heading_3": "heading",
+                    "heading_4": "heading",
+                    "heading_5": "heading",
+                    "heading_6": "heading"
+                },
+                "table": {
+                    "border_color": "#D3DCE2",
+                    "outer_border_color": "#213C51",
+                    "header": {
+                        "border_color": "#526D80"
+                    },
+                    "uppercase_baseline_shift": 0.1
+                },
+                "directive_styles": {
+                    "signature-block": {
+                        "padding": 10,
+                        "border_width": 0.6,
+                        "border_color": "#213C51",
+                        "header_background_color": "#F1F5F7",
+                        "title_color": "#213C51",
+                        "field_label_width": 115,
+                        "signature_row_height": 64,
+                        "row_height": 16,
+                        "row_gap": 3,
+                        "header_gap": 10,
+                        "post_gap": 8
+                    },
+                    "single": {
+                        "font_size": 9.2,
+                        "header_gap": 5,
+                        "signature_row_height": 64,
+                        "row_height": 15,
+                        "row_gap": 0,
+                        "post_gap": 6,
+                        "border_width": 0.5,
+                        "border_color": "#213C51",
+                        "title_color": "#61727E"
+                    },
+                    "split": {
+                        "column_gap": 40,
+                        "separator_width": 0.6,
+                        "separator_color": "#D3DCE2"
+                    }
+                },
+                "markdown_envelope_style": {
+                    "font_size": 9.2,
+                    "label_font_size": 8.3,
+                    "line_spacing": 1.35,
+                    "row_gap": 3,
+                    "label_gap": 14,
+                    "padding": {
+                        "top": 10,
+                        "right": 12,
+                        "bottom": 10,
+                        "left": 12
+                    },
+                    "label_color": "#52616B",
+                    "value_color": "#263238",
+                    "background_color": "#F5F8FA",
+                    "top_rule": {
+                        "width": 0.6,
+                        "color": "#213C51"
+                    },
+                    "bottom_rule": {
+                        "width": 0.3,
+                        "color": "#D3DCE2"
+                    },
+                    "spacing_before": 8,
+                    "spacing_after": 14
+                }
+            }
+        },
+        "rulesets": [
+            {
+                "id": "service-instruments",
+                "selectors": {
+                    "extensions": ["md"]
+                },
+                "render": {
+                    "target": "pdf",
+                    "profile": "contractor-services"
+                }
+            },
+            {
+                "id": "agreement-packet",
+                "selectors": {
+                    "doc_types": ["PACKET"],
+                    "extensions": ["pdf"]
+                },
+                "render": {
+                    "target": "pdf",
+                    "profile": "contractor-services"
+                }
+            }
+        ],
+        "render_profiles": {
+            "contractor-services": {
+                "target": "pdf"
+            },
+            "contractor-services-certificate": {
+                "extends": "contractor-services",
+                "overrides": {
+                    "base_font_size": 10,
+                    "line_spacing": 1.18,
+                    "margins": {
+                        "top": 40,
+                        "bottom": 40,
+                        "left": 52,
+                        "right": 64,
+                        "unit": "pt"
+                    },
+                    "heading_scales": {
+                        "h1": 1.3,
+                        "h2": 1.1,
+                        "h3": 1.05
+                    },
+                    "spacing_policy": {
+                        "before_rules": [
+                            {
+                                "prev": "*",
+                                "next": "paragraph",
+                                "pt": 2.5
+                            },
+                            {
+                                "prev": "*",
+                                "next": "heading",
+                                "pt": 7
+                            }
+                        ]
+                    },
+                    "page_composition": {
+                        "mode": "fixed",
+                        "placeholder_mode": "literal",
+                        "decorations": [
+                            {
+                                "x": 30,
+                                "top": 40,
+                                "width": 3,
+                                "height": 49,
+                                "fill": "#213C51"
+                            },
+                            {
+                                "x": 42,
+                                "top": 99,
+                                "width": 503,
+                                "height": 0.6,
+                                "fill": "#D3DCE2"
+                            },
+                            {
+                                "x": 42,
+                                "top": 219,
+                                "width": 503,
+                                "height": 58,
+                                "fill": "#F1F5F7"
+                            },
+                            {
+                                "x": 410,
+                                "top": 229,
+                                "width": 0.6,
+                                "height": 36,
+                                "fill": "#D3DCE2"
+                            },
+                            {
+                                "x": 42,
+                                "top": 311,
+                                "width": 503,
+                                "height": 55,
+                                "fill": "#213C51"
+                            },
+                            {
+                                "x": 250,
+                                "top": 324,
+                                "width": 0.5,
+                                "height": 28,
+                                "fill": "#658093"
+                            },
+                            {
+                                "x": 399,
+                                "top": 324,
+                                "width": 0.5,
+                                "height": 28,
+                                "fill": "#658093"
+                            },
+                            {
+                                "x": 42,
+                                "top": 495,
+                                "width": 503,
+                                "height": 0.6,
+                                "fill": "#D3DCE2"
+                            },
+                            {
+                                "x": 42,
+                                "top": 549,
+                                "width": 503,
+                                "height": 44,
+                                "fill": "#F1F5F7"
+                            },
+                            {
+                                "x": 207,
+                                "top": 558,
+                                "width": 0.5,
+                                "height": 26,
+                                "fill": "#D3DCE2"
+                            },
+                            {
+                                "x": 376,
+                                "top": 558,
+                                "width": 0.5,
+                                "height": 26,
+                                "fill": "#D3DCE2"
+                            },
+                            {
+                                "x": 42,
+                                "top": 643,
+                                "width": 503,
+                                "height": 0.6,
+                                "fill": "#D3DCE2"
+                            },
+                            {
+                                "x": 42,
+                                "top": 755,
+                                "width": 224,
+                                "height": 0.6,
+                                "fill": "#213C51"
+                            },
+                            {
+                                "x": 305,
+                                "top": 711,
+                                "width": 0.5,
+                                "height": 80,
+                                "fill": "#D3DCE2"
+                            },
+                            {
+                                "x": 42,
+                                "top": 807,
+                                "width": 503,
+                                "height": 0.6,
+                                "fill": "#D3DCE2"
+                            }
+                        ],
+                        "regions": [
+                            {
+                                "source_heading": "ISSUER",
+                                "x": 42,
+                                "top": 39,
+                                "width": 331,
+                                "height": 24,
+                                "font_size": 13.4,
+                                "line_spacing": 1.28,
+                                "color": "#213C51",
+                                "bold": true,
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "REGISTERED DETAILS",
+                                "x": 42,
+                                "top": 67,
+                                "width": 330,
+                                "height": 32,
+                                "font_size": 8.1,
+                                "line_spacing": 1.24,
+                                "color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "DOCUMENT CONTROL",
+                                "x": 389,
+                                "top": 40,
+                                "width": 156,
+                                "height": 53,
+                                "font_size": 8.1,
+                                "line_spacing": 1.42,
+                                "color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "CERTIFICATE CLASS",
+                                "x": 42,
+                                "top": 110,
+                                "width": 503,
+                                "height": 13,
+                                "font_size": 7.5,
+                                "line_spacing": 1.28,
+                                "color": "#61727E",
+                                "bold": true,
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "CERTIFICATE TITLE",
+                                "x": 42,
+                                "top": 126,
+                                "width": 503,
+                                "height": 59,
+                                "font_size": 24,
+                                "line_spacing": 1.08,
+                                "color": "#213C51",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "ADDRESSEE",
+                                "x": 42,
+                                "top": 197,
+                                "width": 503,
+                                "height": 15,
+                                "font_size": 8.8,
+                                "line_spacing": 1.28,
+                                "color": "#263642",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "SERVICE PROVIDER",
+                                "x": 55,
+                                "top": 230,
+                                "width": 342,
+                                "height": 42,
+                                "font_size": 10.4,
+                                "line_spacing": 1.2,
+                                "color": "#213C51",
+                                "show_heading": true,
+                                "heading_font_size": 7.1,
+                                "heading_gap": 6,
+                                "heading_color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "ENGAGEMENT STATUS",
+                                "x": 424,
+                                "top": 230,
+                                "width": 109,
+                                "height": 41,
+                                "font_size": 10.4,
+                                "line_spacing": 1.28,
+                                "color": "#213C51",
+                                "show_heading": true,
+                                "heading_font_size": 7,
+                                "heading_gap": 7,
+                                "heading_color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "ENGAGEMENT CONFIRMATION",
+                                "x": 42,
+                                "top": 285,
+                                "width": 503,
+                                "height": 25,
+                                "font_size": 9.1,
+                                "line_spacing": 1.23,
+                                "color": "#263642",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "MONTHLY SERVICE FEE",
+                                "x": 55,
+                                "top": 321,
+                                "width": 185,
+                                "height": 39,
+                                "font_size": 17,
+                                "line_spacing": 1.1,
+                                "color": "#FFFFFF",
+                                "show_heading": true,
+                                "heading_font_size": 7.1,
+                                "heading_gap": 5,
+                                "heading_color": "#C7D5DF",
+                                "bold": true,
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "RESERVED CAPACITY",
+                                "x": 265,
+                                "top": 321,
+                                "width": 123,
+                                "height": 39,
+                                "font_size": 13.8,
+                                "line_spacing": 1.1,
+                                "color": "#FFFFFF",
+                                "show_heading": true,
+                                "heading_font_size": 7.1,
+                                "heading_gap": 7,
+                                "heading_color": "#C7D5DF",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "TERMS EFFECTIVE FROM",
+                                "x": 414,
+                                "top": 321,
+                                "width": 118,
+                                "height": 39,
+                                "font_size": 10.3,
+                                "line_spacing": 1.1,
+                                "color": "#FFFFFF",
+                                "show_heading": true,
+                                "heading_font_size": 6.9,
+                                "heading_gap": 9,
+                                "heading_color": "#C7D5DF",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "ENGAGEMENT TERMS",
+                                "x": 42,
+                                "top": 377,
+                                "width": 503,
+                                "height": 51,
+                                "font_size": 9.1,
+                                "line_spacing": 1.3,
+                                "color": "#263642",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "SERVICE AND AGREEMENT HISTORY",
+                                "x": 42,
+                                "top": 437,
+                                "width": 503,
+                                "height": 56,
+                                "font_size": 8.5,
+                                "line_spacing": 1.26,
+                                "color": "#263642",
+                                "show_heading": true,
+                                "heading_font_size": 7.2,
+                                "heading_gap": 6,
+                                "heading_color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "INCOME AND RECEIPTS",
+                                "x": 42,
+                                "top": 505,
+                                "width": 503,
+                                "height": 37,
+                                "font_size": 8.5,
+                                "line_spacing": 1.25,
+                                "color": "#263642",
+                                "show_heading": true,
+                                "heading_font_size": 8.2,
+                                "heading_gap": 6,
+                                "heading_color": "#213C51",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "SERVICE FEES EARNED",
+                                "x": 55,
+                                "top": 557,
+                                "width": 142,
+                                "height": 32,
+                                "font_size": 13.5,
+                                "line_spacing": 1.1,
+                                "color": "#213C51",
+                                "show_heading": true,
+                                "heading_font_size": 6.9,
+                                "heading_gap": 4,
+                                "heading_color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "FEES SETTLED BY CUT-OFF",
+                                "x": 221,
+                                "top": 557,
+                                "width": 145,
+                                "height": 32,
+                                "font_size": 13.5,
+                                "line_spacing": 1.1,
+                                "color": "#213C51",
+                                "show_heading": true,
+                                "heading_font_size": 6.9,
+                                "heading_gap": 4,
+                                "heading_color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "FEES REMAINING PAYABLE",
+                                "x": 390,
+                                "top": 557,
+                                "width": 143,
+                                "height": 32,
+                                "font_size": 13.5,
+                                "line_spacing": 1.1,
+                                "color": "#213C51",
+                                "show_heading": true,
+                                "heading_font_size": 6.9,
+                                "heading_gap": 4,
+                                "heading_color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "RECEIPT BASIS",
+                                "x": 42,
+                                "top": 603,
+                                "width": 503,
+                                "height": 35,
+                                "font_size": 8.5,
+                                "line_spacing": 1.26,
+                                "color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "COMPANY CONFIRMATION",
+                                "x": 42,
+                                "top": 655,
+                                "width": 503,
+                                "height": 49,
+                                "font_size": 8.5,
+                                "line_spacing": 1.28,
+                                "color": "#263642",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "EXECUTION",
+                                "x": 42,
+                                "top": 713,
+                                "width": 246,
+                                "height": 14,
+                                "font_size": 8.3,
+                                "line_spacing": 1.28,
+                                "color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "SIGNATORY PARTICULARS",
+                                "x": 42,
+                                "top": 762,
+                                "width": 246,
+                                "height": 31,
+                                "font_size": 8.7,
+                                "line_spacing": 1.35,
+                                "color": "#263642",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "DIRECT VERIFICATION",
+                                "x": 326,
+                                "top": 713,
+                                "width": 219,
+                                "height": 70,
+                                "font_size": 8.7,
+                                "line_spacing": 1.5,
+                                "color": "#263642",
+                                "show_heading": true,
+                                "heading_font_size": 7.3,
+                                "heading_gap": 10,
+                                "heading_color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "DOCUMENT REFERENCE",
+                                "x": 42,
+                                "top": 815,
+                                "width": 380,
+                                "height": 14,
+                                "font_size": 7.2,
+                                "line_spacing": 1.28,
+                                "color": "#61727E",
+                                "paragraph_gap": 0
+                            }
+                        ],
+                        "pagination": {
+                            "x": 430,
+                            "top": 815,
+                            "width": 115,
+                            "font_size": 7.2,
+                            "color": "#61727E"
+                        },
+                        "letterhead_logo": {
+                            "enabled": false,
+                            "x": 42,
+                            "top": 39,
+                            "width": 54,
+                            "height": 54,
+                            "scale": 1,
+                            "gap": 14,
+                            "shift_source_headings": [
+                                "ISSUER",
+                                "REGISTERED DETAILS"
+                            ]
+                        }
+                    }
+                }
+            },
+            "contractor-services-compact": {
+                "extends": "contractor-services",
+                "overrides": {
+                    "base_font_size": 10,
+                    "line_spacing": 1.18,
+                    "margins": {
+                        "top": 40,
+                        "bottom": 40,
+                        "left": 52,
+                        "right": 64,
+                        "unit": "pt"
+                    },
+                    "heading_scales": {
+                        "h1": 1.3,
+                        "h2": 1.1,
+                        "h3": 1.05
+                    },
+                    "spacing_policy": {
+                        "before_rules": [
+                            {
+                                "prev": "*",
+                                "next": "paragraph",
+                                "pt": 2.5
+                            },
+                            {
+                                "prev": "*",
+                                "next": "heading",
+                                "pt": 7
+                            }
+                        ]
+                    }
+                }
+            },
+            "contractor-services-licensing": {
+                "extends": "contractor-services",
+                "overrides": {
+                    "base_font_size": 10,
+                    "line_spacing": 1.24,
+                    "heading_scales": {
+                        "h1": 1.55,
+                        "h2": 1.23,
+                        "h3": 1.07
+                    },
+                    "horizontal_rule": {
+                        "behavior": "rule"
+                    },
+                    "spacing_policy": {
+                        "before_rules": [
+                            {
+                                "prev": "*",
+                                "next": "paragraph",
+                                "pt": 5
+                            },
+                            {
+                                "prev": "*",
+                                "next": "heading",
+                                "pt": 9
+                            },
+                            {
+                                "prev": "*",
+                                "next": "signature-block",
+                                "pt": 8
+                            }
+                        ]
+                    },
+                    "table": {
+                        "font_size": 9.2,
+                        "min_font_size": 9.2,
+                        "auto_shrink": false,
+                        "line_height": 1.2,
+                        "cell_padding": {
+                            "x": 7,
+                            "y": 3
+                        },
+                        "border_width": 0.4,
+                        "border_color": "#D3DCE2",
+                        "header": {
+                            "background_color": "#213C51",
+                            "text_color": "#FFFFFF"
+                        },
+                        "zebra": {
+                            "enabled": true,
+                            "odd_background": "#F1F5F7",
+                            "even_background": "#FFFFFF"
+                        }
+                    },
+                    "margins": {
+                        "top": 48,
+                        "bottom": 48,
+                        "left": 52,
+                        "right": 64,
+                        "unit": "pt"
+                    }
+                }
+            },
+            "contractor-services-ip-designation": {
+                "extends": "contractor-services-licensing",
+                "overrides": {
+                    "base_font_size": 9.2,
+                    "line_spacing": 1.22,
+                    "margins": {
+                        "top": 40,
+                        "bottom": 40,
+                        "left": 42,
+                        "right": 64,
+                        "unit": "pt"
+                    },
+                    "heading_scales": {
+                        "h1": 1.5,
+                        "h2": 1.25,
+                        "h3": 1.08
+                    },
+                    "spacing_policy": {
+                        "before_rules": [
+                            {
+                                "prev": "*",
+                                "next": "paragraph",
+                                "pt": 3
+                            },
+                            {
+                                "prev": "*",
+                                "next": "heading",
+                                "pt": 7
+                            },
+                            {
+                                "prev": "*",
+                                "next": "signature-block",
+                                "pt": 8
+                            }
+                        ]
+                    },
+                    "table": {
+                        "font_size": 8.5,
+                        "min_font_size": 8.5,
+                        "auto_shrink": false,
+                        "line_height": 1.15,
+                        "cell_padding": {
+                            "x": 6,
+                            "y": 3.5
+                        }
+                    }
+                }
+            },
+            "contractor-services-income-certificate": {
+                "extends": "contractor-services-compact",
+                "overrides": {
+                    "base_font_size": 10,
+                    "line_spacing": 1.25,
+                    "heading_scales": {
+                        "h1": 2.4,
+                        "h2": 1.15,
+                        "h3": 1.05
+                    },
+                    "table": {
+                        "font_size": 9,
+                        "zebra": {
+                            "enabled": true,
+                            "odd_background": "#FFFFFF",
+                            "even_background": "#F1F5F7"
+                        },
+                        "header": {
+                            "background_color": "#213C51",
+                            "text_color": "#FFFFFF"
+                        },
+                        "minimum_body_rows": 3
+                    },
+                    "directive_styles": {
+                        "form-fields": {
+                            "font_size": 9.2,
+                            "row_height": 21,
+                            "field_label_width": 150,
+                            "padding": 10,
+                            "background_color": "#F5F8FA",
+                            "label_color": "#52616B"
+                        },
+                        "single": {
+                            "font_size": 8.5,
+                            "header_gap": 3.5,
+                            "signature_row_height": 52,
+                            "row_height": 12.5,
+                            "row_gap": 0,
+                            "post_gap": 2
+                        }
+                    },
+                    "page_composition": {
+                        "mode": "first-page",
+                        "placeholder_mode": "literal",
+                        "decorations": [
+                            {
+                                "x": 30,
+                                "top": 40,
+                                "width": 3,
+                                "height": 49,
+                                "fill": "#213C51"
+                            },
+                            {
+                                "x": 42,
+                                "top": 99,
+                                "width": 503,
+                                "height": 0.6,
+                                "fill": "#D3DCE2"
+                            },
+                            {
+                                "x": 42,
+                                "top": 219,
+                                "width": 503,
+                                "height": 58,
+                                "fill": "#F1F5F7"
+                            },
+                            {
+                                "x": 410,
+                                "top": 229,
+                                "width": 0.6,
+                                "height": 36,
+                                "fill": "#D3DCE2"
+                            },
+                            {
+                                "x": 42,
+                                "top": 311,
+                                "width": 503,
+                                "height": 55,
+                                "fill": "#213C51"
+                            },
+                            {
+                                "x": 250,
+                                "top": 324,
+                                "width": 0.5,
+                                "height": 28,
+                                "fill": "#658093"
+                            },
+                            {
+                                "x": 399,
+                                "top": 324,
+                                "width": 0.5,
+                                "height": 28,
+                                "fill": "#658093"
+                            },
+                            {
+                                "x": 42,
+                                "top": 495,
+                                "width": 503,
+                                "height": 0.6,
+                                "fill": "#D3DCE2"
+                            },
+                            {
+                                "x": 42,
+                                "top": 549,
+                                "width": 503,
+                                "height": 44,
+                                "fill": "#F1F5F7"
+                            },
+                            {
+                                "x": 207,
+                                "top": 558,
+                                "width": 0.5,
+                                "height": 26,
+                                "fill": "#D3DCE2"
+                            },
+                            {
+                                "x": 376,
+                                "top": 558,
+                                "width": 0.5,
+                                "height": 26,
+                                "fill": "#D3DCE2"
+                            },
+                            {
+                                "x": 42,
+                                "top": 643,
+                                "width": 503,
+                                "height": 0.6,
+                                "fill": "#D3DCE2"
+                            },
+                            {
+                                "x": 42,
+                                "top": 807,
+                                "width": 503,
+                                "height": 0.6,
+                                "fill": "#D3DCE2"
+                            },
+                            {
+                                "x": 305,
+                                "top": 703,
+                                "width": 0.6,
+                                "height": 91,
+                                "fill": "#D3DCE2"
+                            }
+                        ],
+                        "regions": [
+                            {
+                                "source_heading": "ISSUER",
+                                "x": 42,
+                                "top": 39,
+                                "width": 331,
+                                "height": 24,
+                                "font_size": 13.4,
+                                "line_spacing": 1.28,
+                                "color": "#213C51",
+                                "bold": true,
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "REGISTERED DETAILS",
+                                "x": 42,
+                                "top": 67,
+                                "width": 330,
+                                "height": 32,
+                                "font_size": 8.1,
+                                "line_spacing": 1.24,
+                                "color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "DOCUMENT CONTROL",
+                                "x": 389,
+                                "top": 40,
+                                "width": 156,
+                                "height": 53,
+                                "font_size": 8.1,
+                                "line_spacing": 1.42,
+                                "color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "CERTIFICATE CLASS",
+                                "x": 42,
+                                "top": 110,
+                                "width": 503,
+                                "height": 13,
+                                "font_size": 7.5,
+                                "line_spacing": 1.28,
+                                "color": "#61727E",
+                                "bold": true,
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "CERTIFICATE TITLE",
+                                "x": 42,
+                                "top": 126,
+                                "width": 503,
+                                "height": 59,
+                                "font_size": 24,
+                                "line_spacing": 1.08,
+                                "color": "#213C51",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "ADDRESSEE",
+                                "x": 42,
+                                "top": 197,
+                                "width": 503,
+                                "height": 15,
+                                "font_size": 8.8,
+                                "line_spacing": 1.28,
+                                "color": "#263642",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "SERVICE PROVIDER",
+                                "x": 55,
+                                "top": 230,
+                                "width": 342,
+                                "height": 42,
+                                "font_size": 10.4,
+                                "line_spacing": 1.2,
+                                "color": "#213C51",
+                                "show_heading": true,
+                                "heading_font_size": 7.1,
+                                "heading_gap": 6,
+                                "heading_color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "ENGAGEMENT STATUS",
+                                "x": 424,
+                                "top": 230,
+                                "width": 109,
+                                "height": 41,
+                                "font_size": 10.4,
+                                "line_spacing": 1.28,
+                                "color": "#213C51",
+                                "show_heading": true,
+                                "heading_font_size": 7,
+                                "heading_gap": 7,
+                                "heading_color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "ENGAGEMENT CONFIRMATION",
+                                "x": 42,
+                                "top": 285,
+                                "width": 503,
+                                "height": 25,
+                                "font_size": 9.1,
+                                "line_spacing": 1.23,
+                                "color": "#263642",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "MONTHLY SERVICE FEE",
+                                "x": 55,
+                                "top": 321,
+                                "width": 185,
+                                "height": 39,
+                                "font_size": 17,
+                                "line_spacing": 1.1,
+                                "color": "#FFFFFF",
+                                "show_heading": true,
+                                "heading_font_size": 7.1,
+                                "heading_gap": 5,
+                                "heading_color": "#C7D5DF",
+                                "bold": true,
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "RESERVED CAPACITY",
+                                "x": 265,
+                                "top": 321,
+                                "width": 123,
+                                "height": 39,
+                                "font_size": 13.8,
+                                "line_spacing": 1.1,
+                                "color": "#FFFFFF",
+                                "show_heading": true,
+                                "heading_font_size": 7.1,
+                                "heading_gap": 7,
+                                "heading_color": "#C7D5DF",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "TERMS EFFECTIVE FROM",
+                                "x": 414,
+                                "top": 321,
+                                "width": 118,
+                                "height": 39,
+                                "font_size": 10.3,
+                                "line_spacing": 1.1,
+                                "color": "#FFFFFF",
+                                "show_heading": true,
+                                "heading_font_size": 6.9,
+                                "heading_gap": 9,
+                                "heading_color": "#C7D5DF",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "ENGAGEMENT TERMS",
+                                "x": 42,
+                                "top": 377,
+                                "width": 503,
+                                "height": 51,
+                                "font_size": 9.1,
+                                "line_spacing": 1.3,
+                                "color": "#263642",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "AGREEMENT REFERENCE",
+                                "x": 42,
+                                "top": 437,
+                                "width": 503,
+                                "height": 56,
+                                "font_size": 8.5,
+                                "line_spacing": 1.26,
+                                "color": "#263642",
+                                "show_heading": true,
+                                "heading_font_size": 7.2,
+                                "heading_gap": 6,
+                                "heading_color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "INCOME AND RECEIPTS",
+                                "x": 42,
+                                "top": 505,
+                                "width": 503,
+                                "height": 37,
+                                "font_size": 8.5,
+                                "line_spacing": 1.25,
+                                "color": "#263642",
+                                "show_heading": true,
+                                "heading_font_size": 8.2,
+                                "heading_gap": 6,
+                                "heading_color": "#213C51",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "SERVICE FEES EARNED",
+                                "x": 55,
+                                "top": 557,
+                                "width": 142,
+                                "height": 32,
+                                "font_size": 13.5,
+                                "line_spacing": 1.1,
+                                "color": "#213C51",
+                                "show_heading": true,
+                                "heading_font_size": 6.9,
+                                "heading_gap": 4,
+                                "heading_color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "FEES SETTLED BY CUT-OFF",
+                                "x": 221,
+                                "top": 557,
+                                "width": 145,
+                                "height": 32,
+                                "font_size": 13.5,
+                                "line_spacing": 1.1,
+                                "color": "#213C51",
+                                "show_heading": true,
+                                "heading_font_size": 6.9,
+                                "heading_gap": 4,
+                                "heading_color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "FEES REMAINING PAYABLE",
+                                "x": 390,
+                                "top": 557,
+                                "width": 143,
+                                "height": 32,
+                                "font_size": 13.5,
+                                "line_spacing": 1.1,
+                                "color": "#213C51",
+                                "show_heading": true,
+                                "heading_font_size": 6.9,
+                                "heading_gap": 4,
+                                "heading_color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "RECEIPT BASIS",
+                                "x": 42,
+                                "top": 603,
+                                "width": 503,
+                                "height": 35,
+                                "font_size": 8.5,
+                                "line_spacing": 1.26,
+                                "color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "COMPANY CONFIRMATION",
+                                "x": 42,
+                                "top": 655,
+                                "width": 503,
+                                "height": 44,
+                                "font_size": 8.5,
+                                "line_spacing": 1.28,
+                                "color": "#263642",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "DIRECT VERIFICATION",
+                                "x": 326,
+                                "top": 713,
+                                "width": 219,
+                                "height": 80,
+                                "font_size": 8.7,
+                                "line_spacing": 1.5,
+                                "color": "#263642",
+                                "show_heading": true,
+                                "heading_font_size": 7.3,
+                                "heading_gap": 8,
+                                "heading_color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "DOCUMENT REFERENCE",
+                                "x": 42,
+                                "top": 815,
+                                "width": 380,
+                                "height": 14,
+                                "font_size": 7.2,
+                                "line_spacing": 1.28,
+                                "color": "#61727E",
+                                "paragraph_gap": 0
+                            },
+                            {
+                                "source_heading": "EXECUTION",
+                                "x": 42,
+                                "top": 703,
+                                "width": 224,
+                                "height": 95,
+                                "font_size": 8.5,
+                                "color": "#263642"
+                            }
+                        ],
+                        "continuation_heading": "Transaction records",
+                        "pagination": {
+                            "x": 430,
+                            "top": 815,
+                            "width": 115,
+                            "font_size": 7.2,
+                            "color": "#61727E"
+                        },
+                        "letterhead_logo": {
+                            "enabled": false,
+                            "x": 42,
+                            "top": 39,
+                            "width": 54,
+                            "height": 54,
+                            "scale": 1,
+                            "gap": 14,
+                            "shift_source_headings": [
+                                "ISSUER",
+                                "REGISTERED DETAILS"
+                            ]
+                        }
+                    },
+                    "page_tracking": {
+                        "module_width": 0.4,
+                        "bar_height": 11,
+                        "right_inset": 12,
+                        "bottom_inset": 25,
+                        "font_size": 4.3
+                    },
+                    "margins": {
+                        "top": 92,
+                        "bottom": 54,
+                        "left": 42,
+                        "right": 50,
+                        "unit": "pt"
+                    },
+                    "heading_styles": {
+                        "h1": {
+                            "bold": false,
+                            "align": "left",
+                            "color": "#213C51"
+                        }
+                    }
+                }
+            },
+            "contractor-services-record": {
+                "extends": "contractor-services-licensing",
+                "overrides": {
+                    "base_font_size": 10,
+                    "line_spacing": 1.25,
+                    "directive_styles": {
+                        "signature-block": {
+                            "field_label_width": 235,
+                            "row_height": 17,
+                            "row_gap": 3,
+                            "post_gap": 8
+                        }
+                    },
+                    "table": {
+                        "zebra": {
+                            "enabled": true,
+                            "odd_background": "#FFFFFF",
+                            "even_background": "#F1F5F7"
+                        },
+                        "header": {
+                            "background_color": "#213C51",
+                            "text_color": "#FFFFFF"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "packet_config": {
+        "header_text": "CONFIDENTIAL",
+        "header_title_format": "plain",
+        "section_page_break": "always",
+        "cover_config": {
+            "suppress_header": true,
+            "suppress_footer": true,
+            "suppress_page_numbering": true,
+            "reserve_header_footer_space": false,
+            "watermark": {
+                "enabled": false
+            },
+            "draft_watermark": {
+                "enabled": false
+            },
+            "cover_layout": {
+                "eyebrow": {
+                    "enabled": true,
+                    "text": "PRIVATE & CONFIDENTIAL",
+                    "font_size": 8,
+                    "color": "#52616B",
+                    "after_spacer": 20,
+                    "align": "left"
+                },
+                "title_block": {
+                    "top_spacer": 125,
+                    "align": "left",
+                    "title_font_size": 27,
+                    "subtitle_font_size": 11,
+                    "entity_font_size": 11,
+                    "title_color": "#233B50",
+                    "subtitle_color": "#52616B",
+                    "entity_color": "#233B50",
+                    "include_conjunction_line": false,
+                    "after_title_spacer": 16,
+                    "after_subtitle_spacer": 30,
+                    "after_entity_spacer": 40
+                },
+                "rule": {
+                    "enabled": true,
+                    "start_frac": 0,
+                    "end_frac": 1,
+                    "line_width": 0.65,
+                    "color": "#233B50",
+                    "after_spacer": 26
+                },
+                "metadata_block": {
+                    "layout": "columns",
+                    "start_frac": 0,
+                    "end_frac": 1,
+                    "align": "left",
+                    "font_size": 9,
+                    "line_spacer": 10,
+                    "column_gap": 18,
+                    "label_align": "left",
+                    "label_color": "#52616B",
+                    "value_color": "#233B50",
+                    "fields": [
+                        {
+                            "key": "document_id",
+                            "label": "DOCUMENT REFERENCE"
+                        },
+                        {
+                            "key": "version",
+                            "label": "REVISION"
+                        },
+                        {
+                            "key": "status",
+                            "label": "STATUS"
+                        }
+                    ]
+                },
+                "footer_note": {
+                    "enabled": false
+                }
+            },
+            "font_roles": {
+                "title": "cover_title",
+                "eyebrow": "cover_eyebrow",
+                "subtitle": "cover_subtitle",
+                "entity": "cover_entity",
+                "metadata_label": "cover_meta_label",
+                "metadata_value": "cover_meta_value",
+                "footer_note": "cover_footer"
+            }
+        },
+        "packet_variants": {
+            "service-agreement": {
+                "include_cover": true,
+                "include_toc": false,
+                "signing_page": false
+            }
+        },
+        "signing_page": null,
+        "entity_extraction": {
+            "fields": [
+                "entity.legal_name",
+                "entity_name",
+                "assembly.packet.cover.party_1"
+            ]
+        }
+    }
+}

@@ -26,8 +26,8 @@ rules:
         require_primary_document: true
         require_documents_primary_ref: true
         require_series_code: MGK
-        require_record_directory_regex: "^[A-Z]{2,5}-\\d{6}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?$"
-        require_file_name_regex: "^[A-Z]{2,5}-\\d{6}_[A-Z]{2,5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?\\.[A-Za-z0-9]+$"
+        require_record_directory_regex: "^[A-Z]{2,5}-\\d{5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?$"
+        require_file_name_regex: "^[A-Z]{2,5}-\\d{5}_[A-Z]{2,5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?\\.[A-Za-z0-9]+$"
         status_phase_allow: [approved, adopted, effective, current]
         require_markdown_envelope_for_extensions: [md]
         markdown_envelope_id: record-markdown-envelope-v1
@@ -44,8 +44,8 @@ rules:
         require_primary_document: true
         require_documents_primary_ref: true
         require_series_code: MGK
-        require_record_directory_regex: "^[A-Z]{2,5}-\\d{6}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?$"
-        require_file_name_regex: "^[A-Z]{2,5}-\\d{6}_[A-Z]{2,5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?\\.[A-Za-z0-9]+$"
+        require_record_directory_regex: "^[A-Z]{2,5}-\\d{5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?$"
+        require_file_name_regex: "^[A-Z]{2,5}-\\d{5}_[A-Z]{2,5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?\\.[A-Za-z0-9]+$"
         status_phase_allow: [interim, draft, proposed, reviewed]
         require_markdown_envelope_for_extensions: [md]
         markdown_envelope_id: record-markdown-envelope-v1
@@ -61,8 +61,8 @@ rules:
         require_primary_document: true
         require_documents_primary_ref: true
         require_series_code: MGK
-        require_record_directory_regex: "^[A-Z]{2,5}-\\d{6}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?$"
-        require_file_name_regex: "^[A-Z]{2,5}-\\d{6}_[A-Z]{2,5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?\\.[A-Za-z0-9]+$"
+        require_record_directory_regex: "^[A-Z]{2,5}-\\d{5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?$"
+        require_file_name_regex: "^[A-Z]{2,5}-\\d{5}_[A-Z]{2,5}(?:-[A-Za-z0-9][A-Za-z0-9_-]*)?\\.[A-Za-z0-9]+$"
         status_phase_allow: [superseded, retired, rescinded, archived]
         require_markdown_envelope_for_extensions: [md]
         markdown_envelope_id: record-markdown-envelope-v1

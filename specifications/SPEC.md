@@ -204,8 +204,11 @@ Recommended metadata keys (all optional):
 
 ```yaml
 documents:
-  index: "{RECORD_ID}_IND-index.md"          # doc type IND
-  packet: "{RECORD_ID}_PKT-filing.pdf"       # doc type PKT (derived artefact)
+  index:
+    path: "{RECORD_ID}_IND-index.md"
+assembly:
+  packet:
+    path: "{RECORD_ID}_PKT-filing.pdf"       # derived artefact
   pack:
     - path: "{RECORD_ID}_IND-index.md"
       label: "Index"
@@ -220,10 +223,11 @@ documents:
 
 Assembly order (informative default):
 
-1. If `documents.pack` is present, include items where `include != false` and sort by
+1. If `assembly.pack` is present, include items where `include != false` and sort by
    `(precedence asc, path asc)`.
-2. Otherwise, include `documents.index` (if present), then `documents.primary`, then `documents.annexes`
-   in the order listed.
+2. Legacy `documents.pack` is accepted as a fallback.
+3. Otherwise, include the `documents.primary` references in their listed order.
+   Add an explicit `assembly.pack` to include an index or other document tiers.
 
 Tooling SHOULD treat `PKT` outputs as derived artefacts: regenerate them from source rather than editing
 them directly.

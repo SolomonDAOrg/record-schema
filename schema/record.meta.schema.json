@@ -210,6 +210,20 @@
               "include": {
                 "type": "boolean",
                 "default": true
+              },
+              "document_id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Document tracking identifier before the optional /version suffix."
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "render_profile_id": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Named render profile selected for this document."
               }
             },
             "additionalProperties": true
@@ -383,7 +397,12 @@
               }
             },
             "additionalProperties": true,
-            "description": "Compact commitment entry (legacy/simple form)."
+            "description": "Compact commitment entry (legacy/simple form).",
+            "not": {
+              "required": [
+                "commitment_id"
+              ]
+            }
           }
         ]
       }
@@ -443,6 +462,10 @@
         }
       },
       "additionalProperties": true
+    },
+    "template": {
+      "$ref": "document.template.schema.json",
+      "description": "Typed inputs, metadata destinations, dataset and signing slots; named instance YAML files."
     }
   },
   "additionalProperties": true,
@@ -465,6 +488,24 @@
         "description": {
           "type": "string",
           "description": "Optional description of the document's role."
+        },
+        "doc_type": {
+          "type": "string",
+          "pattern": "^[A-Z]{2,5}$"
+        },
+        "document_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Document tracking identifier before the optional /version suffix."
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "render_profile_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Named render profile selected for this document."
         }
       },
       "additionalProperties": true,

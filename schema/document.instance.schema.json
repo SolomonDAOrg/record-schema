@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solomondao.org/record-schema/document.instance.schema.json",
+  "title": "Document instance values and stage overlays",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "record-schema-document-instance"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "template": {
+      "type": "object",
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "record_id",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "document_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "fields": {
+      "type": "object",
+      "patternProperties": {
+        "^[A-Za-z][A-Za-z0-9]*$": {
+          "type": [
+            "string",
+            "boolean"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "datasets": {
+      "type": "object",
+      "patternProperties": {
+        "^[A-Za-z][A-Za-z0-9]*$": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "stages": {
+      "type": "object",
+      "properties": {
+        "draft": {
+          "type": "object",
+          "properties": {
+            "document": {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "version",
+                "path"
+              ],
+              "additionalProperties": false
+            },
+            "fields": {
+              "type": "object",
+              "patternProperties": {
+                "^[A-Za-z][A-Za-z0-9]*$": {
+                  "type": [
+                    "string",
+                    "boolean"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            },
+            "datasets": {
+              "type": "object",
+              "patternProperties": {
+                "^[A-Za-z][A-Za-z0-9]*$": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "sha256"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "document"
+          ],
+          "additionalProperties": false
+        },
+        "for_execution": {
+          "type": "object",
+          "properties": {
+            "document": {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "version",
+                "path"
+              ],
+              "additionalProperties": false
+            },
+            "fields": {
+              "type": "object",
+              "patternProperties": {
+                "^[A-Za-z][A-Za-z0-9]*$": {
+                  "type": [
+                    "string",
+                    "boolean"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            },
+            "datasets": {
+              "type": "object",
+              "patternProperties": {
+                "^[A-Za-z][A-Za-z0-9]*$": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "sha256"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "document"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "default_stage": {
+      "enum": [
+        "draft",
+        "for_execution"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "schema_version",
+    "template",
+    "document_id",
+    "fields",
+    "datasets",
+    "stages",
+    "default_stage"
+  ],
+  "additionalProperties": false
+}

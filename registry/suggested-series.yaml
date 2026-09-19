@@ -73,3 +73,9 @@ series:
     name: Deployment and Release Batch
     description: Immutable deployment or program-upgrade release batches with artefact manifests, signatures, verification receipts, and human-readable reports.
     recommended_doc_types: [DOC, PLAN, MAN, ATT, VER, EVD, IND, PKT, LOG]
+
+  - code: CON
+    tier: suggested
+    name: Confidential Record
+    description: Confidential agreements, statements, attestations, and supporting records.
+    recommended_doc_types: [DOC, REP, DAT, EVD, LOG, IND]

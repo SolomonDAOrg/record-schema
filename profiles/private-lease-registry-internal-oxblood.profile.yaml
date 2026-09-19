@@ -44,6 +44,6 @@ rules:
   document_policies:
     pack_paths:
     - type: formatting
-      path: formatting/packs/private-lease-formatting-v1.json
+      path: formatting/packs/private-lease-v1.json
     - type: render
       path: render/packs/private-lease-v1-oxblood-deed.json

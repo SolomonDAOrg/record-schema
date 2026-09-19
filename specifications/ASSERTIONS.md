@@ -437,6 +437,14 @@ Required fields: `manifest` and `tracks`. The engine computes SHA-256 over the r
 
 Manifest fields are selected with `entries`, `entry_path`, `entry_digest`, `count_path`, and `root_path`. Commitment options define a domain-separation byte, `u16le` or `u32le` path length, and whether each entry contributes its path and digest. Unsupported algorithms are rejected.
 
+The `manifest` is a repository-relative JSON or YAML file. `tracks` is a named source, an inline source definition, or a list of these. Sources are read as raw bytes regardless of their parsing mode; overlapping sources are deduplicated by path. Tracking the manifest itself is a configuration error.
+
+Defaults are `algorithm: sha256`, `entries: entries`, `entry_path: path`, and `entry_digest: sha256`. `count_path` and `root_path` are optional. Manifest field selectors are concrete dotted paths, with an optional `$.` prefix. Inventory paths are repository-relative, sorted lexicographically, and digests use lowercase hexadecimal. Duplicate, omitted, additional, reordered, or changed entries are findings.
+
+Commitment defaults are `domain: 0`, `path_length: u32le`, `include_path: true`, and `include_digest: true`. The root is SHA-256 of one domain byte followed by each sorted entry: the UTF-8 path byte length in the selected unsigned little-endian encoding, the UTF-8 path bytes, and the 32 raw digest bytes. Disabling `include_path` omits both the length and path; disabling `include_digest` omits the digest. At least one must remain enabled. No text normalization precedes hashing.
+
+The `digest_manifest` materializer regenerates these declared fields while retaining unrelated data. It emits deterministic JSON or YAML. Digest materializers run after other materializers and hash their final staged bytes, including newly created files. Manifest and tracked files must remain within the repository; symbolic-link manifest outputs are refused.
+
 ### `lex`
 
 Required fields: `scope` or `select`, and `language`. `value_path` selects embedded text. `syntax` controls syntax findings. `reference_roles` chooses token roles treated as references. `defines` and key fields provide the declaration set. `ignore` and `ignore_pattern` exempt known language terminals. `max_syntax_findings` bounds repeated syntax output per row.

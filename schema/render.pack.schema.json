@@ -41,7 +41,21 @@
         "defaults": {
           "type": "object",
           "description": "Default render settings inherited by all rules.",
-          "additionalProperties": true
+          "additionalProperties": true,
+          "properties": {
+            "page_tracking": {
+              "$ref": "#/$defs/pdfPageTracking"
+            },
+            "heading_styles": {
+              "$ref": "#/$defs/pdfHeadingStyles"
+            },
+            "page_composition": {
+              "$ref": "#/$defs/pdfPageComposition"
+            },
+            "page_numbering": {
+              "$ref": "#/$defs/pdfPageNumbering"
+            }
+          }
         },
         "targets": {
           "type": "object",
@@ -53,7 +67,9 @@
         "render_profiles": {
           "type": "object",
           "description": "Named render profiles that can be referenced by rules.",
-          "additionalProperties": true
+          "additionalProperties": {
+            "$ref": "#/$defs/renderProfile"
+          }
         },
         "chart_themes": {
           "type": "object",
@@ -91,9 +107,7 @@
           "description": "Ordered list of selector-based render rules."
         },
         "spacing_policy": {
-          "type": "object",
-          "description": "Element spacing rules for document rendering.",
-          "additionalProperties": true
+          "$ref": "#/$defs/spacingPolicy"
         },
         "precedence_notes": {
           "type": "string",
@@ -155,6 +169,18 @@
             "output_suffix": {
               "type": "string",
               "description": "Suffix to add before extension (e.g., '-rendered')."
+            },
+            "page_tracking": {
+              "$ref": "#/$defs/pdfPageTracking"
+            },
+            "heading_styles": {
+              "$ref": "#/$defs/pdfHeadingStyles"
+            },
+            "page_composition": {
+              "$ref": "#/$defs/pdfPageComposition"
+            },
+            "spacing_policy": {
+              "$ref": "#/$defs/spacingPolicy"
             }
           },
           "additionalProperties": true
@@ -181,10 +207,10 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^[A-Z]{2,5}$"
+            "pattern": "^(?:[A-Z]{2,5}|PACKET)$"
           },
           "uniqueItems": true,
-          "description": "Document type codes."
+          "description": "Document type codes, or PACKET for a compiled packet."
         },
         "extensions": {
           "type": "array",
@@ -665,6 +691,17 @@
                   "additionalProperties": false
                 }
               ]
+            },
+            "border_color": {
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ],
+              "description": "Header cell grid color; defaults to the body border_color."
             }
           },
           "additionalProperties": true
@@ -747,6 +784,30 @@
           "type": "integer",
           "minimum": 0,
           "description": "Alias for bleed_if_columns_gte."
+        },
+        "outer_border_color": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Outer frame color on each physical table fragment; defaults to border_color."
+        },
+        "uppercase_baseline_shift": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.25,
+          "default": 0.1,
+          "description": "Downward optical baseline shift in em when all row text is uppercase. Zero disables."
+        },
+        "minimum_body_rows": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1,
+          "description": "Body rows kept with the initial table header. Shorter tables stay together; if a full page cannot hold the group, keep the largest fitting prefix with at least the first body row."
         }
       },
       "additionalProperties": true
@@ -774,6 +835,54 @@
         },
         "font_role_defaults": {
           "$ref": "#/$defs/pdfFontRoleDefaults"
+        },
+        "page_tracking": {
+          "$ref": "#/$defs/pdfPageTracking"
+        },
+        "heading_styles": {
+          "$ref": "#/$defs/pdfHeadingStyles"
+        },
+        "page_composition": {
+          "$ref": "#/$defs/pdfPageComposition"
+        },
+        "directive_styles": {
+          "type": "object",
+          "description": "Visual styles keyed by Markdown directive name or variant.",
+          "additionalProperties": {
+            "type": "object"
+          },
+          "properties": {
+            "form-fields": {
+              "$ref": "#/$defs/formFieldsStyle"
+            }
+          }
+        },
+        "markdown_envelope_style": {
+          "$ref": "#/$defs/markdownEnvelopeStyle"
+        },
+        "page_numbering": {
+          "$ref": "#/$defs/pdfPageNumbering"
+        },
+        "spacing_policy": {
+          "$ref": "#/$defs/spacingPolicy"
+        },
+        "default_headers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pdfHeaderFooter"
+          }
+        },
+        "default_footers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pdfHeaderFooter"
+          }
+        },
+        "heading_page_breaks": {
+          "$ref": "#/$defs/pdfHeadingPageBreaks"
+        },
+        "text_variables": {
+          "$ref": "#/$defs/pdfTextVariables"
         }
       },
       "additionalProperties": true
@@ -837,10 +946,6 @@
     },
     "pdfEmbeddedFontFace": {
       "type": "object",
-      "required": [
-        "path",
-        "format"
-      ],
       "properties": {
         "path": {
           "type": "string",
@@ -876,9 +981,57 @@
               "type": "string"
             }
           ]
+        },
+        "google_font": {
+          "type": "object",
+          "required": [
+            "family"
+          ],
+          "properties": {
+            "family": {
+              "type": "string",
+              "minLength": 1
+            },
+            "weight": {
+              "oneOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000
+                },
+                {
+                  "type": "string",
+                  "minLength": 1
+                }
+              ]
+            },
+            "style": {
+              "enum": [
+                "normal",
+                "italic"
+              ]
+            }
+          },
+          "additionalProperties": true
+        },
+        "fallback": {
+          "type": "string",
+          "minLength": 1
         }
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "anyOf": [
+        {
+          "required": [
+            "path"
+          ]
+        },
+        {
+          "required": [
+            "google_font"
+          ]
+        }
+      ]
     },
     "pdfEmbeddedFontFamily": {
       "type": "object",
@@ -905,7 +1058,9 @@
               "$ref": "#/$defs/pdfEmbeddedFontFace"
             }
           },
-          "additionalProperties": false
+          "additionalProperties": {
+            "$ref": "#/$defs/pdfEmbeddedFontFace"
+          }
         }
       },
       "additionalProperties": true
@@ -1006,6 +1161,930 @@
         }
       },
       "additionalProperties": true
+    },
+    "pdfPageTracking": {
+      "type": "object",
+      "description": "Opt-in vector Code 128-B tracking strip in the bottom-right paper margin. Payload identifier|page/total uses physical page positions even when cover or signing marks are suppressed.",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "symbology": {
+          "type": "string",
+          "const": "code128-b",
+          "default": "code128-b"
+        },
+        "identifier": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[ -~]+$",
+          "description": "Stable document and revision identifier. Defaults to the documentId renderer variable; standalone CLI uses the document basename and packet rendering uses the record ID."
+        },
+        "module_width": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 0.6
+        },
+        "bar_height": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 14
+        },
+        "quiet_zone_modules": {
+          "type": "integer",
+          "minimum": 10,
+          "default": 10
+        },
+        "right_inset": {
+          "type": "number",
+          "minimum": 0,
+          "default": 12
+        },
+        "bottom_inset": {
+          "type": "number",
+          "minimum": 0,
+          "default": 24
+        },
+        "show_text": {
+          "type": "boolean",
+          "default": true
+        },
+        "font_size": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 5
+        },
+        "suppress_cover": {
+          "type": "boolean",
+          "default": false,
+          "description": "Suppress the tracking strip on cover and dust-cover pages. Covers remain marked by default when tracking is enabled."
+        },
+        "suppress_signing": {
+          "type": "boolean",
+          "default": true,
+          "description": "Suppress the tracking strip on the final signing page."
+        }
+      },
+      "additionalProperties": false
+    },
+    "pdfHeadingStyles": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^(?:h)?[1-6]$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string"
+          },
+          "bold": {
+            "type": "boolean"
+          },
+          "align": {
+            "enum": [
+              "left",
+              "center",
+              "right"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "pdfPageComposition": {
+      "type": "object",
+      "required": [
+        "mode",
+        "regions"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "fixed",
+            "first-page"
+          ]
+        },
+        "regions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/pdfPageCompositionRegion"
+          }
+        },
+        "decorations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pdfPageCompositionDecoration"
+          }
+        },
+        "placeholder_mode": {
+          "type": "string",
+          "enum": [
+            "literal",
+            "fields"
+          ]
+        },
+        "continuation_heading": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "description": "Exact heading that starts ordinary flowing content on the page after the composed first page."
+        },
+        "pagination": {
+          "type": "object",
+          "required": [
+            "x",
+            "top",
+            "width",
+            "font_size"
+          ],
+          "properties": {
+            "x": {
+              "type": "number",
+              "minimum": 0
+            },
+            "top": {
+              "type": "number",
+              "minimum": 0
+            },
+            "width": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "font_size": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            }
+          },
+          "additionalProperties": false,
+          "description": "Right-aligned Page n of N on the composed page; coordinates are points from the top left."
+        },
+        "letterhead_logo": {
+          "$ref": "#/$defs/pdfLetterheadLogo"
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "properties": {
+            "mode": {
+              "const": "fixed"
+            }
+          },
+          "not": {
+            "required": [
+              "continuation_heading"
+            ]
+          }
+        },
+        {
+          "properties": {
+            "mode": {
+              "const": "first-page"
+            }
+          },
+          "required": [
+            "continuation_heading"
+          ]
+        }
+      ]
+    },
+    "pdfPageCompositionRegion": {
+      "type": "object",
+      "required": [
+        "source_heading",
+        "x",
+        "top",
+        "width",
+        "height",
+        "font_size"
+      ],
+      "properties": {
+        "source_heading": {
+          "type": "string",
+          "minLength": 1
+        },
+        "x": {
+          "type": "number",
+          "minimum": 0
+        },
+        "top": {
+          "type": "number",
+          "minimum": 0
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "font_size": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "line_spacing": {
+          "type": "number",
+          "minimum": 1
+        },
+        "paragraph_gap": {
+          "type": "number",
+          "minimum": 0
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "bold": {
+          "type": "boolean"
+        },
+        "show_heading": {
+          "type": "boolean"
+        },
+        "heading_font_size": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "heading_gap": {
+          "type": "number",
+          "minimum": 0
+        },
+        "heading_color": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "pdfPageCompositionDecoration": {
+      "type": "object",
+      "required": [
+        "x",
+        "top",
+        "width",
+        "height",
+        "fill"
+      ],
+      "properties": {
+        "x": {
+          "type": "number",
+          "minimum": 0
+        },
+        "top": {
+          "type": "number",
+          "minimum": 0
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "fill": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "renderProfile": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "extends": {
+          "type": "string",
+          "minLength": 1
+        },
+        "overrides": {
+          "$ref": "#/$defs/renderOverrides"
+        }
+      },
+      "additionalProperties": true
+    },
+    "renderOverrides": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "minLength": 1
+        },
+        "table": {
+          "$ref": "#/$defs/tableRenderConfig"
+        },
+        "table_style": {
+          "$ref": "#/$defs/tableRenderConfig"
+        },
+        "fonts": {
+          "$ref": "#/$defs/pdfFontsConfig"
+        },
+        "embedded_fonts": {
+          "$ref": "#/$defs/pdfEmbeddedFontsConfig"
+        },
+        "font_role_defaults": {
+          "$ref": "#/$defs/pdfFontRoleDefaults"
+        },
+        "page_tracking": {
+          "$ref": "#/$defs/pdfPageTracking"
+        },
+        "heading_styles": {
+          "$ref": "#/$defs/pdfHeadingStyles"
+        },
+        "page_composition": {
+          "$ref": "#/$defs/pdfPageComposition"
+        },
+        "directive_styles": {
+          "type": "object",
+          "description": "Visual styles keyed by Markdown directive name or variant.",
+          "additionalProperties": {
+            "type": "object"
+          },
+          "properties": {
+            "form-fields": {
+              "$ref": "#/$defs/formFieldsStyle"
+            }
+          }
+        },
+        "markdown_envelope_style": {
+          "$ref": "#/$defs/markdownEnvelopeStyle"
+        },
+        "page_numbering": {
+          "$ref": "#/$defs/pdfPageNumbering"
+        },
+        "spacing_policy": {
+          "$ref": "#/$defs/spacingPolicy"
+        },
+        "default_headers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pdfHeaderFooter"
+          }
+        },
+        "default_footers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/pdfHeaderFooter"
+          }
+        },
+        "heading_page_breaks": {
+          "$ref": "#/$defs/pdfHeadingPageBreaks"
+        },
+        "text_variables": {
+          "$ref": "#/$defs/pdfTextVariables"
+        }
+      },
+      "additionalProperties": true
+    },
+    "formFieldsStyle": {
+      "type": "object",
+      "properties": {
+        "font_size": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "row_height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "field_label_width": {
+          "type": "number",
+          "minimum": 0
+        },
+        "padding": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "object",
+              "properties": {
+                "top": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "right": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "bottom": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "left": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "x": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "y": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "background_color": {
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "border_color": {
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "border_width": {
+          "type": "number",
+          "minimum": 0
+        },
+        "label_color": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "markdownEnvelopeStyle": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "font_size": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "label_font_size": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "line_spacing": {
+          "type": "number",
+          "minimum": 1
+        },
+        "row_gap": {
+          "type": "number",
+          "minimum": 0
+        },
+        "label_gap": {
+          "type": "number",
+          "minimum": 0
+        },
+        "padding": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "object",
+              "properties": {
+                "top": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "right": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "bottom": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "left": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "x": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "y": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "label_color": {
+          "type": "string"
+        },
+        "value_color": {
+          "type": "string"
+        },
+        "background_color": {
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "top_rule": {
+          "type": "object",
+          "properties": {
+            "width": {
+              "type": "number",
+              "minimum": 0
+            },
+            "color": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "bottom_rule": {
+          "type": "object",
+          "properties": {
+            "width": {
+              "type": "number",
+              "minimum": 0
+            },
+            "color": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "spacing_before": {
+          "type": "number",
+          "minimum": 0
+        },
+        "spacing_after": {
+          "type": "number",
+          "minimum": 0
+        },
+        "labels": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[^:\\r\\n]+$"
+          },
+          "description": "Leading Markdown labels without their trailing colons. Defaults to Status, Owner, Applies to and Related."
+        }
+      },
+      "additionalProperties": false
+    },
+    "pdfLetterheadLogo": {
+      "type": "object",
+      "description": "Optional local SVG logo in the company letterhead. Coordinates and dimensions are PDF points. Scaled artwork is contained without changing its aspect ratio.",
+      "required": [
+        "x",
+        "top",
+        "width",
+        "height",
+        "shift_source_headings"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "description": "Local SVG path relative to the render pack file."
+        },
+        "x": {
+          "type": "number",
+          "minimum": 0
+        },
+        "top": {
+          "type": "number",
+          "minimum": 0
+        },
+        "width": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "height": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "scale": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "default": 1
+        },
+        "gap": {
+          "type": "number",
+          "minimum": 0,
+          "default": 12
+        },
+        "shift_source_headings": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "description": "Exact company region headings to align beside the logo while retaining their right edges."
+        }
+      },
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": [
+            "enabled"
+          ],
+          "properties": {
+            "enabled": {
+              "const": false
+            }
+          }
+        },
+        {
+          "required": [
+            "path"
+          ]
+        }
+      ]
+    },
+    "pdfPageNumbering": {
+      "type": "object",
+      "properties": {
+        "include_signing_page": {
+          "type": "boolean",
+          "default": false,
+          "description": "Count the final signing page and render its footer. Its header remains suppressed; barcode suppression is configured independently."
+        }
+      },
+      "additionalProperties": false
+    },
+    "spacingPolicy": {
+      "type": "object",
+      "properties": {
+        "basis": {
+          "enum": [
+            "cursor",
+            "ink"
+          ],
+          "default": "cursor",
+          "description": "Ink spacing measures gaps from the preceding rendered edge to the following content edge. Cursor preserves line advances and added spacing."
+        },
+        "before_rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "prev": {
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "next": {
+                "type": [
+                  "string",
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "pt": {
+                "type": "number"
+              },
+              "em": {
+                "type": "number"
+              },
+              "priority": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "pdfHeaderFooterVariable": {
+      "type": "object",
+      "required": [
+        "type",
+        "name"
+      ],
+      "properties": {
+        "type": {
+          "const": "variable"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "pdfHeaderFooterElement": {
+      "type": "object",
+      "required": [
+        "content"
+      ],
+      "properties": {
+        "content": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/pdfHeaderFooterVariable"
+            },
+            {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "$ref": "#/$defs/pdfHeaderFooterVariable"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "style": {
+          "type": "object",
+          "properties": {
+            "font_size": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "bold": {
+              "type": "boolean"
+            },
+            "italic": {
+              "type": "boolean"
+            },
+            "color": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "pdfHeaderFooter": {
+      "type": "object",
+      "required": [
+        "location",
+        "pages",
+        "columns"
+      ],
+      "properties": {
+        "location": {
+          "enum": [
+            "header",
+            "footer"
+          ]
+        },
+        "pages": {
+          "oneOf": [
+            {
+              "enum": [
+                "all",
+                "first",
+                "not-first",
+                "last",
+                "not-last",
+                "odd",
+                "even",
+                "section-first",
+                "section-not-first"
+              ]
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          ]
+        },
+        "columns": {
+          "type": "object",
+          "properties": {
+            "left": {
+              "$ref": "#/$defs/pdfHeaderFooterElement"
+            },
+            "center": {
+              "$ref": "#/$defs/pdfHeaderFooterElement"
+            },
+            "right": {
+              "$ref": "#/$defs/pdfHeaderFooterElement"
+            }
+          },
+          "additionalProperties": false
+        },
+        "height": {
+          "type": "number",
+          "minimum": 0
+        },
+        "spacing": {
+          "type": "number",
+          "minimum": 0
+        },
+        "priority": {
+          "type": "number"
+        },
+        "border": {
+          "type": "object",
+          "properties": {
+            "width": {
+              "type": "number",
+              "minimum": 0
+            },
+            "color": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "pdfHeadingPageBreaks": {
+      "type": "object",
+      "required": [
+        "levels"
+      ],
+      "properties": {
+        "levels": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 6
+          }
+        },
+        "exclude_text": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Exact Markdown heading text that remains in the current section."
+        }
+      },
+      "additionalProperties": false
+    },
+    "pdfTextVariables": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+      },
+      "description": "Selected bound rendering variables. A whole Markdown text span written as {{name}} is resolved before layout; missing bindings are errors."
     }
   }
 }

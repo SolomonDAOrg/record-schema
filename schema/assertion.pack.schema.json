@@ -240,9 +240,7 @@
           "$ref": "#/$defs/lexTransform"
         },
         "post_where": {},
-        "project": {
-          "type": "object"
-        }
+        "project": {}
       }
     },
     "extract": {
@@ -699,7 +697,8 @@
           "enum": [
             "rewrite",
             "yaml_inline_mapping_field",
-            "reach_baseline"
+            "reach_baseline",
+            "digest_manifest"
           ]
         },
         "file": {
@@ -1087,7 +1086,8 @@
             "decode",
             "lex",
             "path",
-            "format"
+            "format",
+            "digest"
           ]
         },
         "message": {
@@ -1409,6 +1409,85 @@
         },
         "materialize": {
           "$ref": "#/$defs/materializer"
+        },
+        "manifest": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tracks": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "$ref": "#/$defs/source"
+            },
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "$ref": "#/$defs/source"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "entries": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entry_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entry_digest": {
+          "type": "string",
+          "minLength": 1
+        },
+        "count_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "root_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "algorithm": {
+          "const": "sha256"
+        },
+        "commitment": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "algorithm": {
+              "const": "sha256"
+            },
+            "domain": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 255
+            },
+            "path_length": {
+              "enum": [
+                "u16le",
+                "u32le"
+              ]
+            },
+            "include_path": {
+              "type": "boolean"
+            },
+            "include_digest": {
+              "type": "boolean"
+            }
+          }
         }
       },
       "allOf": [
@@ -1823,6 +1902,24 @@
                   "operation"
                 ]
               }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "digest"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "manifest",
+              "tracks"
             ]
           }
         }

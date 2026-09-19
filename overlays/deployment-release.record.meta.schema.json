@@ -93,5 +93,8 @@
       "additionalProperties": true
     }
   },
-  "additionalProperties": true
+  "additionalProperties": true,
+  "required": [
+    "extensions"
+  ]
 }

@@ -14,7 +14,9 @@
         "extensions": {
           "type": "object",
           "properties": {
-            "sop_registry": { "$ref": "#/$defs/sopRegistryExtension" }
+            "sop_registry": {
+              "$ref": "#/$defs/sopRegistryExtension"
+            }
           },
           "additionalProperties": true
         }
@@ -24,13 +26,24 @@
     {
       "if": {
         "type": "object",
-        "required": ["status"],
+        "required": [
+          "status"
+        ],
         "properties": {
           "status": {
             "type": "object",
-            "required": ["phase"],
+            "required": [
+              "phase"
+            ],
             "properties": {
-              "phase": { "enum": ["ratified", "adopted", "effective", "current"] }
+              "phase": {
+                "enum": [
+                  "ratified",
+                  "adopted",
+                  "effective",
+                  "current"
+                ]
+              }
             }
           }
         }
@@ -40,21 +53,30 @@
         "properties": {
           "extensions": {
             "type": "object",
-            "required": ["sop_registry"],
+            "required": [
+              "sop_registry"
+            ],
             "properties": {
               "sop_registry": {
                 "type": "object",
-                "required": ["operational_pack"],
+                "required": [
+                  "operational_pack"
+                ],
                 "properties": {
                   "operational_pack": {
                     "type": "object",
-                    "required": ["record_id"]
+                    "required": [
+                      "record_id"
+                    ]
                   }
                 }
               }
             }
           }
-        }
+        },
+        "required": [
+          "extensions"
+        ]
       }
     }
   ],
@@ -62,7 +84,9 @@
     "sopRegistryExtension": {
       "type": "object",
       "properties": {
-        "operational_pack": { "$ref": "#/$defs/operationalPackPin" }
+        "operational_pack": {
+          "$ref": "#/$defs/operationalPackPin"
+        }
       },
       "additionalProperties": true
     },
@@ -75,21 +99,33 @@
           "description": "Operational Pack record id in dao-proposals (DP-xxxxx)."
         },
         "vote_reference": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "minLength": 1,
           "maxLength": 256
         },
         "passed_tag": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "minLength": 1,
           "maxLength": 128
         },
         "passed_commit": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "pattern": "^[0-9a-f]{40}$"
         },
         "adopted_at": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "date-time"
         }
       },

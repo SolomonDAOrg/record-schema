@@ -74,8 +74,8 @@ Two distinct pack types with separate concerns:
 **Domain**: AST transformation and output generation
 
 - `targets` - Output format configurations (pdf, csv, html, json, yaml, ...)
-- `profiles` - Named render configurations (legal-standard-v1, registry-export-v1)
-- `rules` - Selector-based render rules
+- `render_profiles` - Named render configurations (legal-standard-v1, registry-export-v1)
+- `rulesets` - Selector-based render rules
 - `ast_transforms` - Pre-render AST transformations
 
 ## 3. Usage in Metadata
@@ -93,6 +93,40 @@ extensions:
     default_profile: legal-standard-v1
 ```
 
+### Document identity and render profiles
+
+Reusable render packs MUST NOT hardcode record identifiers, revision numbers, or repository-specific document filenames. Select common rules by document type and extension. `PACKET` is the synthetic selector for compiled packet output; it is not a document filename code.
+
+Tracking identifiers come from the record META. For a standalone document, matching `documents` references are overlaid by the matching `assembly.pack` entry. Each reference may declare `doc_type`, `document_id`, `version`, and `render_profile_id`. Paths are relative to the record directory.
+
+An explicit document identifier is used before the optional `/version` suffix. Otherwise the identifier uses META `id`, the document type, and the filename remaining suffix without the extension. META id replaces any stale record prefix in the filename. For packets, `assembly.packet.document_id`, then `document.document_id`, then META `id` supplies the identifier. Version priority is the selected reference, `document.version`, then root `version`; omit the suffix when absent. Explicit `page_tracking.identifier` in a custom render pack remains an override.
+
+A reference `render_profile_id` overrides selector-based styling. The fallback is `extensions.rendering.default_profile`, followed by the matching pack rules. Missing selected profiles, missing parents, and inheritance cycles are errors. Per-document profiles affect standalone layout and packet section break/rule policies. Fixed page compositions are standalone layouts; packet tracking uses the packet identifier and physical page count.
+
+The contractor services pack provides `contractor-services`, `contractor-services-compact`, and `contractor-services-certificate` profiles. The certificate profile consumes the declared heading slots in its fixed layout. Titles and entity names come from META; no jurisdiction is assumed.
+
+```yaml
+id: AGR-00127
+version: "2.4"
+entity:
+  legal_name: Example Services Ltd
+extensions:
+  rendering:
+    pack_paths: [render/packs/contractor-services-v1.json]
+    default_profile: contractor-services
+documents:
+  primary:
+    - path: AGR-00127_DOC-confirmation.md
+      doc_type: DOC
+      document_id: AGR-00127-confirmation
+      version: "3.1"
+      render_profile_id: contractor-services-compact
+assembly:
+  packet:
+    path: AGR-00127_PKT-filing.pdf
+    document_id: AGR-00127
+```
+
 ## 3.1 META overlays (registry profiles)
 
 Formatting/render packs are selected by metadata for normalization and output.
@@ -106,7 +140,7 @@ Example (in a registry profile):
 rules:
   meta_policies:
     overlay_schema_paths:
-      - overlays/dao_proposals.record.meta.schema.json
+      - overlays/dao-proposals.record.meta.schema.json
 ```
 
 ## 4. Key Benefits

@@ -1,0 +1,417 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solomondao.org/record-schema/document.template.schema.json",
+  "title": "Document template binding contract",
+  "type": "object",
+  "properties": {
+    "fields": {
+      "type": "object",
+      "patternProperties": {
+        "^[A-Za-z][A-Za-z0-9]*$": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "text"
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "draft_placeholder": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "type",
+                "required"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "date"
+                },
+                "format": {
+                  "enum": [
+                    "YYYY-MM-DD",
+                    "DD MMM YYYY"
+                  ]
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "draft_placeholder": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "type",
+                "required",
+                "format"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "decimal"
+                },
+                "decimal_places": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 18
+                },
+                "rounding": {
+                  "enum": [
+                    "half-up",
+                    "reject"
+                  ]
+                },
+                "grouping": {
+                  "type": "boolean"
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "draft_placeholder": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "type",
+                "required",
+                "decimal_places",
+                "rounding"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "boolean"
+                },
+                "true_label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "false_label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "draft_placeholder": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "type",
+                "required",
+                "true_label",
+                "false_label"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "enum"
+                },
+                "values": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 1,
+                  "uniqueItems": true
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "draft_placeholder": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "type",
+                "required",
+                "values"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "metadata": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "target": {
+            "enum": [
+              "title",
+              "entity_name",
+              "entity.legal_name",
+              "entity.short_name",
+              "entity.jurisdiction",
+              "document.effective_date",
+              "status.phase",
+              "status.last_updated",
+              "status.confidentiality",
+              "assembly.packet.cover.title",
+              "assembly.packet.cover.subtitle",
+              "assembly.packet.cover.short_name",
+              "assembly.packet.cover.party_1",
+              "assembly.packet.cover.party_2",
+              "assembly.packet.cover.confidentiality"
+            ]
+          },
+          "field": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+          }
+        },
+        "required": [
+          "target",
+          "field"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "datasets": {
+      "type": "object",
+      "patternProperties": {
+        "^[A-Za-z][A-Za-z0-9]*$": {
+          "type": "object",
+          "properties": {
+            "columns": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "header": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "align": {
+                        "enum": [
+                          "left",
+                          "center",
+                          "right"
+                        ]
+                      },
+                      "width": {
+                        "enum": [
+                          "auto",
+                          "max-content",
+                          "max-content-padded"
+                        ]
+                      },
+                      "nullable": {
+                        "type": "boolean"
+                      },
+                      "type": {
+                        "const": "text"
+                      }
+                    },
+                    "required": [
+                      "header",
+                      "align",
+                      "width",
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "header": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "align": {
+                        "enum": [
+                          "left",
+                          "center",
+                          "right"
+                        ]
+                      },
+                      "width": {
+                        "enum": [
+                          "auto",
+                          "max-content",
+                          "max-content-padded"
+                        ]
+                      },
+                      "nullable": {
+                        "type": "boolean"
+                      },
+                      "type": {
+                        "const": "date"
+                      },
+                      "format": {
+                        "enum": [
+                          "YYYY-MM-DD",
+                          "DD MMM YYYY"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "header",
+                      "align",
+                      "width",
+                      "type",
+                      "format"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "header": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "align": {
+                        "enum": [
+                          "left",
+                          "center",
+                          "right"
+                        ]
+                      },
+                      "width": {
+                        "enum": [
+                          "auto",
+                          "max-content",
+                          "max-content-padded"
+                        ]
+                      },
+                      "nullable": {
+                        "type": "boolean"
+                      },
+                      "type": {
+                        "const": "decimal"
+                      },
+                      "decimal_places": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 18
+                      },
+                      "rounding": {
+                        "enum": [
+                          "half-up",
+                          "reject"
+                        ]
+                      },
+                      "grouping": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "header",
+                      "align",
+                      "width",
+                      "type",
+                      "decimal_places",
+                      "rounding"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "minItems": 1
+            },
+            "striped_rows": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "columns"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "signatures": {
+      "type": "object",
+      "patternProperties": {
+        "^[A-Za-z][A-Za-z0-9]*$": {
+          "type": "object",
+          "properties": {
+            "party_label": {
+              "type": "string",
+              "minLength": 1
+            },
+            "signer_role": {
+              "type": "string",
+              "minLength": 1
+            },
+            "required": {
+              "type": "boolean"
+            },
+            "name_field": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+            },
+            "capacity_field": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+            },
+            "date_field": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+            }
+          },
+          "required": [
+            "party_label",
+            "signer_role",
+            "required"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "instances": {
+      "type": "object",
+      "patternProperties": {
+        "^[A-Za-z][A-Za-z0-9]*$": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "default_instance": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+    }
+  },
+  "required": [
+    "fields",
+    "metadata",
+    "datasets",
+    "signatures",
+    "instances",
+    "default_instance"
+  ],
+  "additionalProperties": false
+}
