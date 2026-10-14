@@ -1,0 +1,136 @@
+{
+    "schema": "record-schema-form-pack",
+    "schema_version": 1,
+    "pack_id": "irs-w8ben-e-2021-10",
+    "description": "Part I identification of IRS Form W-8BEN-E (Rev. October 2021): lines 1-4 and the two address blocks on page 1. The chapter 4 status of line 5, the taxpayer identifiers of lines 8-10 and the per-status certifications of Parts IV onward are chosen per engagement and are not bound here.",
+    "forms": {
+        "irs-w8ben-e-part1": {
+            "title": "IRS Form W-8BEN-E Part I, identification of beneficial owner (Rev. October 2021)",
+            "document": {
+                "path": "forms/pdf/fw8bene-2021-10.pdf",
+                "sha256": "d67fc5abae5af11df5d6168a60f7a7e7f27044efa63f660cb76c0e47a241ef6e"
+            },
+            "xfa": "remove",
+            "need_appearances": false,
+            "unresolved": "skip",
+            "bindings": [
+                {
+                    "bind": "text",
+                    "field": "OrganizationName",
+                    "target": "topmostSubform[0].Page1[0].f1_1[0]"
+                },
+                {
+                    "bind": "text",
+                    "field": "CountryOfIncorporation",
+                    "target": "topmostSubform[0].Page1[0].f1_2[0]"
+                },
+                {
+                    "bind": "text",
+                    "field": "DisregardedEntityName",
+                    "target": "topmostSubform[0].Page1[0].f1_3[0]"
+                },
+                {
+                    "bind": "button_group",
+                    "field": "ChapterThreeStatus",
+                    "options": [
+                        {
+                            "value": "corporation",
+                            "target": "topmostSubform[0].Page1[0].c1_1[0]",
+                            "on_state": "1"
+                        },
+                        {
+                            "value": "partnership",
+                            "target": "topmostSubform[0].Page1[0].c1_1[1]",
+                            "on_state": "2"
+                        },
+                        {
+                            "value": "simple-trust",
+                            "target": "topmostSubform[0].Page1[0].c1_1[2]",
+                            "on_state": "3"
+                        },
+                        {
+                            "value": "tax-exempt-organization",
+                            "target": "topmostSubform[0].Page1[0].c1_1[3]",
+                            "on_state": "4"
+                        },
+                        {
+                            "value": "complex-trust",
+                            "target": "topmostSubform[0].Page1[0].c1_1[4]",
+                            "on_state": "5"
+                        },
+                        {
+                            "value": "foreign-government-controlled-entity",
+                            "target": "topmostSubform[0].Page1[0].c1_1[5]",
+                            "on_state": "6"
+                        },
+                        {
+                            "value": "central-bank-of-issue",
+                            "target": "topmostSubform[0].Page1[0].c1_1[6]",
+                            "on_state": "7"
+                        },
+                        {
+                            "value": "private-foundation",
+                            "target": "topmostSubform[0].Page1[0].c1_1[7]",
+                            "on_state": "8"
+                        },
+                        {
+                            "value": "estate",
+                            "target": "topmostSubform[0].Page1[0].c1_1[8]",
+                            "on_state": "9"
+                        },
+                        {
+                            "value": "foreign-government-integral-part",
+                            "target": "topmostSubform[0].Page1[0].c1_1[9]",
+                            "on_state": "10"
+                        },
+                        {
+                            "value": "grantor-trust",
+                            "target": "topmostSubform[0].Page1[0].c1_1[10]",
+                            "on_state": "11"
+                        },
+                        {
+                            "value": "disregarded-entity",
+                            "target": "topmostSubform[0].Page1[0].c1_1[11]",
+                            "on_state": "12"
+                        },
+                        {
+                            "value": "international-organization",
+                            "target": "topmostSubform[0].Page1[0].c1_1[12]",
+                            "on_state": "13"
+                        }
+                    ]
+                },
+                {
+                    "bind": "text",
+                    "field": "ResidenceAddress",
+                    "target": "topmostSubform[0].Page1[0].f1_4[0]"
+                },
+                {
+                    "bind": "text",
+                    "field": "ResidenceCity",
+                    "target": "topmostSubform[0].Page1[0].f1_5[0]"
+                },
+                {
+                    "bind": "text",
+                    "field": "ResidenceCountry",
+                    "target": "topmostSubform[0].Page1[0].f1_6[0]"
+                },
+                {
+                    "bind": "text",
+                    "field": "MailingAddress",
+                    "target": "topmostSubform[0].Page1[0].f1_7[0]"
+                },
+                {
+                    "bind": "text",
+                    "field": "MailingCity",
+                    "target": "topmostSubform[0].Page1[0].f1_8[0]"
+                },
+                {
+                    "bind": "text",
+                    "field": "MailingCountry",
+                    "target": "topmostSubform[0].Page1[0].f1_9[0]"
+                }
+            ]
+        }
+    }
+}

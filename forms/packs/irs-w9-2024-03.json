@@ -1,0 +1,151 @@
+{
+    "schema": "record-schema-form-pack",
+    "schema_version": 1,
+    "pack_id": "irs-w9-2024-03",
+    "description": "Every fillable field of IRS Form W-9 (Rev. March 2024). Field names are those the published PDF declares; they are not stable across revisions, which is why the document is pinned by checksum.",
+    "forms": {
+        "irs-w9": {
+            "title": "IRS Form W-9, Request for Taxpayer Identification Number and Certification (Rev. March 2024)",
+            "document": {
+                "path": "forms/pdf/fw9-2024-03.pdf",
+                "sha256": "2d420cbb4123dcf1fb82595b2359cfbb5d81f00b9df9d359fcc7af361d093f53"
+            },
+            "xfa": "remove",
+            "need_appearances": false,
+            "unresolved": "skip",
+            "bindings": [
+                {
+                    "bind": "text",
+                    "field": "LegalName",
+                    "target": "topmostSubform[0].Page1[0].f1_01[0]"
+                },
+                {
+                    "bind": "text",
+                    "field": "BusinessName",
+                    "target": "topmostSubform[0].Page1[0].f1_02[0]"
+                },
+                {
+                    "bind": "button_group",
+                    "field": "TaxClassification",
+                    "options": [
+                        {
+                            "value": "individual",
+                            "target": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_1[0]",
+                            "on_state": "1"
+                        },
+                        {
+                            "value": "c-corporation",
+                            "target": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_1[1]",
+                            "on_state": "2"
+                        },
+                        {
+                            "value": "s-corporation",
+                            "target": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_1[2]",
+                            "on_state": "3"
+                        },
+                        {
+                            "value": "partnership",
+                            "target": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_1[3]",
+                            "on_state": "4"
+                        },
+                        {
+                            "value": "trust-estate",
+                            "target": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_1[4]",
+                            "on_state": "5"
+                        },
+                        {
+                            "value": "limited-liability-company",
+                            "target": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_1[5]",
+                            "on_state": "6"
+                        },
+                        {
+                            "value": "other",
+                            "target": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_1[6]",
+                            "on_state": "7"
+                        }
+                    ]
+                },
+                {
+                    "bind": "text",
+                    "field": "LlcTaxClassification",
+                    "target": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].f1_03[0]"
+                },
+                {
+                    "bind": "text",
+                    "field": "OtherClassification",
+                    "target": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].f1_04[0]"
+                },
+                {
+                    "bind": "check",
+                    "field": "HasForeignPartners",
+                    "target": "topmostSubform[0].Page1[0].Boxes3a-b_ReadOrder[0].c1_2[0]",
+                    "on_state": "1"
+                },
+                {
+                    "bind": "text",
+                    "field": "ExemptPayeeCode",
+                    "target": "topmostSubform[0].Page1[0].f1_05[0]"
+                },
+                {
+                    "bind": "text",
+                    "field": "FatcaExemptionCode",
+                    "target": "topmostSubform[0].Page1[0].f1_06[0]"
+                },
+                {
+                    "bind": "text",
+                    "field": "Address",
+                    "target": "topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_07[0]"
+                },
+                {
+                    "bind": "text",
+                    "field": "CityStateZip",
+                    "target": "topmostSubform[0].Page1[0].Address_ReadOrder[0].f1_08[0]"
+                },
+                {
+                    "bind": "text",
+                    "field": "RequesterNameAddress",
+                    "target": "topmostSubform[0].Page1[0].f1_09[0]"
+                },
+                {
+                    "bind": "text",
+                    "field": "AccountNumbers",
+                    "target": "topmostSubform[0].Page1[0].f1_10[0]"
+                },
+                {
+                    "bind": "segments",
+                    "field": "SocialSecurityNumber",
+                    "retain": "digits",
+                    "segments": [
+                        {
+                            "target": "topmostSubform[0].Page1[0].f1_11[0]",
+                            "length": 3
+                        },
+                        {
+                            "target": "topmostSubform[0].Page1[0].f1_12[0]",
+                            "length": 2
+                        },
+                        {
+                            "target": "topmostSubform[0].Page1[0].f1_13[0]",
+                            "length": 4
+                        }
+                    ]
+                },
+                {
+                    "bind": "segments",
+                    "field": "EmployerIdentificationNumber",
+                    "retain": "digits",
+                    "segments": [
+                        {
+                            "target": "topmostSubform[0].Page1[0].f1_14[0]",
+                            "length": 2
+                        },
+                        {
+                            "target": "topmostSubform[0].Page1[0].f1_15[0]",
+                            "length": 7
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

@@ -1624,6 +1624,21 @@
     "markdownEnvelopeStyle": {
       "type": "object",
       "properties": {
+        "columns": {
+          "enum": [
+            1,
+            2,
+            "auto"
+          ],
+          "default": 1,
+          "description": "Label/value pairs per row. Auto pairs consecutive entries only when both fit on one line; long entries occupy a full row."
+        },
+        "column_gap": {
+          "type": "number",
+          "minimum": 0,
+          "default": 24,
+          "description": "Horizontal gap between paired metadata entries, in points."
+        },
         "enabled": {
           "type": "boolean"
         },

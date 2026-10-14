@@ -1,0 +1,357 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://solomondao.org/record-schema/form.pack.schema.json",
+  "title": "Form Pack",
+  "description": "Maps the typed fields of a document template onto the AcroForm fields of an existing PDF, so that a document instance can prefill that PDF. Each form pins one PDF revision by checksum, because field names are not stable across revisions of a published form.",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "record-schema-form-pack"
+    },
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "pack_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{2,}$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "imports": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "forms": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z][a-z0-9-]{2,}$": {
+          "$ref": "#/$defs/form"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema",
+    "schema_version",
+    "pack_id",
+    "forms"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "form": {
+      "type": "object",
+      "description": "One target PDF and the bindings that fill it.",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human label for the form, including its revision."
+        },
+        "document": {
+          "$ref": "#/$defs/document"
+        },
+        "xfa": {
+          "enum": [
+            "keep",
+            "remove"
+          ],
+          "description": "What to do with an /XFA entry. A hybrid form describes its fields twice; 'remove' drops the XFA description so viewers read the filled AcroForm, 'keep' leaves it and accepts that an XFA-preferring viewer shows the form unfilled. Ignored when the PDF carries no /XFA."
+        },
+        "need_appearances": {
+          "type": "boolean",
+          "description": "Set /NeedAppearances, which asks the viewer to discard the appearance streams written here and rebuild them from the values. A viewer that does so uses its own fonts and line breaking, so the filled form renders differently from one viewer to the next and from the flattened form. Leave it false unless a target viewer is known to ignore supplied appearances. Defaults to false."
+        },
+        "allow_read_only": {
+          "type": "boolean",
+          "description": "Permit writing to fields the PDF flags read-only. Defaults to false."
+        },
+        "unresolved": {
+          "enum": [
+            "skip",
+            "blank",
+            "placeholder",
+            "error"
+          ],
+          "description": "What to do with a template field the instance leaves unresolved: leave the PDF field untouched, clear it, write the template's draft placeholder, or refuse to prefill."
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/binding"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "document",
+        "xfa",
+        "unresolved",
+        "bindings"
+      ],
+      "additionalProperties": false
+    },
+    "document": {
+      "type": "object",
+      "description": "The PDF this form fills, pinned to one revision.",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Path to the PDF, resolved the way pack imports are."
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Checksum of that PDF. A mismatch means the field names this pack targets may no longer be the ones in the file."
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "binding": {
+      "description": "One template field written into the PDF. The kinds differ in how a value reaches its target, not in where it comes from.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/text_binding"
+        },
+        {
+          "$ref": "#/$defs/segments_binding"
+        },
+        {
+          "$ref": "#/$defs/check_binding"
+        },
+        {
+          "$ref": "#/$defs/button_group_binding"
+        },
+        {
+          "$ref": "#/$defs/choice_binding"
+        }
+      ]
+    },
+    "text_binding": {
+      "type": "object",
+      "description": "A value written whole into one PDF text field.",
+      "properties": {
+        "bind": {
+          "const": "text"
+        },
+        "field": {
+          "$ref": "#/$defs/template_field"
+        },
+        "target": {
+          "$ref": "#/$defs/target"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        }
+      },
+      "required": [
+        "bind",
+        "field",
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    "segments_binding": {
+      "type": "object",
+      "description": "A value split across several PDF fields by character count, which is how published forms lay out identifiers such as a tax number across separate comb boxes. The segment lengths must account for the whole value.",
+      "properties": {
+        "bind": {
+          "const": "segments"
+        },
+        "field": {
+          "$ref": "#/$defs/template_field"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "retain": {
+          "enum": [
+            "all",
+            "digits",
+            "letters",
+            "alphanumeric"
+          ],
+          "description": "Which characters of the value to keep before splitting, so that a formatted identifier can be bound without restating its punctuation. Defaults to 'all'."
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "target": {
+                "$ref": "#/$defs/target"
+              },
+              "length": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "target",
+              "length"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2
+        }
+      },
+      "required": [
+        "bind",
+        "field",
+        "segments"
+      ],
+      "additionalProperties": false
+    },
+    "check_binding": {
+      "type": "object",
+      "description": "A boolean field selecting one button. The button is cleared whenever the value is not the one named by 'when'.",
+      "properties": {
+        "bind": {
+          "const": "check"
+        },
+        "field": {
+          "$ref": "#/$defs/template_field"
+        },
+        "target": {
+          "$ref": "#/$defs/target"
+        },
+        "on_state": {
+          "$ref": "#/$defs/on_state"
+        },
+        "when": {
+          "type": "boolean",
+          "description": "The boolean value that selects the button, so that a box meaning the negative of its field can be bound without a second field. Defaults to true."
+        }
+      },
+      "required": [
+        "bind",
+        "field",
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    "button_group_binding": {
+      "type": "object",
+      "description": "An enum field selecting one of several buttons, which is how a published form offers an exclusive choice as a row of separate check boxes. Every listed button not selected is cleared.",
+      "properties": {
+        "bind": {
+          "const": "button_group"
+        },
+        "field": {
+          "$ref": "#/$defs/template_field"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The enum value of the template field this button stands for."
+              },
+              "target": {
+                "$ref": "#/$defs/target"
+              },
+              "on_state": {
+                "$ref": "#/$defs/on_state"
+              }
+            },
+            "required": [
+              "value",
+              "target"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2
+        }
+      },
+      "required": [
+        "bind",
+        "field",
+        "options"
+      ],
+      "additionalProperties": false
+    },
+    "choice_binding": {
+      "type": "object",
+      "description": "An enum field selecting an option of one PDF choice field, naming the export value the form submits rather than the text it displays.",
+      "properties": {
+        "bind": {
+          "const": "choice"
+        },
+        "field": {
+          "$ref": "#/$defs/template_field"
+        },
+        "target": {
+          "$ref": "#/$defs/target"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The enum value of the template field."
+              },
+              "export": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The export value declared by the PDF field's /Opt entry."
+              }
+            },
+            "required": [
+              "value",
+              "export"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "bind",
+        "field",
+        "target",
+        "options"
+      ],
+      "additionalProperties": false
+    },
+    "template_field": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9]*$",
+      "description": "A field declared by the record's document template contract."
+    },
+    "target": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The fully-qualified name of a field in the PDF's AcroForm, with the partial names of its ancestors joined by '.'."
+    },
+    "on_state": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The appearance state that shows the button as selected. Omit it when the button declares exactly one, in which case that state is used."
+    },
+    "source": {
+      "enum": [
+        "text",
+        "value"
+      ],
+      "description": "Which reading of the instance field to write: 'text' is the display form the template's own typing produces, 'value' the raw value behind it. Defaults to 'text'."
+    }
+  }
+}

@@ -218,6 +218,16 @@
           }
         }
       },
+      "tpl-nda-v1": {
+        "description": "Non-disclosure agreement rendering with continuous clause flow",
+        "target": "pdf",
+        "extends": "tpl-master-agreement-v1",
+        "overrides": {
+          "horizontal_rule": {
+            "behavior": "rule"
+          }
+        }
+      },
       "tpl-service-agreement-v1": {
         "description": "Service agreement rendering",
         "target": "pdf",
