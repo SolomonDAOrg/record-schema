@@ -34,6 +34,7 @@ Human-readable specifications live in `specifications/`:
 | [PACK_ARCHITECTURE.md](specifications/PACK_ARCHITECTURE.md) | Formatting pack and render pack architecture |
 | [ASSERTIONS.md](specifications/ASSERTIONS.md) | Cross-document assertion packs: the checks that only exist between two documents |
 | [CHARTS.md](specifications/CHARTS.md) | Chart/diagram DSL with proper escaping and multiline labels |
+| [DATA_TABLES.md](specifications/rendering/DATA_TABLES.md) | CSV/TSV table columns, literal text and inline Markdown cells |
 
 ## Contents
 

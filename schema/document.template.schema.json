@@ -229,6 +229,14 @@
                       },
                       "type": {
                         "const": "text"
+                      },
+                      "format": {
+                        "enum": [
+                          "plain",
+                          "markdown"
+                        ],
+                        "default": "plain",
+                        "description": "Text-cell interpretation. Markdown parses inline emphasis, code, links and line breaks; omitted or plain preserves literal text."
                       }
                     },
                     "required": [
